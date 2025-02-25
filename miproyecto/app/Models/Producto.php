@@ -5,11 +5,11 @@ use Illuminate\Database\Eloquent\Model;
 
 
 
-class Carta extends Model
+class Producto extends Model
 {
     
 
-    protected $fillable = ['cod', 'precio', 'nombre'];
+    protected $fillable = ['cod', 'pvp', 'nombre','stock','precioCompra'];
 
     public function lineasPedido()
     {
