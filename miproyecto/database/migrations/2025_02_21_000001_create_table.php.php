@@ -43,22 +43,17 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('cartas', function (Blueprint $table) {
-            $table->id();
-            $table->string('cod')->unique();
-            $table->float('precio');
+        Schema::create('productos', function (Blueprint $table) {
+            $table->string('cod',5)->primary();
+            $table->float('pvp');
             $table->string('nombre');
+            $table->integer('stock');
+            $table->boolean('disponible')->default(true);
+            $table->float('precioCompra');
             $table->timestamps();
         });
 
-        Schema::create('stocks', function (Blueprint $table) {
-            $table->id();
-            $table->integer('cantidad');
-            $table->boolean('disponible')->default(true);
-            $table->float('precio');
-            $table->foreignId('carta_id')->constrained('cartas')->onDelete('cascade');
-            $table->timestamps();
-        });
+       
 
         Schema::create('reservas', function (Blueprint $table) {
             $table->id();
@@ -73,8 +68,8 @@ return new class extends Migration {
         });
 
         Schema::create('pedidos', function (Blueprint $table) {
-            $table->id();
-            $table->integer('cod')->unique();
+            
+            $table->string('cod',5)->primary();
             $table->date('fecha');
             $table->string('estado');
             $table->foreignId('usuario_id')->constrained('usuarios')->onDelete('cascade');
@@ -82,12 +77,14 @@ return new class extends Migration {
         });
 
         Schema::create('linea_pedidos', function (Blueprint $table) {
-            $table->id();
+            $table->string('linea',5)->primary();
             $table->integer('cantidad');
             $table->float('precio');
             $table->string('estado');
-            $table->foreignId('pedido_id')->constrained('pedidos')->onDelete('cascade');
-            $table->foreignId('carta_id')->constrained('cartas')->onDelete('cascade');
+            $table->string('pedido_id',5);
+            $table->foreign('pedido_id')->references('cod')->on('pedidos')->onDelete('cascade');
+            $table->string('producto_id',5);
+            $table->foreign('producto_id')->references('cod')->on('productos')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -97,8 +94,7 @@ return new class extends Migration {
         Schema::dropIfExists('linea_pedidos');
         Schema::dropIfExists('pedidos');
         Schema::dropIfExists('reservas');
-        Schema::dropIfExists('stocks');
-        Schema::dropIfExists('cartas');
+        Schema::dropIfExists('productos');
         Schema::dropIfExists('bebidas');
         Schema::dropIfExists('comidas');
         Schema::dropIfExists('menus');
