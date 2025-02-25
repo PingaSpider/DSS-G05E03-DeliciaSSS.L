@@ -16,33 +16,6 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('mesas', function (Blueprint $table) {
-            $table->id();
-            $table->integer('cantidadMesa');
-            $table->string('codMesa')->unique();
-            $table->boolean('ocupada')->default(false);
-            $table->timestamps();
-        });
-
-        Schema::create('menus', function (Blueprint $table) {
-            $table->id();
-            $table->string('descripcion');
-            $table->timestamps();
-        });
-
-        Schema::create('comidas', function (Blueprint $table) {
-            $table->id();
-            $table->string('descripcion');
-            $table->timestamps();
-        });
-
-        Schema::create('bebidas', function (Blueprint $table) {
-            $table->id();
-            $table->string('tamanyo');
-            $table->string('tipoBebida');
-            $table->timestamps();
-        });
-
         Schema::create('productos', function (Blueprint $table) {
             $table->string('cod',5)->primary();
             $table->float('pvp');
@@ -53,7 +26,38 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-       
+
+        Schema::create('menus', function (Blueprint $table) {
+            $table->id();
+            $table->string('descripcion');
+            $table->timestamps();
+            $table->string('cod_producto',5);
+            $table->foreign('cod_producto')->references('cod')->on('productos')->onDelete('cascade');
+        });
+
+        Schema::create('comidas', function (Blueprint $table) {
+            $table->id();
+            $table->string('descripcion');
+            $table->timestamps();
+            $table->string('cod_producto',5);
+            $table->foreign('cod_producto')->references('cod')->on('productos')->onDelete('cascade');
+        });
+
+        Schema::create('bebidas', function (Blueprint $table) {
+            $table->id();
+            $table->string('tamanyo');
+            $table->string('tipoBebida');
+            $table->timestamps();
+            $table->string('cod_producto',5);
+            $table->foreign('cod_producto')->references('cod')->on('productos')->onDelete('cascade');
+        });
+
+        Schema::create('mesas', function (Blueprint $table) {
+            $table->string('codMesa',5)->primary();
+            $table->boolean('ocupada')->default(true);
+            $table->integer('cantidadMesa')->default(2);
+            $table->timestamps();
+        });
 
         Schema::create('reservas', function (Blueprint $table) {
             $table->id();
@@ -62,7 +66,8 @@ return new class extends Migration {
             $table->integer('codReserva')->unique();
             $table->integer('cantPersona');
             $table->boolean('reservaConfirmada')->default(false);
-            $table->foreignId('mesa_id')->constrained('mesas')->onDelete('cascade');
+            $table->string('mesa_id',5);
+            $table->foreign('mesa_id')->references('codMesa')->on('mesas')->onDelete('cascade');
             $table->foreignId('usuario_id')->constrained('usuarios')->onDelete('cascade');
             $table->timestamps();
         });
@@ -94,10 +99,10 @@ return new class extends Migration {
         Schema::dropIfExists('linea_pedidos');
         Schema::dropIfExists('pedidos');
         Schema::dropIfExists('reservas');
-        Schema::dropIfExists('productos');
         Schema::dropIfExists('bebidas');
         Schema::dropIfExists('comidas');
         Schema::dropIfExists('menus');
+        Schema::dropIfExists('productos');
         Schema::dropIfExists('mesas');
         Schema::dropIfExists('usuarios');
     }

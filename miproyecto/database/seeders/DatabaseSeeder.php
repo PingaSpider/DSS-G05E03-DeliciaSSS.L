@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
 
         
         Mesa::create([
-            'cantidadMesa' => 4,
+            'cantidadMesa' => 2,
             'codMesa' => 'M001',
             'ocupada' => false
         ]);
@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             'codReserva' => 1001,
             'cantPersona' => 2,
             'reservaConfirmada' => true,
-            'mesa_id' => 1,  
+            'mesa_id' => 'M001',  
             'usuario_id' => 1  
         ]);
 
@@ -65,10 +65,26 @@ class DatabaseSeeder extends Seeder
             'precioCompra'=> '6.70'
         ]);
 
-       
-        
+        Producto::create([
+            'cod' => 'C0002',
+            'pvp' => 2.50,
+            'nombre' => 'coca-cola',
+            'stock' => 2,
+            'disponible'=> true,
+            'precioCompra'=> '0.70'
+        ]);
 
-        
+        Producto::create([
+            'cod' => 'C0003',
+            'pvp' => 12.50,
+            'nombre' => 'Menu Lunes',
+            'stock' => 2,
+            'disponible'=> true,
+            'precioCompra'=> '6.70'
+        ]);
+
+       
+                
         LineaPedido::create([
             'linea'=>'L0001',
             'cantidad' => 2,
@@ -80,18 +96,21 @@ class DatabaseSeeder extends Seeder
 
        
         Menu::create([
-            'descripcion' => 'Menú del día'
+            'descripcion' => 'Menú del día',
+            'cod_producto' => 'C0003'
         ]);
 
         
         Comida::create([
-            'descripcion' => 'Ensalada'
+            'descripcion' => 'Pizza Peperoni',
+            'cod_producto' => 'C0001'
         ]);
 
         
         Bebida::create([
             'tamanyo' => 'Grande',
-            'tipoBebida' => 'Coca-Cola'
+            'tipoBebida' => 'Coca-Cola',
+            'cod_producto' => 'C0002'
         ]);
     }
 }
