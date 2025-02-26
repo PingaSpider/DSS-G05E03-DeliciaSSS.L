@@ -28,28 +28,40 @@ return new class extends Migration {
 
 
         Schema::create('menus', function (Blueprint $table) {
-            $table->id();
+            $table->string('cod',5)->primary();
             $table->string('descripcion');
             $table->timestamps();
-            $table->string('cod_producto',5);
-            $table->foreign('cod_producto')->references('cod')->on('productos')->onDelete('cascade');
+
+            $table->foreign('cod')->references('cod')->on('productos')->onDelete('cascade');
+        });
+
+        // Tabla pivote para la relación muchos a muchos
+        Schema::create('menu_producto', function (Blueprint $table) {
+            $table->id();
+            $table->string('menu_cod', 5);
+            $table->string('producto_cod', 5);
+            $table->integer('cantidad')->default(1);
+            $table->timestamps();
+            
+            $table->foreign('menu_cod')->references('cod')->on('menus')->onDelete('cascade');
+            $table->foreign('producto_cod')->references('cod')->on('productos')->onDelete('cascade');
         });
 
         Schema::create('comidas', function (Blueprint $table) {
-            $table->id();
+            $table->string('cod',5)->primary();
             $table->string('descripcion');
             $table->timestamps();
-            $table->string('cod_producto',5);
-            $table->foreign('cod_producto')->references('cod')->on('productos')->onDelete('cascade');
+
+            $table->foreign('cod')->references('cod')->on('productos')->onDelete('cascade');
         });
 
         Schema::create('bebidas', function (Blueprint $table) {
-            $table->id();
+            $table->string('cod',5)-> primary();
             $table->string('tamanyo');
             $table->string('tipoBebida');
             $table->timestamps();
-            $table->string('cod_producto',5);
-            $table->foreign('cod_producto')->references('cod')->on('productos')->onDelete('cascade');
+
+            $table->foreign('cod')->references('cod')->on('productos')->onDelete('cascade');
         });
 
         Schema::create('mesas', function (Blueprint $table) {
@@ -101,6 +113,7 @@ return new class extends Migration {
         Schema::dropIfExists('reservas');
         Schema::dropIfExists('bebidas');
         Schema::dropIfExists('comidas');
+        Schema::dropIfExists('menu_producto');
         Schema::dropIfExists('menus');
         Schema::dropIfExists('productos');
         Schema::dropIfExists('mesas');

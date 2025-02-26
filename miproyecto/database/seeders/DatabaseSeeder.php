@@ -58,15 +58,15 @@ class DatabaseSeeder extends Seeder
         
         Producto::create([
             'cod' => 'C0001',
-            'pvp' => 12.50,
-            'nombre' => 'Pizza',
+            'pvp' => 8.50,
+            'nombre' => 'Hamburguesa',
             'stock' => 2,
             'disponible'=> true,
             'precioCompra'=> '6.70'
         ]);
 
         Producto::create([
-            'cod' => 'C0002',
+            'cod' => 'B0001',
             'pvp' => 2.50,
             'nombre' => 'coca-cola',
             'stock' => 2,
@@ -75,7 +75,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Producto::create([
-            'cod' => 'C0003',
+            'cod' => 'M0001',
             'pvp' => 12.50,
             'nombre' => 'Menu Lunes',
             'stock' => 2,
@@ -83,6 +83,15 @@ class DatabaseSeeder extends Seeder
             'precioCompra'=> '6.70'
         ]);
 
+
+        Producto::create([
+            'cod' => 'C0002',
+            'pvp' => 3.50,
+            'nombre' => 'Patatas',
+            'stock' => 50,
+            'disponible'=> true,
+            'precioCompra'=> '0.70'
+        ]);
        
                 
         LineaPedido::create([
@@ -94,23 +103,36 @@ class DatabaseSeeder extends Seeder
             'producto_id' => 'C0001'  
         ]);
 
+        
        
-        Menu::create([
-            'descripcion' => 'Menú del día',
-            'cod_producto' => 'C0003'
+        $menu=Menu::create([
+            'cod' => 'M0001',
+            'descripcion' => 'Menú del día'
         ]);
+
+        \DB::table('menu_producto')->insert([
+            ['menu_cod' => 'M0001', 'producto_cod' => 'C0001', 'cantidad' => 1],
+            ['menu_cod' => 'M0001', 'producto_cod' => 'C0002', 'cantidad' => 1],
+            ['menu_cod' => 'M0001', 'producto_cod' => 'B0001', 'cantidad' => 1]
+        ]);
+
 
         
         Comida::create([
-            'descripcion' => 'Pizza Peperoni',
-            'cod_producto' => 'C0001'
+            'descripcion' => 'Cheese Burguer',
+            'cod' => 'C0001'
+        ]);
+
+        Comida::create([
+            'descripcion' => 'Patatas Fritas',
+            'cod' => 'C0002'
         ]);
 
         
         Bebida::create([
             'tamanyo' => 'Grande',
             'tipoBebida' => 'Coca-Cola',
-            'cod_producto' => 'C0002'
+            'cod' => 'B0001'
         ]);
     }
 }
