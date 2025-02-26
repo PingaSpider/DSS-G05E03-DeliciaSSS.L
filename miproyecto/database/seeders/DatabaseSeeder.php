@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         
+        $usuario = Usuario::find(1);
         Reserva::create([
             'fecha' => now()->addDays(2),
             'hora' => '19:00:00',
@@ -44,7 +45,8 @@ class DatabaseSeeder extends Seeder
             'cantPersona' => 2,
             'reservaConfirmada' => true,
             'mesa_id' => 'M001',  
-            'usuario_id' => 1  
+            'usuario_id' => 1,
+            'usuario_email' => $usuario->email
         ]);
 
        
@@ -116,8 +118,6 @@ class DatabaseSeeder extends Seeder
             ['menu_cod' => 'M0001', 'producto_cod' => 'B0001', 'cantidad' => 1]
         ]);
 
-
-        
         Comida::create([
             'descripcion' => 'Cheese Burguer',
             'cod' => 'C0001'
@@ -134,5 +134,28 @@ class DatabaseSeeder extends Seeder
             'tipoBebida' => 'Coca-Cola',
             'cod' => 'B0001'
         ]);
+
+        //Insertar descripciones a menu_producto con la funcion descripcionProductos
+        \DB::table('menu_producto')
+            ->where('menu_cod', 'M0001')
+            ->where('producto_cod', 'C0001')
+            ->update([
+                'descripcion' => $menu->descripcionProductos('C0001')
+        ]);
+        
+        \DB::table('menu_producto')
+            ->where('menu_cod', 'M0001')
+            ->where('producto_cod', 'C0002')
+            ->update([
+                'descripcion' => $menu->descripcionProductos('C0002')
+        ]);
+
+        \DB::table('menu_producto')
+            ->where('menu_cod', 'M0001')
+            ->where('producto_cod', 'B0001')
+            ->update([
+                'descripcion' => $menu->descripcionProductos('B0001')
+        ]);
+
     }
 }

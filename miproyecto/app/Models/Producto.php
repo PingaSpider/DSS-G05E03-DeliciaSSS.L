@@ -10,6 +10,10 @@ class Producto extends Model
     
 
     protected $fillable = ['cod', 'pvp', 'nombre','stock','precioCompra'];
+    protected $primaryKey = 'cod';
+    protected $keyType = 'string';
+
+    public $incrementing = false;
 
     public function lineasPedido()
     {

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
+
         Schema::create('usuarios', function (Blueprint $table) {
             $table->id();
             $table->string('email')->unique();
@@ -25,8 +26,7 @@ return new class extends Migration {
             $table->float('precioCompra');
             $table->timestamps();
         });
-
-
+    
         Schema::create('menus', function (Blueprint $table) {
             $table->string('cod',5)->primary();
             $table->string('descripcion');
@@ -35,17 +35,6 @@ return new class extends Migration {
             $table->foreign('cod')->references('cod')->on('productos')->onDelete('cascade');
         });
 
-        // Tabla pivote para la relación muchos a muchos
-        Schema::create('menu_producto', function (Blueprint $table) {
-            $table->id();
-            $table->string('menu_cod', 5);
-            $table->string('producto_cod', 5);
-            $table->integer('cantidad')->default(1);
-            $table->timestamps();
-            
-            $table->foreign('menu_cod')->references('cod')->on('menus')->onDelete('cascade');
-            $table->foreign('producto_cod')->references('cod')->on('productos')->onDelete('cascade');
-        });
 
         Schema::create('comidas', function (Blueprint $table) {
             $table->string('cod',5)->primary();
@@ -64,6 +53,20 @@ return new class extends Migration {
             $table->foreign('cod')->references('cod')->on('productos')->onDelete('cascade');
         });
 
+         // Tabla pivote para la relación muchos a muchos
+         Schema::create('menu_producto', function (Blueprint $table) {
+            $table->id();
+            $table->string('menu_cod', 5);
+            $table->string('producto_cod', 5);
+            $table->integer('cantidad')->default(1);
+            $table->string('descripcion')->default('');
+            $table->timestamps();
+            
+            $table->foreign('menu_cod')->references('cod')->on('menus')->onDelete('cascade');
+            $table->foreign('producto_cod')->references('cod')->on('productos')->onDelete('cascade');
+        });
+
+
         Schema::create('mesas', function (Blueprint $table) {
             $table->string('codMesa',5)->primary();
             $table->boolean('ocupada')->default(true);
@@ -79,9 +82,14 @@ return new class extends Migration {
             $table->integer('cantPersona');
             $table->boolean('reservaConfirmada')->default(false);
             $table->string('mesa_id',5);
+            $table->string('usuario_email');
+            $table->unsignedBigInteger('usuario_id');
             $table->foreign('mesa_id')->references('codMesa')->on('mesas')->onDelete('cascade');
-            $table->foreignId('usuario_id')->constrained('usuarios')->onDelete('cascade');
+            $table->foreign('usuario_id')->references('id')->on('usuarios')->onDelete('cascade');
             $table->timestamps();
+
+            // Restricción de clave única para evitar reservas duplicadas
+            $table->unique(['mesa_id', 'fecha', 'hora']);
         });
 
         Schema::create('pedidos', function (Blueprint $table) {
