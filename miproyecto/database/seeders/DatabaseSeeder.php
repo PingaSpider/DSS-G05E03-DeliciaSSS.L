@@ -21,24 +21,143 @@ class DatabaseSeeder extends Seeder
     {
         // Usuarios
         Usuario::create([
-            'nombre' => 'javier',
-            'email' => 'javier@ua.es',
-            'password' => '123456',  
-            'telefono' => '987654321'
-        ]);
-
-        Usuario::create([
-            'nombre' => 'cliente',
-            'email' => 'cliente@example.com',
-            'password' => '123456',  
-            'telefono' => '123123123'
-        ]);
-
-        Usuario::create([
-            'nombre' => 'maria',
-            'email' => 'maria@example.com',
+            'nombre' => 'alvaro',
+            'email' => 'alvaro@example.com',
             'password' => '123456',
-            'telefono' => '666777888'
+            'telefono' => '111222333'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'beatriz',
+            'email' => 'beatriz@example.com',
+            'password' => '123456',
+            'telefono' => '444555666'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'carlos',
+            'email' => 'carlos@example.com',
+            'password' => '123456',
+            'telefono' => '777888999'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'daniela',
+            'email' => 'daniela@example.com',
+            'password' => '123456',
+            'telefono' => '123321123'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'esteban',
+            'email' => 'esteban@example.com',
+            'password' => '123456',
+            'telefono' => '321123321'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'fabiana',
+            'email' => 'fabiana@example.com',
+            'password' => '123456',
+            'telefono' => '456654456'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'gonzalo',
+            'email' => 'gonzalo@example.com',
+            'password' => '123456',
+            'telefono' => '654456654'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'helena',
+            'email' => 'helena@example.com',
+            'password' => '123456',
+            'telefono' => '789987789'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'ignacio',
+            'email' => 'ignacio@example.com',
+            'password' => '123456',
+            'telefono' => '987789987'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'jose',
+            'email' => 'jose@example.com',
+            'password' => '123456',
+            'telefono' => '159951159'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'karina',
+            'email' => 'karina@example.com',
+            'password' => '123456',
+            'telefono' => '951159951'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'luis',
+            'email' => 'luis@example.com',
+            'password' => '123456',
+            'telefono' => '753357753'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'marta',
+            'email' => 'marta@example.com',
+            'password' => '123456',
+            'telefono' => '357753357'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'nicolas',
+            'email' => 'nicolas@example.com',
+            'password' => '123456',
+            'telefono' => '258852258'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'olivia',
+            'email' => 'olivia@example.com',
+            'password' => '123456',
+            'telefono' => '852258852'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'pedro',
+            'email' => 'pedro@example.com',
+            'password' => '123456',
+            'telefono' => '147741147'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'quique',
+            'email' => 'quique@example.com',
+            'password' => '123456',
+            'telefono' => '741147741'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'rosario',
+            'email' => 'rosario@example.com',
+            'password' => '123456',
+            'telefono' => '369963369'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'santiago',
+            'email' => 'santiago@example.com',
+            'password' => '123456',
+            'telefono' => '963369963'
+        ]);
+
+        Usuario::create([
+            'nombre' => 'teresa',
+            'email' => 'teresa@example.com',
+            'password' => '123456',
+            'telefono' => '789123456'
         ]);
 
         // Mesas
@@ -61,7 +180,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Reservas
-        $usuario = Usuario::find(1);
         Reserva::create([
             'fecha' => now()->addDays(2),
             'hora' => '19:00:00',
@@ -70,7 +188,7 @@ class DatabaseSeeder extends Seeder
             'reservaConfirmada' => true,
             'mesa_id' => 'M001',  
             'usuario_id' => 1,
-            'usuario_email' => $usuario->email
+            'usuario_email' => 'alvaro@example.com'
         ]);
 
         Reserva::create([
@@ -81,7 +199,7 @@ class DatabaseSeeder extends Seeder
             'reservaConfirmada' => true,
             'mesa_id' => 'M002',  
             'usuario_id' => 2,
-            'usuario_email' => 'cliente@example.com'
+            'usuario_email' => 'beatriz@example.com'
         ]);
 
         // PRODUCTOS
@@ -155,43 +273,117 @@ class DatabaseSeeder extends Seeder
 
         // COMIDAS
         Comida::create([
-            'descripcion' => 'Cheese Burguer',
-            'cod' => 'C0001'
+            'nombre' => 'Pizza Margarita',
+            'descripcion' => 'Pizza con tomate, mozzarella y albahaca.',
+            'precio' => 8.50
         ]);
 
         Comida::create([
-            'descripcion' => 'Patatas Fritas',
-            'cod' => 'C0002'
+            'nombre' => 'Hamburguesa Clásica',
+            'descripcion' => 'Carne de res con lechuga, tomate y queso cheddar.',
+            'precio' => 7.00
         ]);
 
         Comida::create([
-            'descripcion' => 'Ensalada fresca con pollo y salsa césar',
-            'cod' => 'C0003'
+            'nombre' => 'Ensalada César',
+            'descripcion' => 'Lechuga romana, pollo a la parrilla y aderezo César.',
+            'precio' => 6.50
         ]);
+
+        Comida::create([
+            'nombre' => 'Tacos al Pastor',
+            'descripcion' => 'Tacos de cerdo marinados con piña y cilantro.',
+            'precio' => 5.00
+        ]);
+
+        Comida::create([
+            'nombre' => 'Sushi Roll California',
+            'descripcion' => 'Rollo de cangrejo, aguacate y pepino.',
+            'precio' => 9.00
+        ]);
+
+        Comida::create([
+            'nombre' => 'Espaguetis Carbonara',
+            'descripcion' => 'Pasta con salsa de huevo, panceta y queso parmesano.',
+            'precio' => 10.00
+        ]);
+
+        Comida::create([
+            'nombre' => 'Pollo Asado',
+            'descripcion' => 'Pollo a la parrilla con guarnición de papas fritas.',
+            'precio' => 11.50
+        ]);
+
+        Comida::create([
+            'nombre' => 'Lasagna Boloñesa',
+            'descripcion' => 'Capas de pasta, carne molida y salsa de tomate.',
+            'precio' => 9.50
+        ]);
+
+        Comida::create([
+            'nombre' => 'Falafel con Hummus',
+            'descripcion' => 'Bolitas de garbanzo con hummus y ensalada.',
+            'precio' => 7.50
+        ]);
+
+        Comida::create([
+            'nombre' => 'Churrasco con Chimichurri',
+            'descripcion' => 'Corte de carne a la parrilla con salsa chimichurri.',
+            'precio' => 15.00
+        ]);
+
 
         // BEBIDAS
         Bebida::create([
-            'tamanyo' => 'Grande',
-            'tipoBebida' => 'Coca-Cola',
-            'cod' => 'B0001'
+            'nombre' => 'Coca-Cola',
+            'descripcion' => 'Refresco de cola.',
+            'precio' => 2.00
         ]);
 
         Bebida::create([
-            'tamanyo' => 'Caña',
-            'tipoBebida' => 'Cerveza Rubia',
-            'cod' => 'B0002'
+            'nombre' => 'Limonada Natural',
+            'descripcion' => 'Bebida refrescante de limón.',
+            'precio' => 2.50
         ]);
+
+        Bebida::create([
+            'nombre' => 'Cerveza Artesanal',
+            'descripcion' => 'Cerveza local con sabor intenso.',
+            'precio' => 4.00
+        ]);
+
+        Bebida::create([
+            'nombre' => 'Té Helado',
+            'descripcion' => 'Té frío con limón.',
+            'precio' => 2.20
+        ]);
+
+        Bebida::create([
+            'nombre' => 'Café Espresso',
+            'descripcion' => 'Café concentrado y aromático.',
+            'precio' => 1.80
+        ]);
+
 
         // MENÚS - Ahora creamos los menús después de que existan los productos
         Menu::create([
-            'cod' => 'M0001',
-            'descripcion' => 'Menú del día'
+            'nombre' => 'Menú Ejecutivo',
+            'descripcion' => 'Entrada, plato principal y postre.',
+            'precio' => 15.00
         ]);
 
         Menu::create([
-            'cod' => 'M0002',
-            'descripcion' => 'Menú Premium'
+            'nombre' => 'Menú Infantil',
+            'descripcion' => 'Plato principal pequeño con bebida.',
+            'precio' => 8.00
         ]);
+
+        Menu::create([
+            'nombre' => 'Menú Degustación',
+            'descripcion' => 'Variedad de platos en pequeñas porciones.',
+            'precio' => 25.00
+        ]);
+
 
         // Relaciones entre menús y productos
         \DB::table('menu_producto')->insert([
@@ -207,7 +399,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // PEDIDOS CONFIRMADOS
-        // Pedido completo confirmado
         Pedido::create([
             'cod' => 'P0001',
             'fecha' => now(),
@@ -215,13 +406,49 @@ class DatabaseSeeder extends Seeder
             'usuario_id' => 1  
         ]);
 
+        Pedido::create([
+            'cod' => 'P0002',
+            'fecha' => now(),
+            'estado' => 'pendiente',
+            'usuario_id' => 2  
+        ]);
+
+        Pedido::create([
+            'cod' => 'P0003',
+            'fecha' => now(),
+            'estado' => 'entregado',
+            'usuario_id' => 3  
+        ]);
+
+        Pedido::create([
+            'cod' => 'P0004',
+            'fecha' => now(),
+            'estado' => 'cancelado',
+            'usuario_id' => 4  
+        ]);
+
+        Pedido::create([
+            'cod' => 'P0005',
+            'fecha' => now(),
+            'estado' => 'en_cesta',
+            'usuario_id' => 5  
+        ]);
+
+        // Obtenemos los IDs de los pedidos recién creados
+        $pedido1 = Pedido::where('cod', 'P0001')->first()->id;
+        $pedido2 = Pedido::where('cod', 'P0002')->first()->id;
+        $pedido3 = Pedido::where('cod', 'P0003')->first()->id;
+        $pedido4 = Pedido::where('cod', 'P0004')->first()->id;
+        $pedido5 = Pedido::where('cod', 'P0005')->first()->id;
+
+        // Lineas de Pedido para P0001
         LineaPedido::create([
             'linea'=>'L0001',
             'cantidad' => 2,
             'precio' => 8.50,
             'estado' => 'confirmado',
-            'pedido_id' => 'P0001', 
-            'producto_id' => 'C0001'  
+            'pedido_id' => $pedido1,
+            'producto_id' => 'C0001'
         ]);
 
         LineaPedido::create([
@@ -229,99 +456,40 @@ class DatabaseSeeder extends Seeder
             'cantidad' => 2,
             'precio' => 2.50,
             'estado' => 'confirmado',
-            'pedido_id' => 'P0001', 
-            'producto_id' => 'B0001'  
+            'pedido_id' => $pedido1,
+            'producto_id' => 'B0001'
         ]);
 
-        // CESTAS DE COMPRA (Pedidos en estado "en_cesta")
-        // Cesta 1 - Usuario 2 con varios productos
-        Pedido::create([
-            'cod' => 'P0002',
-            'fecha' => now(),
-            'estado' => 'en_cesta',
-            'usuario_id' => 2  
-        ]);
-
+        // Lineas de Pedido para P0002
         LineaPedido::create([
             'linea'=>'L0003',
             'cantidad' => 1,
             'precio' => 12.50,
-            'estado' => 'en_cesta',
-            'pedido_id' => 'P0002', 
-            'producto_id' => 'M0001'  
+            'estado' => 'pendiente',
+            'pedido_id' => $pedido2,
+            'producto_id' => 'M0001'
         ]);
 
+        // Lineas de Pedido para P0003
         LineaPedido::create([
             'linea'=>'L0004',
             'cantidad' => 1,
-            'precio' => 3.50,
-            'estado' => 'en_cesta',
-            'pedido_id' => 'P0002', 
-            'producto_id' => 'B0002'  
+            'precio' => 18.95,
+            'estado' => 'entregado',
+            'pedido_id' => $pedido3,
+            'producto_id' => 'M0002'
         ]);
 
-        // Cesta 2 - Usuario 3 con un solo producto
-        Pedido::create([
-            'cod' => 'P0003',
-            'fecha' => now(),
-            'estado' => 'en_cesta',
-            'usuario_id' => 3  
-        ]);
+        // Pedido P0004 no tiene líneas (cancelado)
 
+        // Lineas de Pedido para P0005 (en cesta)
         LineaPedido::create([
             'linea'=>'L0005',
             'cantidad' => 1,
-            'precio' => 18.95,
+            'precio' => 7.50,
             'estado' => 'en_cesta',
-            'pedido_id' => 'P0003', 
-            'producto_id' => 'M0002'  
+            'pedido_id' => $pedido5,
+            'producto_id' => 'C0003'
         ]);
-
-        // Cesta 3 - Cesta vacía para el usuario 1 (solo el pedido sin líneas)
-        Pedido::create([
-            'cod' => 'P0004',
-            'fecha' => now(),
-            'estado' => 'en_cesta',
-            'usuario_id' => 1  
-        ]);
-
-        // HISTORIAL DE PEDIDOS
-        // Crear varios pedidos con diferentes estados para historial
-        $fechasAnteriores = [
-            Carbon::now()->subDays(1),
-            Carbon::now()->subDays(3),
-            Carbon::now()->subDays(5),
-            Carbon::now()->subDays(8),
-        ];
-
-        $estados = ['confirmado', 'preparando', 'entregado', 'pagado'];
-
-        foreach ($fechasAnteriores as $index => $fecha) {
-            $pedido = Pedido::create([
-                'cod' => 'P100' . ($index + 1),
-                'fecha' => $fecha,
-                'estado' => $estados[$index % count($estados)],
-                'usuario_id' => $index % 3 + 1  // Alternar entre usuarios 1, 2 y 3
-            ]);
-
-            // Añadir líneas de pedido diferentes para cada pedido histórico
-            LineaPedido::create([
-                'linea' => 'L100' . ($index * 2 + 1),
-                'cantidad' => rand(1, 3),
-                'precio' => 8.50,
-                'estado' => $estados[$index % count($estados)],
-                'pedido_id' => $pedido->cod, 
-                'producto_id' => 'C0001'  
-            ]);
-
-            LineaPedido::create([
-                'linea' => 'L100' . ($index * 2 + 2),
-                'cantidad' => rand(1, 2),
-                'precio' => 2.50,
-                'estado' => $estados[$index % count($estados)],
-                'pedido_id' => $pedido->cod, 
-                'producto_id' => 'B0001'  
-            ]);
-        }
     }
 }
