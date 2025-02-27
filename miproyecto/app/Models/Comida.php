@@ -9,6 +9,7 @@ class Comida extends Model
     protected $primaryKey = 'cod';
     protected $keyType = 'string';
     public $incrementing = false;
+    
     protected $fillable = ['cod','descripcion'];
 
 

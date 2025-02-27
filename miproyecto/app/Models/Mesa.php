@@ -7,15 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mesa extends Model
 {
+    protected $table = 'mesas';
+    protected $primaryKey = 'codMesa';
+    public $incrementing = false;
+    protected $keyType = 'string';
     
+    protected $fillable = [
+        'codMesa', 'ocupada', 'cantidadMesa'
+    ];
 
-    protected $fillable = ['cantidadMesa', 'codMesa', 'ocupada'];
+    protected $casts = [
+        'ocupada' => 'boolean',
+        'cantidadMesa' => 'integer',
+    ];
 
-    public function estaDisponible($fecha, $hora)
+    // Relación con reservas: una mesa puede tener muchas reservas
+    public function reservas()
     {
-        return !$this->hasMany(Reserva::class, 'mesa_id', 'codMesa')
-            ->where('fecha', $fecha)
-            ->where('hora', $hora)
-            ->exists();
+        return $this->hasMany(Reserva::class, 'mesa_id', 'codMesa');
     }
 }

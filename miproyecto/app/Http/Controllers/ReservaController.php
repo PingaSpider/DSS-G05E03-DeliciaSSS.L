@@ -8,16 +8,13 @@ use Illuminate\Http\Request;
 
 class ReservaController extends Controller
 {
-    // Otros métodos...
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Listar todas las reservas
     public function store(Request $request)
     {
         // Validar que la mesa esté disponible
         $mesa = Mesa::findOrFail($request->mesa_id);
         
+        // Si la mesa no está disponible, mostrar un mensaje de error
         if (!$mesa->estaDisponible($request->fecha, $request->hora)) {
             return back()->withErrors(['mesa' => 'Esta mesa ya está reservada para la fecha y hora seleccionadas.']);
         }
@@ -30,11 +27,9 @@ class ReservaController extends Controller
             'codReserva' => $request->codReserva,
             'cantPersona' => $request->cantPersona,
             'usuario_id' => auth()->id(), // Asume que el usuario está autenticado
-            // Otros campos...
+
         ]);
-        
+        // Redirigir a la lista de reservas con un mensaje de éxito
         return redirect()->route('reservas.index')->with('success', 'Reserva creada exitosamente.');
     }
-
-    // Otros métodos...
 }

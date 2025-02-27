@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reserva extends Model
 {
     
-    protected $fillable = ['fecha', 'hora', 'codReserva', 'cantPersona', 'reservaConfirmada', 'mesa_id', 'usuario_id'];
-
+    protected $fillable = ['fecha', 'hora', 'codReserva', 'cantPersona', 'reservaConfirmada', 'mesa_id', 'usuario_id', 'usuario_email'];
     public function mesa()
     {
         return $this->belongsTo(Mesa::class);

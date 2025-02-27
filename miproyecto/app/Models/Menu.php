@@ -9,7 +9,7 @@ use App\Models\Bebida;
 class Menu extends Model
 {
     
-    protected $fillable = ['descripcion'];
+    protected $fillable = ['cod','descripcion'];
     protected $primaryKey = 'cod';
     protected $keyType = 'string';
     public $incrementing = false;

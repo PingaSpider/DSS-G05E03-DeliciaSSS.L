@@ -19,4 +19,20 @@ class Producto extends Model
     {
         return $this->hasMany(LineaPedido::class);
     }
+
+    // Relaciones con las subclases
+    public function comida()
+    {
+        return $this->hasOne(Comida::class, 'cod', 'cod');
+    }
+
+    public function bebida()
+    {
+        return $this->hasOne(Bebida::class, 'cod', 'cod');
+    }
+
+    public function menu()
+    {
+        return $this->hasOne(Menu::class, 'cod', 'cod');
+    }
 }

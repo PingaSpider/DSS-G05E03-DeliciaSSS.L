@@ -6,18 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Usuario extends Model
 {
+    protected $table = 'usuarios';
     
+    protected $fillable = [
+        'email', 'nombre', 'password', 'telefono'
+    ];
 
-    protected $fillable = ['email', 'nombre', 'password', 'telefono'];
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
 
-    public function pedidos()
-    {
-        return $this->hasMany(Pedido::class);
-    }
-    
+    // Relación con reservas: un usuario puede tener muchas reservas
     public function reservas()
     {
-        return $this->hasMany(Reserva::class);
+        return $this->hasMany(Reserva::class, 'usuario_id', 'id');
     }
 }
 
