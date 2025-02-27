@@ -203,9 +203,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // PRODUCTOS
-        // Primero creamos todos los productos, tanto comidas, bebidas como menús
-        
-        // Productos tipo comida
+        // 1. Hamburguesa
         Producto::create([
             'cod' => 'C0001',
             'pvp' => 8.50,
@@ -215,15 +213,27 @@ class DatabaseSeeder extends Seeder
             'precioCompra'=> '6.70'
         ]);
 
+        Comida::create([
+            'cod' => 'C0001',
+            'descripcion' => 'Hamburguesa con queso y bacon'
+        ]);
+
+        // 2. Patatas Fritas
         Producto::create([
             'cod' => 'C0002',
             'pvp' => 3.50,
-            'nombre' => 'Patatas',
+            'nombre' => 'Patatas Fritas',
             'stock' => 50,
             'disponible'=> true,
             'precioCompra'=> '0.70'
         ]);
 
+        Comida::create([
+            'cod' => 'C0002',
+            'descripcion' => 'Patatas fritas con salsa especial'
+        ]);
+
+        // 3. Ensalada César
         Producto::create([
             'cod' => 'C0003',
             'pvp' => 9.95,
@@ -233,7 +243,118 @@ class DatabaseSeeder extends Seeder
             'precioCompra'=> '4.50'
         ]);
 
+        Comida::create([
+            'cod' => 'C0003',
+            'descripcion' => 'Ensalada con pollo, crutones y parmesano'
+        ]);
+
+        // 4. Pizza Margarita
+        Producto::create([
+            'cod' => 'C0004',
+            'pvp' => 8.50,
+            'nombre' => 'Pizza Margarita',
+            'stock' => 10,
+            'disponible'=> true,
+            'precioCompra'=> '5.00'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0004',
+            'descripcion' => 'Pizza con tomate, mozzarella y albahaca'
+        ]);
+
+        // 5. Nuggets de Pollo
+        Producto::create([
+            'cod' => 'C0005',
+            'pvp' => 6.75,
+            'nombre' => 'Nuggets de Pollo',
+            'stock' => 40,
+            'disponible'=> true,
+            'precioCompra'=> '3.20'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0005',
+            'descripcion' => 'Nuggets de pollo con salsa BBQ'
+        ]);
+
+        // 6. Sándwich Club
+        Producto::create([
+            'cod' => 'C0006',
+            'pvp' => 7.50,
+            'nombre' => 'Sándwich Club',
+            'stock' => 25,
+            'disponible'=> true,
+            'precioCompra'=> '4.00'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0006',
+            'descripcion' => 'Sándwich con pollo, bacon, lechuga y tomate'
+        ]);
+
+        // 7. Hot Dog
+        Producto::create([
+            'cod' => 'C0007',
+            'pvp' => 5.50,
+            'nombre' => 'Hot Dog',
+            'stock' => 30,
+            'disponible'=> true,
+            'precioCompra'=> '2.50'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0007',
+            'descripcion' => 'Hot Dog con cebolla crujiente y mostaza'
+        ]);
+
+        // 8. Tacos
+        Producto::create([
+            'cod' => 'C0008',
+            'pvp' => 7.95,
+            'nombre' => 'Tacos',
+            'stock' => 20,
+            'disponible'=> true,
+            'precioCompra'=> '4.00'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0008',
+            'descripcion' => 'Tacos rellenos de carne y guacamole'
+        ]);
+
+        // 9. Wrap Vegetariano
+        Producto::create([
+            'cod' => 'C0009',
+            'pvp' => 6.95,
+            'nombre' => 'Wrap Vegetariano',
+            'stock' => 20,
+            'disponible'=> true,
+            'precioCompra'=> '3.80'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0009',
+            'descripcion' => 'Wrap con hummus y vegetales frescos'
+        ]);
+
+        // 10. Sushi Box
+        Producto::create([
+            'cod' => 'C0010',
+            'pvp' => 12.50,
+            'nombre' => 'Sushi Box',
+            'stock' => 15,
+            'disponible'=> true,
+            'precioCompra'=> '7.50'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0010',
+            'descripcion' => 'Caja de sushi variado con soja'
+        ]);
+
         // Productos tipo bebida
+        // 1. Coca-Cola
         Producto::create([
             'cod' => 'B0001',
             'pvp' => 2.50,
@@ -243,6 +364,13 @@ class DatabaseSeeder extends Seeder
             'precioCompra'=> '0.70'
         ]);
 
+        Bebida::create([
+            'cod' => 'B0001',
+            'tamanyo' => 'Mediano',
+            'tipoBebida' => 'Gaseosa'
+        ]);
+
+        // 2. Cerveza
         Producto::create([
             'cod' => 'B0002',
             'pvp' => 3.50,
@@ -252,244 +380,186 @@ class DatabaseSeeder extends Seeder
             'precioCompra'=> '1.20'
         ]);
 
-        // Productos tipo menú
+        Bebida::create([
+            'cod' => 'B0002',
+            'tamanyo' => 'Grande',
+            'tipoBebida' => 'Cerveza'
+        ]);
+
+        // 3. Agua Mineral
+        Producto::create([
+            'cod' => 'B0003',
+            'pvp' => 1.50,
+            'nombre' => 'Agua Mineral',
+            'stock' => 100,
+            'disponible'=> true,
+            'precioCompra'=> '0.30'
+        ]);
+
+        Bebida::create([
+            'cod' => 'B0003',
+            'tamanyo' => 'Pequeño',
+            'tipoBebida' => 'Agua'
+        ]);
+
+        // 4. Jugo de Naranja
+        Producto::create([
+            'cod' => 'B0004',
+            'pvp' => 3.00,
+            'nombre' => 'Jugo de Naranja',
+            'stock' => 25,
+            'disponible'=> true,
+            'precioCompra'=> '1.00'
+        ]);
+
+        Bebida::create([
+            'cod' => 'B0004',
+            'tamanyo' => 'Mediano',
+            'tipoBebida' => 'Jugo'
+        ]);
+
+        // 5. Té Helado
+        Producto::create([
+            'cod' => 'B0005',
+            'pvp' => 2.75,
+            'nombre' => 'Té Helado',
+            'stock' => 40,
+            'disponible'=> true,
+            'precioCompra'=> '0.80'
+        ]);
+
+        Bebida::create([
+            'cod' => 'B0005',
+            'tamanyo' => 'Grande',
+            'tipoBebida' => 'Té'
+        ]);
+
+        // 1. Menú Clásico
         Producto::create([
             'cod' => 'M0001',
             'pvp' => 12.50,
-            'nombre' => 'Menú del día',
-            'stock' => 15,
+            'nombre' => 'Menú Clásico',
+            'stock' => 10,
             'disponible'=> true,
-            'precioCompra'=> '6.70'
+            'precioCompra'=> '7.50'
         ]);
 
+        Menu::create([
+            'cod' => 'M0001',
+            'descripcion' => 'Menú Clásico con hamburguesa, patatas y bebida'
+        ]);
+
+        \DB::table('menu_producto')->insert([
+            ['menu_cod' => 'M0001', 'producto_cod' => 'C0001', 'cantidad' => 1, 'descripcion' => 'Hamburguesa clásica'],
+            ['menu_cod' => 'M0001', 'producto_cod' => 'C0002', 'cantidad' => 1, 'descripcion' => 'Patatas de acompañamiento'],
+            ['menu_cod' => 'M0001', 'producto_cod' => 'B0001', 'cantidad' => 1, 'descripcion' => 'Coca-Cola incluida']
+        ]);
+
+        // 2. Menú Saludable
         Producto::create([
             'cod' => 'M0002',
-            'pvp' => 18.95,
-            'nombre' => 'Menú Premium',
-            'stock' => 10,
+            'pvp' => 14.95,
+            'nombre' => 'Menú Saludable',
+            'stock' => 8,
             'disponible'=> true,
             'precioCompra'=> '9.50'
         ]);
 
-        // COMIDAS
-        Comida::create([
-            'nombre' => 'Pizza Margarita',
-            'descripcion' => 'Pizza con tomate, mozzarella y albahaca.',
-            'precio' => 8.50
-        ]);
-
-        Comida::create([
-            'nombre' => 'Hamburguesa Clásica',
-            'descripcion' => 'Carne de res con lechuga, tomate y queso cheddar.',
-            'precio' => 7.00
-        ]);
-
-        Comida::create([
-            'nombre' => 'Ensalada César',
-            'descripcion' => 'Lechuga romana, pollo a la parrilla y aderezo César.',
-            'precio' => 6.50
-        ]);
-
-        Comida::create([
-            'nombre' => 'Tacos al Pastor',
-            'descripcion' => 'Tacos de cerdo marinados con piña y cilantro.',
-            'precio' => 5.00
-        ]);
-
-        Comida::create([
-            'nombre' => 'Sushi Roll California',
-            'descripcion' => 'Rollo de cangrejo, aguacate y pepino.',
-            'precio' => 9.00
-        ]);
-
-        Comida::create([
-            'nombre' => 'Espaguetis Carbonara',
-            'descripcion' => 'Pasta con salsa de huevo, panceta y queso parmesano.',
-            'precio' => 10.00
-        ]);
-
-        Comida::create([
-            'nombre' => 'Pollo Asado',
-            'descripcion' => 'Pollo a la parrilla con guarnición de papas fritas.',
-            'precio' => 11.50
-        ]);
-
-        Comida::create([
-            'nombre' => 'Lasagna Boloñesa',
-            'descripcion' => 'Capas de pasta, carne molida y salsa de tomate.',
-            'precio' => 9.50
-        ]);
-
-        Comida::create([
-            'nombre' => 'Falafel con Hummus',
-            'descripcion' => 'Bolitas de garbanzo con hummus y ensalada.',
-            'precio' => 7.50
-        ]);
-
-        Comida::create([
-            'nombre' => 'Churrasco con Chimichurri',
-            'descripcion' => 'Corte de carne a la parrilla con salsa chimichurri.',
-            'precio' => 15.00
-        ]);
-
-
-        // BEBIDAS
-        Bebida::create([
-            'nombre' => 'Coca-Cola',
-            'descripcion' => 'Refresco de cola.',
-            'precio' => 2.00
-        ]);
-
-        Bebida::create([
-            'nombre' => 'Limonada Natural',
-            'descripcion' => 'Bebida refrescante de limón.',
-            'precio' => 2.50
-        ]);
-
-        Bebida::create([
-            'nombre' => 'Cerveza Artesanal',
-            'descripcion' => 'Cerveza local con sabor intenso.',
-            'precio' => 4.00
-        ]);
-
-        Bebida::create([
-            'nombre' => 'Té Helado',
-            'descripcion' => 'Té frío con limón.',
-            'precio' => 2.20
-        ]);
-
-        Bebida::create([
-            'nombre' => 'Café Espresso',
-            'descripcion' => 'Café concentrado y aromático.',
-            'precio' => 1.80
-        ]);
-
-
-        // MENÚS - Ahora creamos los menús después de que existan los productos
         Menu::create([
-            'nombre' => 'Menú Ejecutivo',
-            'descripcion' => 'Entrada, plato principal y postre.',
-            'precio' => 15.00
+            'cod' => 'M0002',
+            'descripcion' => 'Menú saludable con ensalada, fruta y agua'
         ]);
 
-        Menu::create([
+        \DB::table('menu_producto')->insert([
+            ['menu_cod' => 'M0002', 'producto_cod' => 'C0003', 'cantidad' => 1, 'descripcion' => 'Ensalada César'],
+            ['menu_cod' => 'M0002', 'producto_cod' => 'C0004', 'cantidad' => 1, 'descripcion' => 'Fruta de temporada'],
+            ['menu_cod' => 'M0002', 'producto_cod' => 'B0003', 'cantidad' => 1, 'descripcion' => 'Agua Mineral']
+        ]);
+
+        // 3. Menú Infantil
+        Producto::create([
+            'cod' => 'M0003',
+            'pvp' => 9.95,
             'nombre' => 'Menú Infantil',
-            'descripcion' => 'Plato principal pequeño con bebida.',
-            'precio' => 8.00
+            'stock' => 15,
+            'disponible'=> true,
+            'precioCompra'=> '5.50'
         ]);
 
         Menu::create([
-            'nombre' => 'Menú Degustación',
-            'descripcion' => 'Variedad de platos en pequeñas porciones.',
-            'precio' => 25.00
-        ]);
-
-
-        // Relaciones entre menús y productos
-        \DB::table('menu_producto')->insert([
-            ['menu_cod' => 'M0001', 'producto_cod' => 'C0001', 'cantidad' => 1, 'descripcion' => 'Hamburguesa principal'],
-            ['menu_cod' => 'M0001', 'producto_cod' => 'C0002', 'cantidad' => 1, 'descripcion' => 'Patatas de acompañamiento'],
-            ['menu_cod' => 'M0001', 'producto_cod' => 'B0001', 'cantidad' => 1, 'descripcion' => 'Bebida incluida']
+            'cod' => 'M0003',
+            'descripcion' => 'Menú infantil con nuggets, patatas y jugo'
         ]);
 
         \DB::table('menu_producto')->insert([
-            ['menu_cod' => 'M0002', 'producto_cod' => 'C0003', 'cantidad' => 1, 'descripcion' => 'Ensalada de primer plato'],
-            ['menu_cod' => 'M0002', 'producto_cod' => 'C0002', 'cantidad' => 1, 'descripcion' => 'Patatas de acompañamiento'],
-            ['menu_cod' => 'M0002', 'producto_cod' => 'B0002', 'cantidad' => 1, 'descripcion' => 'Cerveza incluida']
+            ['menu_cod' => 'M0003', 'producto_cod' => 'C0005', 'cantidad' => 1, 'descripcion' => 'Nuggets de pollo'],
+            ['menu_cod' => 'M0003', 'producto_cod' => 'C0002', 'cantidad' => 1, 'descripcion' => 'Patatas de acompañamiento'],
+            ['menu_cod' => 'M0003', 'producto_cod' => 'B0004', 'cantidad' => 1, 'descripcion' => 'Jugo de Naranja']
         ]);
 
-        // PEDIDOS CONFIRMADOS
+        // Pedido 1
         Pedido::create([
             'cod' => 'P0001',
-            'fecha' => now(),
-            'estado' => 'confirmado',
-            'usuario_id' => 1  
+            'fecha' => '2025-03-01',
+            'estado' => 'Pendiente',
+            'usuario_id' => 1
         ]);
 
+        \DB::table('linea_pedidos')->insert([
+            ['linea' => 'L0001', 'cantidad' => 2, 'precio' => 17.00, 'estado' => 'Pendiente', 'pedido_id' => 'P0001', 'producto_id' => 'C0001'],
+            ['linea' => 'L0002', 'cantidad' => 1, 'precio' => 2.50, 'estado' => 'Pendiente', 'pedido_id' => 'P0001', 'producto_id' => 'B0001']
+        ]);
+
+        // Pedido 2
         Pedido::create([
             'cod' => 'P0002',
-            'fecha' => now(),
-            'estado' => 'pendiente',
-            'usuario_id' => 2  
+            'fecha' => '2025-03-01',
+            'estado' => 'En Preparación',
+            'usuario_id' => 2
         ]);
 
+        \DB::table('linea_pedidos')->insert([
+            ['linea' => 'L0003', 'cantidad' => 1, 'precio' => 9.95, 'estado' => 'En Preparación', 'pedido_id' => 'P0002', 'producto_id' => 'C0003'],
+            ['linea' => 'L0004', 'cantidad' => 1, 'precio' => 3.50, 'estado' => 'En Preparación', 'pedido_id' => 'P0002', 'producto_id' => 'B0002']
+        ]);
+
+        // Pedido 3
         Pedido::create([
             'cod' => 'P0003',
-            'fecha' => now(),
-            'estado' => 'entregado',
-            'usuario_id' => 3  
+            'fecha' => '2025-03-02',
+            'estado' => 'Entregado',
+            'usuario_id' => 3
         ]);
 
+        \DB::table('linea_pedidos')->insert([
+            ['linea' => 'L0005', 'cantidad' => 3, 'precio' => 25.50, 'estado' => 'Entregado', 'pedido_id' => 'P0003', 'producto_id' => 'C0001'],
+            ['linea' => 'L0006', 'cantidad' => 2, 'precio' => 7.00, 'estado' => 'Entregado', 'pedido_id' => 'P0003', 'producto_id' => 'B0001']
+        ]);
+
+        // Pedido 4
         Pedido::create([
             'cod' => 'P0004',
-            'fecha' => now(),
-            'estado' => 'cancelado',
-            'usuario_id' => 4  
+            'fecha' => '2025-03-03',
+            'estado' => 'Cancelado',
+            'usuario_id' => 4
         ]);
 
+        \DB::table('linea_pedidos')->insert([
+            ['linea' => 'L0007', 'cantidad' => 1, 'precio' => 14.95, 'estado' => 'Cancelado', 'pedido_id' => 'P0004', 'producto_id' => 'C0003'],
+            ['linea' => 'L0008', 'cantidad' => 1, 'precio' => 2.50, 'estado' => 'Cancelado', 'pedido_id' => 'P0004', 'producto_id' => 'B0001']
+        ]);
+
+        // Pedido 5
         Pedido::create([
             'cod' => 'P0005',
-            'fecha' => now(),
-            'estado' => 'en_cesta',
-            'usuario_id' => 5  
+            'fecha' => '2025-03-04',
+            'estado' => 'Pendiente',
+            'usuario_id' => 5
         ]);
 
-        // Obtenemos los IDs de los pedidos recién creados
-        $pedido1 = Pedido::where('cod', 'P0001')->first()->id;
-        $pedido2 = Pedido::where('cod', 'P0002')->first()->id;
-        $pedido3 = Pedido::where('cod', 'P0003')->first()->id;
-        $pedido4 = Pedido::where('cod', 'P0004')->first()->id;
-        $pedido5 = Pedido::where('cod', 'P0005')->first()->id;
-
-        // Lineas de Pedido para P0001
-        LineaPedido::create([
-            'linea'=>'L0001',
-            'cantidad' => 2,
-            'precio' => 8.50,
-            'estado' => 'confirmado',
-            'pedido_id' => $pedido1,
-            'producto_id' => 'C0001'
-        ]);
-
-        LineaPedido::create([
-            'linea'=>'L0002',
-            'cantidad' => 2,
-            'precio' => 2.50,
-            'estado' => 'confirmado',
-            'pedido_id' => $pedido1,
-            'producto_id' => 'B0001'
-        ]);
-
-        // Lineas de Pedido para P0002
-        LineaPedido::create([
-            'linea'=>'L0003',
-            'cantidad' => 1,
-            'precio' => 12.50,
-            'estado' => 'pendiente',
-            'pedido_id' => $pedido2,
-            'producto_id' => 'M0001'
-        ]);
-
-        // Lineas de Pedido para P0003
-        LineaPedido::create([
-            'linea'=>'L0004',
-            'cantidad' => 1,
-            'precio' => 18.95,
-            'estado' => 'entregado',
-            'pedido_id' => $pedido3,
-            'producto_id' => 'M0002'
-        ]);
-
-        // Pedido P0004 no tiene líneas (cancelado)
-
-        // Lineas de Pedido para P0005 (en cesta)
-        LineaPedido::create([
-            'linea'=>'L0005',
-            'cantidad' => 1,
-            'precio' => 7.50,
-            'estado' => 'en_cesta',
-            'pedido_id' => $pedido5,
-            'producto_id' => 'C0003'
+        \DB::table('linea_pedidos')->insert([
+            ['linea' => 'L0009', 'cantidad' => 2, 'precio' => 19.90, 'estado' => 'Pendiente', 'pedido_id' => 'P0005', 'producto_id' => 'C0002'],
+            ['linea' => 'L0010', 'cantidad' => 1, 'precio' => 3.50, 'estado' => 'Pendiente', 'pedido_id' => 'P0005', 'producto_id' => 'B0002']
         ]);
     }
 }
