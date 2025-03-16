@@ -1,0 +1,629 @@
+.horizontal-line-2 {
+	width: 1280px;
+	height: 1px;
+	border-color: #929292;
+	border-width: 1px;
+	border-style: solid;
+}
+.search-input-1 {
+	width: 336px;
+	height: 46px;
+	background: #FFFFFF00;
+	color: #060300;
+	border-color: #060300;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 2px 2px 2px 2px;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 15px;
+	text-align: left;
+}
+.link-bar-1 {
+	width: 574px;
+	height: 46px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 16px;
+	text-align: center;
+}
+.button-1-copy-1 {
+	width: 172px;
+	height: 46px;
+	padding: 0px 10px 0px 36px;
+	background: #F39221;
+	color: #060300;
+	border-color: #F39221;
+	border-width: 1px;
+	border-style: solid;
+	font-family: "Raleway";
+	font-weight: 500;
+	font-size: 16px;
+	text-align: left;
+}
+.paragraph-3-copy-3 {
+	width: 150px;
+	height: 29px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: center;
+}
+.paragraph-3-copy-4 {
+	width: 151px;
+	height: 29px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: center;
+}
+.paragraph-3-copy-5 {
+	width: 150px;
+	height: 29px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: center;
+}
+.paragraph-3-copy-8 {
+	width: 150px;
+	height: 29px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: center;
+}
+.paragraph-3-copy-11 {
+	width: 152px;
+	height: 29px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: center;
+}
+.local-pizza-icon-2 {
+	width: 95px;
+	height: 95px;
+	background: #000000;
+	border-color: #F39221;
+	border-width: 0.5px;
+	border-style: solid;
+}
+.dinner-dining-icon-1 {
+	width: 95px;
+	height: 95px;
+	background: #000000;
+	border-color: #F39221;
+	border-width: 0.5px;
+	border-style: solid;
+}
+.brunch-dining-icon-1 {
+	width: 95px;
+	height: 95px;
+	background: #000000;
+	border-color: #F39221;
+	border-width: 0.5px;
+	border-style: solid;
+}
+.free-breakfast-icon-1 {
+	width: 95px;
+	height: 95px;
+	background: #000000;
+	border-color: #F39221;
+	border-width: 0.5px;
+	border-style: solid;
+}
+.lunch-dining-icon-1 {
+	width: 95px;
+	height: 95px;
+	background: #000000;
+	border-color: #F39221;
+	border-width: 0.5px;
+	border-style: solid;
+}
+.menu {
+	width: 106px;
+	height: 41px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 32px;
+	line-height: 1.3;
+	text-align: left;
+}
+.rectangle-6 {
+	width: 1280px;
+	height: 282px;
+	padding: 8px 8px 8px 8px;
+	background: #F39221;
+	border-color: #F39221;
+	border-width: 1px;
+	border-style: solid;
+}
+.grupo-footer-1 {
+	width: 227px;
+	height: 39px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 28px;
+	text-align: left;
+}
+.grupo-footer-2 {
+	width: 150px;
+	height: 39px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 28px;
+	text-align: left;
+}
+.grupo-footer-3 {
+	width: 170px;
+	height: 39px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 28px;
+	text-align: left;
+}
+.grupo-24 {
+	width: 186px;
+	height: 40px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.3;
+	text-align: left;
+}
+.grupo-25 {
+	width: 212px;
+	height: 40px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.3;
+	text-align: left;
+}
+.grupo-26 {
+	width: 212px;
+	height: 40px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.3;
+	text-align: left;
+}
+.captura-de-pantalla-2025-03-12-a-las-17-47-30-png-1 {
+	width: 218px;
+	height: 166px;
+	background: #00000000;
+}
+.paragraph-1-copy-5 {
+	width: 249px;
+	height: 45px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 500;
+	font-size: 32px;
+	line-height: 1;
+	text-align: left;
+}
+.primero-a-elegir {
+	width: 119px;
+	height: 22px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 16px;
+	text-align: left;
+}
+.segundo-a-elegir {
+	width: 137px;
+	height: 22px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 16px;
+	text-align: left;
+}
+.postre {
+	width: 91px;
+	height: 22px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 16px;
+	text-align: left;
+}
+.paragraph-1-copy-4 {
+	width: 455px;
+	height: 45px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 500;
+	font-size: 32px;
+	line-height: 1;
+	text-align: left;
+}
+.lorem-ipsum-dolor-sit-amet-consectetur-adipiscing {
+	width: 592px;
+	height: 58px;
+	opacity: 80%
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.5;
+	text-align: left;
+}
+.image-placeholder-1-copy-2 {
+	width: 245px;
+	height: 303px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.paragraph-3-copy-2 {
+	width: 144px;
+	height: 52px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: left;
+}
+.paragraph-3-copy-6 {
+	width: 132px;
+	height: 39px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: left;
+}
+.rating-7 {
+	width: 87px;
+	height: 16px;
+	background: #7A7A7A;
+}
+.image-placeholder-1-copy-5 {
+	width: 245px;
+	height: 303px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.paragraph-3-copy-7 {
+	width: 144px;
+	height: 52px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: left;
+}
+.paragraph-3-copy-9 {
+	width: 132px;
+	height: 39px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: left;
+}
+.rating-8 {
+	width: 87px;
+	height: 16px;
+	background: #7A7A7A;
+}
+.image-placeholder-1-copy-8 {
+	width: 245px;
+	height: 303px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.paragraph-3-copy-10 {
+	width: 144px;
+	height: 52px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: left;
+}
+.paragraph-3-copy-13 {
+	width: 132px;
+	height: 39px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: left;
+}
+.rating-9 {
+	width: 87px;
+	height: 16px;
+	background: #7A7A7A;
+}
+.image-placeholder-1-copy-13 {
+	width: 245px;
+	height: 303px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.paragraph-3-copy-14 {
+	width: 144px;
+	height: 52px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: left;
+}
+.paragraph-3-copy-15 {
+	width: 132px;
+	height: 39px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: left;
+}
+.rating-10 {
+	width: 87px;
+	height: 16px;
+	background: #7A7A7A;
+}
+.horizontal-line-3 {
+	width: 1280px;
+	height: 1px;
+	border-color: #929292;
+	border-width: 1px;
+	border-style: solid;
+}
+.paragraph-3-copy-12 {
+	width: 150px;
+	height: 29px;
+	color: #060300;
+	font-family: "Source Sans 3";
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	text-align: center;
+}
+.bakery-dining-icon-1 {
+	width: 95px;
+	height: 95px;
+	background: #000000;
+	border-color: #F39221;
+	border-width: 0.5px;
+	border-style: solid;
+}
+.paragraph-1-copy-6 {
+	width: 110px;
+	height: 45px;
+	color: #060300;
+	font-family: "Raleway";
+	font-weight: 500;
+	font-size: 32px;
+	line-height: 1;
+	text-align: left;
+}
+.image-placeholder-1-copy-3 {
+	width: 137px;
+	height: 167px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.image-placeholder-1-copy-4 {
+	width: 137px;
+	height: 167px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.image-placeholder-1-copy-6 {
+	width: 137px;
+	height: 167px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.image-placeholder-1-copy-7 {
+	width: 137px;
+	height: 167px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.image-placeholder-1-copy-9 {
+	width: 137px;
+	height: 167px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.image-placeholder-1-copy-10 {
+	width: 137px;
+	height: 167px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.image-placeholder-1-copy-11 {
+	width: 137px;
+	height: 167px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.image-placeholder-1-copy-12 {
+	width: 137px;
+	height: 167px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.image-placeholder-1-copy-14 {
+	width: 137px;
+	height: 167px;
+	background: #FFFFFF;
+	border-color: #AAAAAA;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px 4px 4px 4px;
+}
+.descripci-n-del-producto {
+	width: 214px;
+	height: 21px;
+	color: #060300;
+	font-family: "Helvetica";
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	text-align: left;
+}
+.descripci-n-del-producto-1 {
+	width: 214px;
+	height: 21px;
+	color: #060300;
+	font-family: "Helvetica";
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	text-align: left;
+}
+.descripci-n-del-producto-2 {
+	width: 214px;
+	height: 21px;
+	color: #060300;
+	font-family: "Helvetica";
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	text-align: left;
+}
+.descripci-n-del-producto-3 {
+	width: 214px;
+	height: 21px;
+	color: #060300;
+	font-family: "Helvetica";
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	text-align: left;
+}
+.descripci-n-del-producto-4 {
+	width: 214px;
+	height: 21px;
+	color: #060300;
+	font-family: "Helvetica";
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	text-align: left;
+}
+.descripci-n-del-producto-5 {
+	width: 214px;
+	height: 21px;
+	color: #060300;
+	font-family: "Helvetica";
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	text-align: left;
+}
+.descripci-n-del-producto-6 {
+	width: 214px;
+	height: 21px;
+	color: #060300;
+	font-family: "Helvetica";
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	text-align: left;
+}
+.descripci-n-del-producto-7 {
+	width: 214px;
+	height: 21px;
+	color: #060300;
+	font-family: "Helvetica";
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	text-align: left;
+}
+.descripci-n-del-producto-8 {
+	width: 214px;
+	height: 21px;
+	color: #060300;
+	font-family: "Helvetica";
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	text-align: left;
+}
+.avatar-1 {
+	width: 44px;
+	height: 44px;
+	background: #FEFCE0;
+	border-color: #060300;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 1px 1px 1px 1px;
+}
+.captura-de-pantalla-2025-03-12-a-las-17-20-04-png-1 {
+	width: 90px;
+	height: 83px;
+	background: #00000000;
+}

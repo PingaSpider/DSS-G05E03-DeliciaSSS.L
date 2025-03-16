@@ -1,0 +1,519 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos base */
+html, body {
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    color: #060300;
+    background-color: #FEFCE0;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* Contenedor principal */
+.container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Header y navegación */
+header {
+    padding: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navigation-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+/* Logo */
+.logo-container {
+    max-width: 100px;
+    max-height: 100px;
+    flex: 0 0 auto;
+}
+
+.captura-de-pantalla-2025-03-12-a-las-17-47-30-png {
+    max-width: 218px;
+    max-height: 166px;
+    width: auto;
+    height: auto;
+}
+
+/* Búsqueda */
+.search-input-1 {
+    width: 100%;
+    max-width: 316px;
+    height: 36px;
+    background: transparent;
+    color: #C0C0C0;
+    border-color: #060300;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 2px;
+    font-family: "Source Sans 3";
+    font-weight: 400;
+    font-size: 15px;
+    text-align: left;
+    padding: 0 10px;
+}
+
+/* Enlaces de navegación */
+.link-bar-1 {
+    width: 100%;
+    max-width: 542px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #000000;
+    font-family: "Raleway";
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+}
+
+.link-bar-1 a {
+    text-decoration: none;
+    color: inherit;
+    margin: 0 10px;
+}
+
+/* Botón de pedido */
+.button-1-copy {
+    width: 161px;
+    height: 36px;
+    padding: 0px 10px 0px 36px;
+    background: #F39221;
+    color: #030303;
+    border-color: #F39221;
+    border-width: 1px;
+    border-style: solid;
+    font-weight: 500;
+    font-size: 16px;
+    text-align: left;
+}
+
+/* Avatar */
+.avatar-1 {
+    width: 35px;
+    height: 35px;
+    background: #FEFCE0;
+    border-width: 1px;
+}
+
+/* Línea vertical lateral */
+.vertical-line-container {
+    position: fixed;
+    right: 50px;
+    top: 0;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.vertical-line-2 {
+    position: absolute;
+    top: 16%;
+    width: 2px;
+    height: 70%;
+    border-color: #000000;
+    border-width: 0 0 0 2px;
+    border-style: solid;
+
+}
+
+.deliciass {
+    position: absolute;
+    top: 9%;
+    transform: translateY(-50%) rotate(90deg);
+    width: auto;
+    color: #232323;
+    font-weight: 400;
+    font-size: 28px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.desde-2024- {
+    position: absolute;
+    bottom: 50px;
+    transform: rotate(90deg);
+    width: auto;
+    color: #232323;
+    font-weight: 400;
+    font-size: 20px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+/* Imagen principal */
+.hero-image {
+    width: 100%;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.imagePrincipal > img {
+    width: 100%;
+    max-height: 437px;
+    overflow: hidden;
+}
+
+/* Sección de descripción */
+.descripcion-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    bottom: solid 1px #000000;
+}
+
+.descripcion-container {
+    flex: 1 1 400px;
+}
+
+
+.algo-delicioso-hecho-con-amor {
+    position: relative;
+    color: #232323;
+    font-weight: 400;
+    font-size: 24px;
+    text-align: left;
+    top: 30%;
+}
+
+.cada-plato-es-una-muestra-de-nuestra-pasi-n-por-la {
+    position: relative;
+    width: 80%;
+    color: #060300;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.3;
+    text-align: left;
+    margin-bottom: 20px;
+    top: 30%;
+}
+
+.rectangle-1 {
+    position: relative;
+    width: 172px;
+    height: 45px;
+    padding: 8px;
+    background: #F39221;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    top: 30%;
+}
+
+.ver-men- {
+    color: #060300;
+    font-family: "Roboto";
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.3;
+    text-align: center;
+}
+
+.imagenDescripcion > img {
+    flex: 1 1 400px;
+    width: 100%;
+}
+
+.captura-de-pantalla-2025-03-12-a-las-16-46-46-png {
+    width: 100%;
+    max-height: 628px;
+    overflow: hidden;
+}
+
+/* Sección de platos vendidos */
+.platos-vendidos-section {
+    width: 100%;
+    position: relative;
+    margin: 50px 0;
+
+}
+.imagenMasVendidos > img {
+    width: 100%;
+    height: 428px;
+    object-fit: cover;
+}
+/* Cambiado de position: relative a position: absolute */
+.platos-vendidos-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 5;
+    /* Asegurar que el overlay esté contenido */
+    height: 50%;
+    max-width: 50%;
+}
+
+/* Cambio de porcentajes a valores fijos con max-width */
+.rectangle-2 {
+    width: 300px;
+    height: 200px;
+    padding: 20px;
+    background: #FEFCE0;
+    color: #060300;
+    border-color: #000000;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.rectangle-3 {
+    position: absolute;
+    top: 80px;
+    left:65px;
+    width: 172px;
+    height: 45px;
+    padding: 8px;
+    background: #F39221;
+    border-radius: 2px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.m-s-informaci-n {
+    color: #060300;
+    font-family: "Raleway";
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.3;
+    text-align: center;
+}
+
+/* Sección de reserva */
+.reserva-section {
+    margin: 50px 0;
+    padding: 0 15px;
+}
+
+.reservar-mesa {
+    color: #060300;
+    font-family: "Raleway";
+    font-weight: 400;
+    font-size: 26px;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.selecciona-la-cantidad-de-persona-la-fecha-y-la-h {
+    color: #060300;
+    font-family: "Raleway";
+    font-weight: 400;
+    font-size: 24px;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.reserva-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+    justify-content: flex-start;
+}
+
+.form-group {
+    flex: 1 1 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+}
+
+.cantidad-de-personas,
+.fecha,
+.hora {
+    color: #060300;
+    font-size: 14px;
+    text-align: left;
+}
+
+.fecha, .cantidad-de-personas {
+    font-family: "Raleway";
+}
+
+.hora {
+    font-family: "Helvetica";
+}
+
+.select-1, 
+.select-2,
+.date-picker-1 {
+    height: 37px;
+    padding: 4px 8px;
+    background: #F39221;
+    color: #060300;
+    border-width: 1px;
+    border-style: solid;
+    font-size: 14px;
+    text-align: left;
+    width: 100%;
+}
+
+.select-1,
+.select-2 {
+    border-color: #F39221;
+    font-family: "Raleway";
+}
+
+.date-picker-1 {
+    border-color: #232323;
+    font-family: "Helvetica";
+}
+
+.reserva-submit {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.rectangle-5 {
+    width: 181px;
+    height: 37px;
+    padding: 8px;
+    background: #F39221;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.buscar-una-mesa {
+    color: #060300;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.3;
+    text-align: center;
+}
+
+/* Footer */
+.footer {
+    background: #F39221;
+    border-color: #F39221;
+    border-width: 1px;
+    border-style: solid;
+    padding: 30px 15px;
+    margin-top: 50px;
+    width: 100%;
+    height: 100%;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.footer-section {
+    flex: 1 1 200px;
+}
+
+.grupo-footer,
+.grupo-footer-1,
+.grupo-footer-2 {
+    color: #060300;
+    font-family: "Raleway";
+    font-weight: 400;
+    font-size: 28px;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.grupo-24,
+.grupo-25,
+.grupo-26 {
+    color: #060300;
+    font-family: "Raleway";
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.3;
+    text-align: left;
+}
+
+/*centrado de logo en footer*/
+.footer-logo {
+    position:relative;
+    left: 90%;
+    transform: translateY(-50%);
+    width: 200px;
+    height:100px;
+}
+
+
+/* Media queries */
+@media (max-width: 768px) {
+    .link-bar-1 {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 15px;
+    }
+    
+    .vertical-line-container {
+        display: none;
+    }
+    
+    .descripcion-section {
+        flex-direction: column;
+    }
+    
+    .rectangle-2 {
+        width: 90%;
+        max-width: 320px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navigation-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .search-input-1 {
+        width: 100%;
+    }
+    
+    .reserva-form {
+        flex-direction: column;
+    }
+    
+    .form-group {
+        width: 100%;
+    }
+}

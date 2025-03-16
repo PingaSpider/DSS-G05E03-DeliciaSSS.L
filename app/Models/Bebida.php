@@ -9,4 +9,5 @@ class Bebida extends Model
     
 
     protected $fillable = ['tamanyo', 'tipoBebida'];
+
 }
