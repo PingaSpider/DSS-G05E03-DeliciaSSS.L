@@ -1,0 +1,360 @@
+/* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Raleway, sans-serif;
+}
+
+body {
+    background-color: #FEFCE0;
+    color: #333;
+    line-height: 1.6;
+}
+
+.profile-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #fff;
+    min-height: 100vh;
+}
+
+/* Estilos del header */
+.user-header {
+    background-color: #444444;
+    color: white;
+    padding: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-name {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* Estilos de las pestañas */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 15px;
+    background-color: #fff2d6;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.tab-button:hover {
+    background-color: #ffecbd;
+}
+
+.tab-button.active {
+    border-bottom: 3px solid #ff8036;
+    background-color: #fff2d6;
+}
+
+/* Contenido de las pestañas */
+.tab-content {
+    background-color: #fff2d6;
+    min-height: 70vh;
+    padding: 20px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.content-box {
+    padding: 25px;
+}
+
+/* Formularios */
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="search"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-start;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #F39221;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: #e46a20;
+    border-color: #333;
+}
+
+.btn-secondary {
+    background-color:#FEFCE0;
+    color: #e46a20;
+    border: 1px solid #e46a20;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background-color: #f5f5f5;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: #ff8036;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 0.9rem;
+}
+
+.btn-text:hover {
+    text-decoration: underline;
+}
+
+/* Estilos para Mis Direcciones */
+.address-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.address-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    position: relative;
+}
+
+.address-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.default-badge {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 3px 8px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+}
+
+.address-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.add-address {
+    align-self: flex-start;
+    margin-top: 10px;
+}
+
+/* Estilos para Mis Pedidos */
+.order-filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.filter-select {
+    max-width: 200px;
+}
+
+.search-input {
+    flex: 1;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.order-item {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-date {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.order-status {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.order-status.delivered {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.order-details {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-products {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.product-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.product-count {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.order-total {
+    text-align: right;
+}
+
+.total-label {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.total-amount {
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: block;
+}
+
+.order-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .order-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .order-total {
+        text-align: left;
+    }
+    
+    .order-actions {
+        flex-direction: row;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .tabs {
+        flex-direction: column;
+    }
+    
+    .tab-button {
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .tab-button.active {
+        border-bottom: 1px solid #ff8036;
+    }
+    
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
