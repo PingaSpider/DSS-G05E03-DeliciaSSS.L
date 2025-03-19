@@ -179,6 +179,128 @@ class DatabaseSeeder extends Seeder
             'ocupada' => true
         ]);
 
+        // Mesas adicionales
+        Mesa::create([
+            'cantidadMesa' => 2,
+            'codMesa' => 'M004',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 4,
+            'codMesa' => 'M005',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 6,
+            'codMesa' => 'M006',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 2,
+            'codMesa' => 'M007',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 4,
+            'codMesa' => 'M008',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 6,
+            'codMesa' => 'M009',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 2,
+            'codMesa' => 'M010',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 4,
+            'codMesa' => 'M011',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 6,
+            'codMesa' => 'M012',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 2,
+            'codMesa' => 'M013',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 4,
+            'codMesa' => 'M014',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 6,
+            'codMesa' => 'M015',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 2,
+            'codMesa' => 'M016',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 4,
+            'codMesa' => 'M017',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 6,
+            'codMesa' => 'M018',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 2,
+            'codMesa' => 'M019',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 4,
+            'codMesa' => 'M020',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 6,
+            'codMesa' => 'M021',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 2,
+            'codMesa' => 'M022',
+            'ocupada' => false
+        ]);
+
+        Mesa::create([
+            'cantidadMesa' => 4,
+            'codMesa' => 'M023',
+            'ocupada' => false
+        ]);
+
+
         // Reservas
         Reserva::create([
             'fecha' => now()->addDays(2),
@@ -495,6 +617,150 @@ class DatabaseSeeder extends Seeder
             ['menu_cod' => 'M0003', 'producto_cod' => 'C0005', 'cantidad' => 1, 'descripcion' => 'Nuggets de pollo'],
             ['menu_cod' => 'M0003', 'producto_cod' => 'C0002', 'cantidad' => 1, 'descripcion' => 'Patatas de acompañamiento'],
             ['menu_cod' => 'M0003', 'producto_cod' => 'B0004', 'cantidad' => 1, 'descripcion' => 'Jugo de Naranja']
+        ]);
+
+        // Productos adicionales tipo comida
+        Producto::create([
+            'cod' => 'C0011',
+            'pvp' => 10.50,
+            'nombre' => 'Pasta Alfredo',
+            'stock' => 12,
+            'disponible'=> true,
+            'precioCompra'=> '6.00'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0011',
+            'descripcion' => 'Pasta con salsa Alfredo y pollo'
+        ]);
+
+        Producto::create([
+            'cod' => 'C0012',
+            'pvp' => 11.25,
+            'nombre' => 'Lasaña',
+            'stock' => 10,
+            'disponible'=> true,
+            'precioCompra'=> '6.80'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0012',
+            'descripcion' => 'Lasaña de carne con salsa bechamel'
+        ]);
+
+        Producto::create([
+            'cod' => 'C0013',
+            'pvp' => 7.95,
+            'nombre' => 'Arepas',
+            'stock' => 20,
+            'disponible'=> true,
+            'precioCompra'=> '3.50'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0013',
+            'descripcion' => 'Arepas rellenas de queso y carne mechada'
+        ]);
+
+        Producto::create([
+            'cod' => 'C0014',
+            'pvp' => 5.95,
+            'nombre' => 'Empanadas',
+            'stock' => 30,
+            'disponible'=> true,
+            'precioCompra'=> '2.50'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0014',
+            'descripcion' => 'Empanadas rellenas de carne y queso'
+        ]);
+
+        // Productos adicionales tipo bebida
+        Producto::create([
+            'cod' => 'B0006',
+            'pvp' => 3.50,
+            'nombre' => 'Batido de Fresa',
+            'stock' => 25,
+            'disponible'=> true,
+            'precioCompra'=> '1.50'
+        ]);
+
+        Bebida::create([
+            'cod' => 'B0006',
+            'tamanyo' => 'Mediano',
+            'tipoBebida' => 'Batido'
+        ]);
+
+        Producto::create([
+            'cod' => 'B0007',
+            'pvp' => 3.75,
+            'nombre' => 'Café Expreso',
+            'stock' => 50,
+            'disponible'=> true,
+            'precioCompra'=> '1.20'
+        ]);
+
+        Bebida::create([
+            'cod' => 'B0007',
+            'tamanyo' => 'Pequeño',
+            'tipoBebida' => 'Café'
+        ]);
+
+        Producto::create([
+            'cod' => 'B0008',
+            'pvp' => 4.25,
+            'nombre' => 'Mojito',
+            'stock' => 20,
+            'disponible'=> true,
+            'precioCompra'=> '2.00'
+        ]);
+
+        Bebida::create([
+            'cod' => 'B0008',
+            'tamanyo' => 'Grande',
+            'tipoBebida' => 'Coctel'
+        ]);
+
+        // Menús adicionales
+        Producto::create([
+            'cod' => 'M0004',
+            'pvp' => 13.95,
+            'nombre' => 'Menú Italiano',
+            'stock' => 10,
+            'disponible'=> true,
+            'precioCompra'=> '8.50'
+        ]);
+
+        Menu::create([
+            'cod' => 'M0004',
+            'descripcion' => 'Menú con pasta Alfredo, ensalada y té helado'
+        ]);
+
+        \DB::table('menu_producto')->insert([
+            ['menu_cod' => 'M0004', 'producto_cod' => 'C0011', 'cantidad' => 1, 'descripcion' => 'Pasta Alfredo'],
+            ['menu_cod' => 'M0004', 'producto_cod' => 'C0003', 'cantidad' => 1, 'descripcion' => 'Ensalada César'],
+            ['menu_cod' => 'M0004', 'producto_cod' => 'B0005', 'cantidad' => 1, 'descripcion' => 'Té Helado']
+        ]);
+
+        Producto::create([
+            'cod' => 'M0005',
+            'pvp' => 15.50,
+            'nombre' => 'Menú Latino',
+            'stock' => 10,
+            'disponible'=> true,
+            'precioCompra'=> '9.00'
+        ]);
+
+        Menu::create([
+            'cod' => 'M0005',
+            'descripcion' => 'Menú con arepas, empanadas y jugo de naranja'
+        ]);
+
+        \DB::table('menu_producto')->insert([
+            ['menu_cod' => 'M0005', 'producto_cod' => 'C0013', 'cantidad' => 1, 'descripcion' => 'Arepas rellenas'],
+            ['menu_cod' => 'M0005', 'producto_cod' => 'C0014', 'cantidad' => 1, 'descripcion' => 'Empanadas de carne'],
+            ['menu_cod' => 'M0005', 'producto_cod' => 'B0004', 'cantidad' => 1, 'descripcion' => 'Jugo de Naranja']
         ]);
 
         // Pedido 1
