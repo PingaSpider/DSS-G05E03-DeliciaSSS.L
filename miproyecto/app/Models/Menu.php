@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Comida;
 use App\Models\Bebida;
+use App\Models\Producto;
 
-class Menu extends Model
+class Menu extends Producto
 {
     
     protected $fillable = ['cod','descripcion'];
