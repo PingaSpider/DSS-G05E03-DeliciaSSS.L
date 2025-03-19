@@ -64,6 +64,7 @@ return new class extends Migration {
             
             $table->foreign('menu_cod')->references('cod')->on('menus')->onDelete('cascade');
             $table->foreign('producto_cod')->references('cod')->on('productos')->onDelete('cascade');
+            $table->unique(['menu_cod', 'producto_cod']);
         });
 
 

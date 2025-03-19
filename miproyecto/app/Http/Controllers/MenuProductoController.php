@@ -3,83 +3,156 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\MenuProducto;
 use App\Models\Producto;
 use App\Models\Menu;
 
-
+/**
+ * Controlador para gestionar las relaciones entre menús y productos
+ * No extiende de ProductoBaseController porque no es un tipo de producto,
+ * sino una relación entre menú y producto
+ */
 class MenuProductoController extends Controller
 {
+    /**
+     * Mostrar formulario para agregar un producto a un menú con cantidad personalizada
+     */
     public function create()
     {
-        return view('menuProducto.create');
+        $menus = Menu::all();
+        $productos = Producto::whereNotIn('cod', function($query) {
+            $query->select('cod')->from('menus');
+        })->get();
+        
+        return view('menuProducto.create', compact('menus', 'productos'));
     }
 
+    /**
+     * Guardar una nueva relación entre menú y producto
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'cod' => 'required|unique:menuProductos',
-            'menu_cod' => 'required',
-            'producto_id' => 'required',
-            'cantidad' => 'required',
+            'menu_cod' => 'required|exists:menus,cod',
+            'producto_id' => 'required|exists:productos,cod',
+            'cantidad' => 'required|integer|min:1',
             'descripcion' => 'required',
         ]);
 
-        //Crear el menuProducto
+        // Verificar que el menú existe
+        $menu = Menu::findOrFail($request->menu_cod);
+        
+        // Verificar que el producto existe
+        $producto = Producto::findOrFail($request->producto_id);
+        
+        // Evitar duplicados en la relación
+        $existente = MenuProducto::where('menu_cod', $request->menu_cod)
+                                ->where('producto_id', $request->producto_id)
+                                ->first();
+        
+        if ($existente) {
+            return redirect()->back()
+                ->with('error', 'Este producto ya está asociado al menú')
+                ->withInput();
+        }
+
+        // Crear la relación con cantidad personalizada
         $menuProducto = new MenuProducto();
-        $menuProducto->cod = $request->cod;
         $menuProducto->menu_cod = $request->menu_cod;
         $menuProducto->producto_id = $request->producto_id;
         $menuProducto->cantidad = $request->cantidad;
         $menuProducto->descripcion = $request->descripcion;
         $menuProducto->save();
 
-        //Asociar el menuProducto con el menu
-        $menu = Menu::findOrFail($request->menu_cod);
-        $menu->menuProductos()->attach($menuProducto->cod);
+        // Actualizar el precio del menú
+        $this->actualizarPrecioMenu($request->menu_cod);
 
-        //Asociar el menuProducto con el producto
-        $producto = Producto::findOrFail($request->producto_id);
-        $producto->menuProductos()->attach($menuProducto->cod);
-
-
-        return "MenuProducto creado exitosamente";
+        return redirect()->route('menus.show', $request->menu_cod)
+            ->with('success', 'Producto agregado al menú exitosamente');
     }
 
-    //Funcion de modificar
-    public function edit($cod)
+    /**
+     * Mostrar formulario para editar una relación entre menú y producto
+     */
+    public function edit($id)
     {
-        $menuProducto = MenuProducto::findOrFail($cod);
-        return view('menuProducto.edit', compact('menuProducto'));
+        $menuProducto = MenuProducto::findOrFail($id);
+        $menus = Menu::all();
+        $productos = Producto::whereNotIn('cod', function($query) {
+            $query->select('cod')->from('menus');
+        })->orWhere('cod', $menuProducto->producto_id)->get();
+        
+        return view('menuProducto.edit', compact('menuProducto', 'menus', 'productos'));
     }
 
-    //Funcion de actualizar
-    public function update(Request $request, $cod)
+    /**
+     * Actualizar una relación entre menú y producto
+     */
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'menu_cod' => 'required',
-            'producto_id' => 'required',
-            'cantidad' => 'required',
+            'cantidad' => 'required|integer|min:1',
             'descripcion' => 'required',
         ]);
 
-        $menuProducto = MenuProducto::findOrFail($cod);
-        $menuProducto->menu_cod = $request->menu_cod;
-        $menuProducto->producto_id = $request->producto_id;
+        $menuProducto = MenuProducto::findOrFail($id);
+        $oldMenuCod = $menuProducto->menu_cod;
+        
+        // No permitimos cambiar el menú o producto, solo la cantidad y descripción
         $menuProducto->cantidad = $request->cantidad;
         $menuProducto->descripcion = $request->descripcion;
         $menuProducto->save();
 
-        return "MenuProducto actualizado exitosamente";
+        // Actualizar el precio del menú
+        $this->actualizarPrecioMenu($oldMenuCod);
+
+        return redirect()->route('menus.show', $menuProducto->menu_cod)
+            ->with('success', 'Relación menú-producto actualizada exitosamente');
     }
 
-    //Funcion de eliminar
-    public function destroy($cod)
+    /**
+     * Eliminar una relación entre menú y producto
+     */
+    public function destroy($id)
     {
-        $menuProducto = MenuProducto::findOrFail($cod);
+        $menuProducto = MenuProducto::findOrFail($id);
+        $menuCod = $menuProducto->menu_cod;
         $menuProducto->delete();
-        return "MenuProducto eliminado exitosamente";
+
+        // Actualizar el precio del menú
+        $this->actualizarPrecioMenu($menuCod);
+
+        return redirect()->route('menus.show', $menuCod)
+            ->with('success', 'Producto eliminado del menú exitosamente');
     }
 
+    /**
+     * Método para calcular y actualizar el precio de un menú
+     * basado en los productos asociados y sus cantidades
+     */
+    private function actualizarPrecioMenu($menuCod)
+    {
+        $menu = Menu::findOrFail($menuCod);
+        $pvpTotal = 0;
+        
+        // Calcular el precio total basado en los productos y sus cantidades
+        foreach ($menu->menuProductos as $menuProducto) {
+            $producto = Producto::find($menuProducto->producto_id);
+            if ($producto) {
+                $pvpTotal += $producto->pvp * $menuProducto->cantidad;
+            }
+        }
+        
+        // Aplicar descuento por ser menú
+        $pvpTotal = $pvpTotal * 0.9; // 10% de descuento
+        
+        // Actualizar el precio del producto base
+        $producto = Producto::find($menuCod);
+        if ($producto) {
+            $producto->pvp = $pvpTotal;
+            $producto->save();
+        }
+        
+        return $pvpTotal;
+    }
 }

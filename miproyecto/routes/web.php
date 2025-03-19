@@ -1,75 +1,72 @@
 <?php
 
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\BebidaController;
+use App\Http\Controllers\ComidaController;
+use App\Http\Controllers\MenuProductoController;
+use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\MesaController;
+use App\Http\Controllers\LineaPedidoController;
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\ReservaController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Rutas para Producto
+Route::resource('productos', ProductoController::class);
 
-//Route de Bebida
-Route::get('/bebida/create', 'App\Http\Controllers\BebidaController@create');
-Route::post('/bebida/store', 'App\Http\Controllers\BebidaController@store');
-Route::get('/bebida/edit/{cod}', 'App\Http\Controllers\BebidaController@edit');
-Route::post('/bebida/update/{cod}', 'App\Http\Controllers\BebidaController@update');
+// Rutas para Bebida
+Route::resource('bebidas', BebidaController::class);
 
-//Route de Comida
-Route::get('/comida/create', 'App\Http\Controllers\ComidaController@create');
-Route::post('/comida/store', 'App\Http\Controllers\ComidaController@store');
-Route::get('/comida/edit/{cod}', 'App\Http\Controllers\ComidaController@edit');
-Route::post('/comida/update/{cod}', 'App\Http\Controllers\ComidaController@update');
+// Rutas para Comida
+Route::resource('comidas', ComidaController::class);
 
-//Route de Producto
-Route::get('/producto/create', 'App\Http\Controllers\ProductoController@create');
-Route::post('/producto/store', 'App\Http\Controllers\ProductoController@store');
-Route::get('/producto/edit/{cod}', 'App\Http\Controllers\ProductoController@edit');
-Route::post('/producto/update/{cod}', 'App\Http\Controllers\ProductoController@update');
+// Rutas para Menu
+Route::resource('menus', MenuController::class);
 
-//Route de Menu
-Route::get('/menu/create', 'App\Http\Controllers\MenuController@create');
-Route::post('/menu/store', 'App\Http\Controllers\MenuController@store');
-Route::get('/menu/edit/{cod}', 'App\Http\Controllers\MenuController@edit');
-Route::post('/menu/update/{cod}', 'App\Http\Controllers\MenuController@update');
+// Rutas para MenuProducto (relación)
+Route::resource('menu-productos', MenuProductoController::class);
 
-//Route de Mesa
-Route::get('/mesa/create', 'App\Http\Controllers\MesaController@create');
-Route::post('/mesa/store', 'App\Http\Controllers\MesaController@store');
-Route::get('/mesa/edit/{cod}', 'App\Http\Controllers\MesaController@edit');
-Route::post('/mesa/update/{cod}', 'App\Http\Controllers\MesaController@update');
+// Rutas adicionales para relaciones de menú-producto
+Route::get('menus/{menu}/add-producto', [MenuController::class, 'addProducto'])
+    ->name('menus.add-producto');
 
-//Route de Pedido
-Route::get('/pedido/create', 'App\Http\Controllers\PedidoController@create');
-Route::post('/pedido/store', 'App\Http\Controllers\PedidoController@store');
-Route::get('/pedido/edit/{cod}', 'App\Http\Controllers\PedidoController@edit');
-Route::post('/pedido/update/{cod}', 'App\Http\Controllers\PedidoController@update');
+Route::post('menus/{menu}/attach-producto', [MenuController::class, 'attachProducto'])
+    ->name('menus.attach-producto');
 
-//Route de Reserva
-Route::get('/reserva/create', 'App\Http\Controllers\ReservaController@create');
-Route::post('/reserva/store', 'App\Http\Controllers\ReservaController@store');
-Route::get('/reserva/edit/{id}', 'App\Http\Controllers\ReservaController@edit');
-Route::post('/reserva/update/{id}', 'App\Http\Controllers\ReservaController@update');
+Route::delete('menus/{menu}/detach-producto/{producto}', [MenuController::class, 'detachProducto'])
+    ->name('menus.detach-producto');
 
-//Route de Usuario
-Route::get('/usuario/create', 'App\Http\Controllers\UsuarioController@create');
-Route::post('/usuario/store', 'App\Http\Controllers\UsuarioController@store');
-Route::get('/usuario/edit/{id}', 'App\Http\Controllers\UsuarioController@edit');
-Route::post('/usuario/update/{id}', 'App\Http\Controllers\UsuarioController@update');
+// Rutas personalizadas para Mesa - CORREGIDAS
+Route::get('mesas', [MesaController::class, 'index'])->name('mesas.index');
+Route::get('mesas/create', [MesaController::class, 'create'])->name('mesas.create');
+Route::post('mesas', [MesaController::class, 'store'])->name('mesas.store');
+Route::get('mesas/{codMesa}', [MesaController::class, 'show'])->name('mesas.show');
+Route::get('mesas/{codMesa}/edit', [MesaController::class, 'edit'])->name('mesas.edit');
+Route::put('mesas/{codMesa}', [MesaController::class, 'update'])->name('mesas.update');
+Route::delete('mesas/{codMesa}', [MesaController::class, 'destroy'])->name('mesas.destroy');
+Route::get('mesas/{codMesa}/delete', [MesaController::class, 'delete'])->name('mesas.delete');
 
-//Route de LineaPedido
-Route::get('/lineaPedido/create', 'App\Http\Controllers\LineaPedidoController@create');
-Route::post('/lineaPedido/store', 'App\Http\Controllers\LineaPedidoController@store');
-Route::get('/lineaPedido/edit/{cod}', 'App\Http\Controllers\LineaPedidoController@edit');
-Route::post('/lineaPedido/update/{cod}', 'App\Http\Controllers\LineaPedidoController@update');
+// Rutas para LineaPedido
+Route::resource('linea-pedidos', LineaPedidoController::class);
 
-//Route de MenuProducto
-Route::get('/menuProducto/create', 'App\Http\Controllers\MenuProductoController@create');
-Route::post('/menuProducto/store', 'App\Http\Controllers\MenuProductoController@store');
-Route::get('/menuProducto/edit/{cod}', 'App\Http\Controllers\MenuProductoController@edit');
-Route::post('/menuProducto/update/{cod}', 'App\Http\Controllers\MenuProductoController@update');
+// Rutas para Usuario
+Route::resource('usuarios', UsuarioController::class);
 
+// Rutas para Reserva
+Route::resource('reservas', ReservaController::class);
 
-
-
-
-
+// Rutas para Pedido
+Route::resource('pedidos', PedidoController::class);
+//peidido create,edit,update,destroy,store
+Route::get('pedidos/create', [PedidoController::class, 'create'])->name('pedidos.create');
+Route::post('pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
+Route::get('pedidos/{cod}/edit', [PedidoController::class, 'edit'])->name('pedidos.edit');
+Route::put('pedidos/{cod}', [PedidoController::class, 'update'])->name('pedidos.update');
+Route::delete('pedidos/{cod}', [PedidoController::class, 'destroy'])->name('pedidos.destroy');
 

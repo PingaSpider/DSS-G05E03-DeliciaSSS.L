@@ -3,76 +3,71 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\Producto;
-class ProductoController extends Controller
+
+class ProductoController extends ProductoBaseController
 {
-   
-    public function create()
+    protected $modelClass = Producto::class;
+    protected $viewPrefix = 'producto';
+    protected $routePrefix = 'productos';
+    protected $requiredFields = ['nombre', 'pvp', 'stock', 'precioCompra'];
+
+    /**
+     * Constructor específico para productos genéricos
+     */
+    public function __construct()
     {
-        return view('producto.create');
+        $this->baseValidationRules['nombre'] = 'required';
+        parent::__construct();
     }
 
+    /**
+     * Guardar un nuevo producto
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'cod' => 'required|unique:productos',
-            'pvp' => 'required',
-            'nombre' => 'required',
-            'stock' => 'required',
-            'precioCompra' => 'required',
-        ]);
+        // Validar los campos
+        $validatedData = $request->validate($this->baseValidationRules);
 
-
+        // Crear el producto directamente
         $producto = new Producto();
-
         $producto->cod = $request->cod;
         $producto->pvp = $request->pvp;
         $producto->nombre = $request->nombre;
         $producto->stock = $request->stock;
         $producto->precioCompra = $request->precioCompra;
-
-
         $producto->save();
 
-        return "Producto creado exitosamente";
+        return redirect()->route($this->routePrefix . '.index')
+            ->with('success', 'Producto creado exitosamente');
     }
 
-    //Funcion de modificar
-    public function edit($cod)
-    {
-        $producto = Producto::findOrFail($cod);
-        return view('producto.edit', compact('producto'));
-    }
-
-    //Funcion de actualizar
+    /**
+     * Actualizar un producto existente
+     */
     public function update(Request $request, $cod)
     {
-        $request->validate([
-            'pvp' => 'required',
-            'nombre' => 'required',
-            'stock' => 'required',
-            'precioCompra' => 'required',
-        ]);
+        // Eliminar la regla 'required' para el código, ya que no se debe modificar
+        $validationRules = array_diff_key($this->baseValidationRules, ['cod' => '']);
+        $validatedData = $request->validate($validationRules);
 
         $producto = Producto::findOrFail($cod);
-
         $producto->pvp = $request->pvp;
         $producto->nombre = $request->nombre;
         $producto->stock = $request->stock;
         $producto->precioCompra = $request->precioCompra;
-
         $producto->save();
 
-        return "Producto actualizado exitosamente";
+        return redirect()->route($this->routePrefix . '.index')
+            ->with('success', 'Producto actualizado exitosamente');
     }
 
-    //Funcion de eliminar
+    // Función para eliminar un producto
     public function destroy($cod)
     {
         $producto = Producto::findOrFail($cod);
         $producto->delete();
-        return "Producto eliminado exitosamente";
+        return redirect()->route($this->routePrefix . '.index')
+            ->with('success', 'Producto eliminado exitosamente');
     }
-
 }

@@ -4,32 +4,41 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
 class MenuProducto extends Model
 {
     protected $table = 'menu_producto';
     
-    // Esta tabla tiene clave primaria compuesta
-    protected $primaryKey = ['menu_cod', 'producto_cod'];
-    public $incrementing = false;
+    // Cambiado para usar la columna id normal como clave primaria
+    protected $primaryKey = 'id';
+    public $incrementing = true;
     
     protected $fillable = [
-        'menu_cod', 'producto_cod', 'cantidad', 'descripcion'
+        'menu_cod', 'producto_id', 'cantidad', 'descripcion'
     ];
 
     protected $casts = [
         'cantidad' => 'integer',
     ];
 
-    // Necesario para tablas pivot con clave primaria compuesta en Laravel
-    public function getIncrementing()
+    // Relación con el menú
+    public function menu()
     {
-        return false;
+        return $this->belongsTo(Menu::class, 'menu_cod', 'cod');
     }
-
-    protected function setKeysForSaveQuery($query)
+    
+    // Relación con el producto
+    public function producto()
     {
-        return $query->where('menu_cod', $this->attributes['menu_cod'])
-                    ->where('producto_cod', $this->attributes['producto_cod']);
+        return $this->belongsTo(Producto::class, 'producto_id', 'cod');
+    }
+    
+    // Calcular el subtotal de este ítem del menú
+    public function calcularSubtotal()
+    {
+        $producto = $this->producto;
+        if ($producto) {
+            return $producto->pvp * $this->cantidad;
+        }
+        return 0;
     }
 }

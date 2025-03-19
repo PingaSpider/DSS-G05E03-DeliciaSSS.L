@@ -3,73 +3,89 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-
 use App\Models\Comida;
 use App\Models\Producto;
 
-class ComidaController extends Controller
+class ComidaController extends ProductoBaseController
 {
+    protected $modelClass = Comida::class;
+    protected $viewPrefix = 'comida';
+    protected $routePrefix = 'comidas';
+    protected $requiredFields = ['descripcion'];
 
-    public function create()
+    /**
+     * Constructor para comidas
+     */
+    public function __construct()
     {
-        return view('comida.create');
+        // Agregar reglas de validación específicas para Comida
+        $this->baseValidationRules['descripcion'] = 'required';
+        
+        // Asegurar que el código sea único en la tabla de comidas
+        $this->baseValidationRules['cod'] = 'required|unique:comidas';
+        
+        parent::__construct();
     }
 
+    /**
+     * Guardar una nueva comida
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'cod' => 'required|unique:comidas',
-            'descripcion' => 'required',
-        ]);
+        // Validar los campos
+        $validatedData = $request->validate($this->baseValidationRules);
 
-        //Crear la comida como un producto
-        $producto = new Producto();
-        $producto->cod = $request->cod;
-        $producto->pvp = $request->pvp;
-        $producto->nombre = $request->descripcion;
-        $producto->stock = $request->stock;
-        $producto->precioCompra = $request->precioCompra;
-        $producto->save();
+        // En este caso, el nombre del producto es la descripción de la comida
+        $nombre = $request->descripcion;
+        
+        // Crear el producto base utilizando el método heredado
+        $producto = $this->createProductoBase($request, $nombre);
 
-        //Crear la comida asociada al codigo del producto creado
+        // Crear la comida asociada
         $comida = new Comida();
         $comida->cod = $producto->cod;
         $comida->descripcion = $request->descripcion;
-
-        //Guardar la comida
         $comida->save();
 
-        return "Comida creada exitosamente";
+        return redirect()->route($this->routePrefix . '.index')
+            ->with('success', 'Comida creada exitosamente');
     }
 
-    //Funcion de modificar
-    public function edit($cod)
-    {
-        $comida = Comida::findOrFail($cod);
-        return view('comida.edit', compact('comida'));
-    }
-
-    //Funcion de actualizar
+    /**
+     * Actualizar una comida existente
+     */
     public function update(Request $request, $cod)
     {
+        // Validar solo los campos específicos de la comida
         $request->validate([
             'descripcion' => 'required',
         ]);
 
+        // Obtener la comida
         $comida = Comida::findOrFail($cod);
         $comida->descripcion = $request->descripcion;
         $comida->save();
 
-        return "Comida actualizada exitosamente";
-    }
+        // Actualizar el nombre del producto base (que es la descripción)
+        $producto = Producto::find($cod);
+        if ($producto) {
+            $producto->nombre = $request->descripcion;
+            
+            // Si también están presentes los demás campos del producto, actualizarlos
+            if ($request->filled('pvp')) {
+                $producto->pvp = $request->pvp;
+            }
+            if ($request->filled('stock')) {
+                $producto->stock = $request->stock;
+            }
+            if ($request->filled('precioCompra')) {
+                $producto->precioCompra = $request->precioCompra;
+            }
+            
+            $producto->save();
+        }
 
-    //Funcion de eliminar
-    public function destroy($cod)
-    {
-        $comida = Comida::findOrFail($cod);
-        $comida->delete();
-
-        return "Comida eliminada exitosamente";
+        return redirect()->route($this->routePrefix . '.index')
+            ->with('success', 'Comida actualizada exitosamente');
     }
 }

@@ -1,81 +1,114 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\Bebida;
 use App\Models\Producto;
 
-class BebidaController extends Controller
+class BebidaController extends ProductoBaseController
 {
+    protected $modelClass = Bebida::class;
+    protected $viewPrefix = 'bebida';
+    protected $routePrefix = 'bebidas';
+    protected $requiredFields = ['tamanyo', 'tipoBebida'];
 
-    public function create()
+    /**
+     * Constructor para bebidas
+     */
+    public function __construct()
     {
-        return view('bebida.create');
+        // Agregar reglas de validación específicas para Bebida
+        $this->baseValidationRules['tamanyo'] = 'required';
+        $this->baseValidationRules['tipoBebida'] = 'required';
+        
+        // Asegurar que el código sea único en la tabla de bebidas
+        $this->baseValidationRules['cod'] = 'required|unique:bebidas';
+        
+        parent::__construct();
     }
 
+    /**
+     * Guardar una nueva bebida
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'cod' => 'required|unique:bebidas',
-            'tamayo' => 'required',
-            'tipoBebida' => 'required',
-        ]);
+        // Validar los campos
+        $validatedData = $request->validate($this->baseValidationRules);
 
-        //Crear la bebida como un producto
-        $producto = new Producto();
-        $producto->cod = $request->cod;
-        $producto->pvp = $request->pvp;
-        $producto->nombre = $request->tipoBebida . ' ' . '(' . $request->tamanyo .')';
-        $producto->stock = $request->stock;
-        $producto->precioCompra = $request->precioCompra;
-        $producto->save();
+        // Crear nombre para el producto base
+        $nombre = $request->tipoBebida . ' (' . $request->tamanyo . ')';
+        
+        // Crear el producto base utilizando el método heredado
+        $producto = $this->createProductoBase($request, $nombre);
 
-        //Crear la bebida asociada al codigo del producto creado
+        // Crear la bebida asociada
         $bebida = new Bebida();
-        $bebida->cod = producto->cod;
+        $bebida->cod = $producto->cod;
         $bebida->tamanyo = $request->tamanyo;
         $bebida->tipoBebida = $request->tipoBebida;
-
-        //Guardar la bebida
         $bebida->save();
 
-        return "Bebida creada exitosamente";
+        return redirect()->route($this->routePrefix . '.index')
+            ->with('success', 'Bebida creada exitosamente');
     }
 
-    //Funcion de modificar
-    public function edit($cod)
-    {
-        $bebida = Bebida::findOrFail($cod);
-        return view('bebida.edit', compact('bebida'));
-    }
-
-    //Funcion de actualizar
+    /**
+     * Actualizar una bebida existente
+     */
     public function update(Request $request, $cod)
     {
+        // Validar solo los campos específicos de la bebida
         $request->validate([
             'tamanyo' => 'required',
             'tipoBebida' => 'required',
         ]);
 
+        // Obtener la bebida
         $bebida = Bebida::findOrFail($cod);
-
         $bebida->tamanyo = $request->tamanyo;
         $bebida->tipoBebida = $request->tipoBebida;
-
         $bebida->save();
 
-        return "Bebida actualizada exitosamente";
+        // Actualizar el nombre del producto base si es necesario
+        $nombre = $request->tipoBebida . ' (' . $request->tamanyo . ')';
+        $producto = Producto::find($cod);
+        if ($producto) {
+            $producto->nombre = $nombre;
+            
+            // Si también están presentes los demás campos del producto, actualizarlos
+            if ($request->filled('pvp')) {
+                $producto->pvp = $request->pvp;
+            }
+            if ($request->filled('stock')) {
+                $producto->stock = $request->stock;
+            }
+            if ($request->filled('precioCompra')) {
+                $producto->precioCompra = $request->precioCompra;
+            }
+            
+            $producto->save();
+        }
+
+        return redirect()->route($this->routePrefix . '.index')
+            ->with('success', 'Bebida actualizada exitosamente');
     }
 
-    //Funcion de eliminar
-    public function destroy($cod)
-    {
+    /**
+     * Eliminar una bebida específica
+     */
+    public function destroy($cod){
+        // Eliminar la bebida
         $bebida = Bebida::findOrFail($cod);
         $bebida->delete();
-
-        return "Bebida eliminada exitosamente";
+        
+        // También eliminar el producto base asociado
+        $producto = Producto::find($cod);
+        if ($producto) {
+            $producto->delete();
+        }
+        
+        return redirect()->route($this->routePrefix . '.index')
+            ->with('success', 'Bebida eliminada exitosamente');
     }
 }
