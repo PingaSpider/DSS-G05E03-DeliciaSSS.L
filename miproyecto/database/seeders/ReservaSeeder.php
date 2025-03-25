@@ -17,7 +17,6 @@ class ReservaSeeder extends Seeder
             'reservaConfirmada' => true,
             'mesa_id' => 'M001',  
             'usuario_id' => 1,
-            'usuario_email' => 'alvaro@example.com'
         ]);
 
         Reserva::create([
@@ -28,7 +27,6 @@ class ReservaSeeder extends Seeder
             'reservaConfirmada' => true,
             'mesa_id' => 'M002',  
             'usuario_id' => 2,
-            'usuario_email' => 'beatriz@example.com'
         ]);
     }
 }

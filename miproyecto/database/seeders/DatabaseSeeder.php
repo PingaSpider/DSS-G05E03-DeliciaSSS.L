@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Database\Seeders\UsuariosSeeder;
+use Database\Seeders\UsuarioSeeder;
 use Database\Seeders\MesasSeeder;
 use Database\Seeders\ReservasSeeder;
 use Database\Seeders\ProductosSeeder;
@@ -14,10 +14,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Llamamos a los seeders específicos para cada entidad
-        $this->call(UsuariosSeeder::class);
-        $this->call(MesasSeeder::class);
-        $this->call(ReservasSeeder::class);
-        $this->call(ProductosSeeder::class);
-        $this->call(PedidosSeeder::class);
+        $this->call(UsuarioSeeder::class);
+        $this->call(MesaSeeder::class);
+        $this->call(ReservaSeeder::class);
+        $this->call(ProductoSeeder::class);
+        $this->call(PedidoSeeder::class);
     }
 }
