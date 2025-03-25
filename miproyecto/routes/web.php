@@ -26,6 +26,8 @@ Route::get('/carrito', function () { return view("carrito"); })->name('carrito')
 Route::get('/confirmacionreserva', function () { return view("confirmacionreserva"); })->name('confirmacionreserva');
 Route::get('/user', function () { return view("user"); })->name('user');
 Route::get('/producto', function () { return view("producto"); })->name('producto');
+Route::get('/registro', function () { return view("registro"); })->name('registro');
+Route::get('/login', function () { return view("login"); })->name('login');
 
 // Ruta para procesar el formulario de reserva
 Route::post('/reservas', function () { 
