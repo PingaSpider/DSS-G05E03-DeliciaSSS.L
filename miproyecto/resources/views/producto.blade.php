@@ -43,7 +43,7 @@
             <!-- Product Detail Section -->
             <div class="product-detail">
                 <div class="product-image-container">
-                    <img src="{{ $producto->imagen ?? asset('hamburguesa.jpg') }}" alt="{{ $producto->nombre ?? 'Hamburguesa especial' }}" id="main-product-image" class="product-main-image">
+                    <img src="{{ $producto->imagen ?? asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/especialburguer.png') }}" alt="{{ $producto->nombre ?? 'Hamburguesa especial' }}" class="product-main-image">
                 </div>
                 
                 <div class="product-info">
@@ -97,7 +97,7 @@
                         <!-- Productos similares por defecto -->
                         <div class="product-card" data-product-id="1">
                             <div class="product-image">
-                                <img src="{{ asset('hamburguesa-clasica.jpg') }}" alt="Hamburguesa Clásica" class="product-thumbnail">
+                                <img src="{{ asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/cheseburguer.png') }}" alt="Hamburguesa Clásica" class="product-thumbnail">
                             </div>
                             <div class="product-card-info">
                                 <div class="product-name">PRODUCT NAME</div>
@@ -108,7 +108,7 @@
                         
                         <div class="product-card" data-product-id="2">
                             <div class="product-image">
-                                <img src="{{ asset('hamburguesa-deluxe.jpg') }}" alt="Hamburguesa Deluxe" class="product-thumbnail">
+                                <img src="{{ asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/cheseburguer.png') }}" alt="Hamburguesa Deluxe" class="product-thumbnail">
                             </div>
                             <div class="product-card-info">
                                 <div class="product-name">PRODUCT NAME</div>
@@ -119,7 +119,7 @@
                         
                         <div class="product-card" data-product-id="3">
                             <div class="product-image">
-                                <img src="{{ asset('hamburguesa-vegetariana.jpg') }}" alt="Hamburguesa Vegetariana" class="product-thumbnail">
+                                <img src="{{ asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/cheseburguer.png') }}" alt="Hamburguesa Vegetariana" class="product-thumbnail">
                             </div>
                             <div class="product-card-info">
                                 <div class="product-name">PRODUCT NAME</div>
@@ -130,7 +130,7 @@
                         
                         <div class="product-card" data-product-id="4">
                             <div class="product-image">
-                                <img src="{{ asset('hamburguesa-pollo.jpg') }}" alt="Hamburguesa de Pollo" class="product-thumbnail">
+                                <img src="{{ asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/cheseburguer.png') }}" alt="Hamburguesa de Pollo" class="product-thumbnail">
                             </div>
                             <div class="product-card-info">
                                 <div class="product-name">PRODUCT NAME</div>
@@ -141,7 +141,7 @@
                         
                         <div class="product-card" data-product-id="5">
                             <div class="product-image">
-                                <img src="{{ asset('hamburguesa-doble.jpg') }}" alt="Hamburguesa Doble" class="product-thumbnail">
+                                <img src="{{ asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/cheseburguer.png') }}" alt="Hamburguesa Vegie" class="product-thumbnail">
                             </div>
                             <div class="product-card-info">
                                 <div class="product-name">PRODUCT NAME</div>
