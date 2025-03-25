@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
-    <link href="../css/home.css" rel="stylesheet">
+    <link href="{{ asset('css/home.css') }}" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -16,7 +16,7 @@
             <div class="navigation-container">
                 <!-- Logo -->
                 <div class="logo-container">
-                    <img src="../assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/r1cZqXsetIdbAgA931dT9WmWgmYAWcTV.png" alt="Deliciass" class="logo-1">
+                    <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Deliciass" class="logo-1">
                 </div>
                 
                 <!-- Barra de búsqueda -->
@@ -26,11 +26,11 @@
                 
                 <!-- Enlaces de navegación -->
                 <div class="link-bar-1">
-                    <a href="#">Nosotros</a>
+                    <a href="{{ route('reserva') }}">Nosotros</a>
                     |
-                    <a href="#">Menu</a>
+                    <a href="{{ route('menu') }}">Menu</a>
                     |
-                    <a href="#">Contacto</a>
+                    <a href="{{ route('contacto') }}">Contacto</a>
                     |
                 </div>
                 
@@ -42,7 +42,7 @@
                 <!-- Avatar de usuario -->
                 <div class="avatar-container">
                     <div class="avatar-1">
-                        <img src="../assets/images/repo/E-commerce_Shop_Avatar_1.png" alt="Avatar">
+                        <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Avatar">
                     </div>
                 </div>
             </div>
@@ -58,16 +58,16 @@
         <!-- Imagen principal del plato -->
         <div class="hero-image">
             <div class="imagePrincipal">
-                <img src="../assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/SBroNFXYw5C7tcoxcOqnO6ln7CiFlvH4.png" alt="Plato gourmet">
+                <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/SBroNFXYw5C7tcoxcOqnO6ln7CiFlvH4.png') }}" alt="Plato gourmet">
             </div>
         </div>
         
         <!-- Sección de descripción -->
         <section class="descripcion-section">
             <div class="descripcion-container">
-                <h2 class="algo-delicioso-hecho-con-amor">Algo Delicioso. Hecho con Amor</h2>
+                <h2 class="algo-delicioso-hecho-con-amor">{{ $titular ?? 'Algo Delicioso. Hecho con Amor' }}</h2>
                 <p class="cada-plato-es-una-muestra-de-nuestra-pasi-n-por-la">
-                    Cada plato es una muestra de nuestra pasión por la buena cocina. Utilizamos ingredientes frescos y de temporada para crear experiencias culinarias únicas que despiertan los sentidos. Nuestro equipo de chefs trabaja con dedicación para ofrecer lo mejor de la gastronomía local con un toque internacional.
+                    {{ $descripcion ?? 'Cada plato es una muestra de nuestra pasión por la buena cocina. Utilizamos ingredientes frescos y de temporada para crear experiencias culinarias únicas que despiertan los sentidos. Nuestro equipo de chefs trabaja con dedicación para ofrecer lo mejor de la gastronomía local con un toque internacional.' }}
                 </p>
                 <div class="rectangle-1">
                     <div class="ver-men-">Ver Menú</div>
@@ -76,7 +76,7 @@
             
             <div class="imagen-secundaria">
                 <div class="imagenDescripcion">
-                    <img src="../assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/8l4lelEDma4bvufvH8FZ8qXyeAdRP0Tz.png" alt="Filete con guarnición">
+                    <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/8l4lelEDma4bvufvH8FZ8qXyeAdRP0Tz.png') }}" alt="Filete con guarnición">
                 </div>
             </div>
         </section>
@@ -84,7 +84,7 @@
         <!-- Sección de platos más vendidos -->
         <section class="platos-vendidos-section">
             <div class="imagenMasVendidos">
-                <img src="../assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/3EEeFsN67I0pScWFkyFsyGQmplVc4QAF.png" alt="Platos más vendidos">
+                <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/3EEeFsN67I0pScWFkyFsyGQmplVc4QAF.png') }}" alt="Platos más vendidos">
             </div>
             
             <div class="platos-vendidos-overlay">
@@ -103,36 +103,37 @@
             <p class="selecciona-la-cantidad-de-persona-la-fecha-y-la-h">Selecciona la cantidad de personas, la fecha y la hora</p>
             
             <div class="reserva-form">
-                <div class="form-group">
-                    <label class="cantidad-de-personas">Cantidad de personas</label>
-                    <select class="select-1">
-                        <option>2</option>
-                        <option>4</option>
-                        <option>6</option>
-                        <option>8+</option>
-                    </select>
-                </div>
+                <form action="{{ route('reservas.store') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label class="cantidad-de-personas">Cantidad de personas</label>
+                        <select name="personas" class="select-1">
+                            @foreach($cantidadPersonas ?? [2, 4, 6, '8+'] as $cantidad)
+                                <option value="{{ $cantidad }}">{{ $cantidad }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="fecha">Fecha</label>
+                        <input type="date" name="fecha" value="{{ date('Y-m-d') }}" class="date-picker-1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="hora">Hora</label>
+                        <select name="hora" class="select-2">
+                            @foreach($horarios ?? ['20:30', '21:00', '21:30', '22:00'] as $hora)
+                                <option value="{{ $hora }}">{{ $hora }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 
-                <div class="form-group">
-                    <label class="fecha">Fecha</label>
-                    <input type="text" value="15/03/2023" class="date-picker-1">
-                </div>
-                
-                <div class="form-group">
-                    <label class="hora">Hora</label>
-                    <select class="select-2">
-                        <option>20:30</option>
-                        <option>21:00</option>
-                        <option>21:30</option>
-                        <option>22:00</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="reserva-submit">
-                <div class="rectangle-5">
-                    <div class="buscar-una-mesa">Reservar una Mesa</div>
-                </div>
+                    <div class="reserva-submit">
+                        <button type="submit" class="rectangle-5">
+                            <div class="buscar-una-mesa">Reservar una Mesa</div>
+                        </button>
+                    </div>
+                </form>
             </div>
         </section>
     </div>
@@ -144,30 +145,30 @@
                 <div class="footer-section">
                     <h3 class="grupo-footer">Dirección</h3>
                     <div class="grupo-24">
-                        <p>Calle Los Olivos 34</p>
-                        <p>Madrid, España</p>
+                        <p>{{ $direccion->calle ?? 'Calle Los Olivos 34' }}</p>
+                        <p>{{ $direccion->ciudad ?? 'Madrid, España' }}</p>
                     </div>
                 </div>
                 
                 <div class="footer-section">
                     <h3 class="grupo-footer-1">Horarios</h3>
                     <div class="grupo-25">
-                        <p>Lun-Vie: 12:30 - 22:00</p>
-                        <p>Sab-Dom: 13:00 - 23:30</p>
+                        <p>{{ $horarios->semana ?? 'Lun-Vie: 12:30 - 22:00' }}</p>
+                        <p>{{ $horarios->finde ?? 'Sab-Dom: 13:00 - 23:30' }}</p>
                     </div>
                 </div>
                 
                 <div class="footer-section">
                     <h3 class="grupo-footer-2">Contáctanos</h3>
                     <div class="grupo-26">
-                        <p>Teléfono: +34 555 123 456</p>
-                        <p>E-mail:info@deliciass.com</p>
+                        <p>Teléfono: {{ $contacto->telefono ?? '+34 555 123 456' }}</p>
+                        <p>E-mail: {{ $contacto->email ?? 'info@deliciass.com' }}</p>
                     </div>
                 </div>
             </div>
             
             <div class="footer-logo">
-                <img src="../assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/pef83IPYIQkNgGZUTRxuRSHaIyL9JCnd.png" alt="Deliciass">
+                <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo-naranja.png') }}" alt="Deliciass">
             </div>
         </div>
     </footer>
