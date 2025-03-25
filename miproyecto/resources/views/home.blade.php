@@ -30,7 +30,7 @@
                     |
                     <a href="{{ route('menu') }}">Menu</a>
                     |
-                    <a href="{{ route('contacto') }}">Contacto</a>
+                    <a href="{{ route('producto') }}">Productos</a>
                     |
                 </div>
                 

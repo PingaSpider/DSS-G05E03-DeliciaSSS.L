@@ -22,6 +22,10 @@ Route::get('/home', function () { return view("home"); })->name('home');
 Route::get('/reserva', function () { return view("reserva"); })->name('reserva');
 Route::get('/menu', function () { return view("menu"); })->name('menu');
 Route::get('/contacto', function () { return view("contacto"); })->name('contacto');
+Route::get('/carrito', function () { return view("carrito"); })->name('carrito');
+Route::get('/confirmacionreserva', function () { return view("confirmacionreserva"); })->name('confirmacionreserva');
+Route::get('/user', function () { return view("user"); })->name('user');
+Route::get('/producto', function () { return view("producto"); })->name('producto');
 
 // Ruta para procesar el formulario de reserva
 Route::post('/reservas', function () { 

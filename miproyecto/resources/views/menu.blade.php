@@ -26,7 +26,7 @@
                 <ul>
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="{{ route('reserva') }}">Reservas</a></li>
-                    <li><a href="{{ route('contacto') }}">Contacto</a></li>
+                    <li><a href="{{ route('producto') }}">Producto</a></li>
                 </ul>
             </nav>
             <div class="actions">
