@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/createmesa.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/create.css') }}">
 </head>
 <body>
     <div class="container">

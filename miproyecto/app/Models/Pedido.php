@@ -18,6 +18,8 @@ class Pedido extends Model
 
     protected $casts = [
         'fecha' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     // Relación con usuario

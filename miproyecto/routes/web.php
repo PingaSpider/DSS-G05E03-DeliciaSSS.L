@@ -59,3 +59,35 @@ Route::get('/verificar-codigo-mesa', [MesaController::class, 'verificarCodigo'])
 
 // Para mantener compatibilidad con las rutas antiguas
 Route::get('/mesas/index', [MesaController::class, 'index'])->name('mesas.index');
+
+
+// Rutas para el CRUD de pedidos
+Route::get('/pedidos', [PedidoController::class, 'paginate'])->name('pedidos.paginate');
+Route::get('/pedidos/create', [PedidoController::class, 'create'])->name('pedidos.create');
+Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
+Route::get('/pedidos/{cod}', [PedidoController::class, 'show'])->name('pedidos.show');
+Route::get('/pedidos/{cod}/edit', [PedidoController::class, 'edit'])->name('pedidos.edit');
+Route::put('/pedidos/{cod}', [PedidoController::class, 'update'])->name('pedidos.update');
+Route::delete('/pedidos/{cod}', [PedidoController::class, 'destroy'])->name('pedidos.destroy');
+
+// Ruta para verificar código de pedido
+Route::get('/verificar-codigo-pedido', [PedidoController::class, 'verificarCodigo'])->name('pedidos.verificar-codigo');
+
+// Para mantener compatibilidad con las rutas antiguas
+Route::get('/pedidos/index', [PedidoController::class, 'index'])->name('pedidos.index');
+
+
+// Rutas para el CRUD de líneas de pedido
+Route::get('/lineas-pedido', [LineaPedidoController::class, 'paginate'])->name('lineaPedidos.paginate');
+Route::get('/lineas-pedido/create', [LineaPedidoController::class, 'create'])->name('lineaPedidos.create');
+Route::post('/lineas-pedido', [LineaPedidoController::class, 'store'])->name('lineaPedidos.store');
+Route::get('/lineas-pedido/{linea}', [LineaPedidoController::class, 'show'])->name('lineaPedidos.show');
+Route::get('/lineas-pedido/{linea}/edit', [LineaPedidoController::class, 'edit'])->name('lineaPedidos.edit');
+Route::put('/lineas-pedido/{linea}', [LineaPedidoController::class, 'update'])->name('lineaPedidos.update');
+Route::delete('/lineas-pedido/{linea}', [LineaPedidoController::class, 'destroy'])->name('lineaPedidos.destroy');
+
+// Ruta para verificar código de línea de pedido
+Route::get('/verificar-codigo-linea', [LineaPedidoController::class, 'verificarCodigo'])->name('lineaPedidos.verificar-codigo');
+
+// Ruta para crear línea de pedido directamente desde un pedido
+Route::get('/pedidos/{pedido_id}/lineas/create', [LineaPedidoController::class, 'createForPedido'])->name('lineaPedidos.createForPedido');

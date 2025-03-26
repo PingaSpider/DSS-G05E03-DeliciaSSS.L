@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pedido;
 use App\Models\Usuario;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class PedidoController extends Controller
 {
@@ -18,16 +21,16 @@ class PedidoController extends Controller
     
     public function store(Request $request)
     {
-        // Validamos incluyendo la existencia del usuario_id
-        $request->validate([
-            'cod' => 'required|string|max:5|unique:pedidos',
-            'fecha' => 'required|date',
-            'estado' => 'required|string',
-            'usuario_id' => 'required|exists:usuarios,id',
-        ]);
-    
-        // Usamos una transacción para asegurar la consistencia de datos
         try {
+            // Validamos incluyendo la existencia del usuario_id
+            $request->validate([
+                'cod' => 'required|string|max:5|unique:pedidos',
+                'fecha' => 'required|date',
+                'estado' => 'required|string',
+                'usuario_id' => 'required|exists:usuarios,id',
+            ]);
+        
+            // Usamos una transacción para asegurar la consistencia de datos
             DB::beginTransaction();
             
             // Crear el pedido
@@ -39,32 +42,37 @@ class PedidoController extends Controller
             $pedido->save();
             
             DB::commit();
-            return redirect()->route('pedidos.index')->with('success', 'Pedido creado exitosamente');
-        } catch (\Exception $e) {
+            return redirect()->route('pedidos.paginate')
+                ->with('success', 'Pedido creado exitosamente');
+        } catch (Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['error' => 'Error al crear el pedido: ' . $e->getMessage()])->withInput();
+            return back()->withInput()
+                ->with('error', 'Error al crear el pedido: ' . $e->getMessage());
         }
     }
     
-    // Función de modificar
     public function edit($cod)
     {
-        $pedido = Pedido::findOrFail($cod);
-        $usuarios = Usuario::all();
-        return view('pedido.edit', compact('pedido', 'usuarios'));
+        try {
+            $pedido = Pedido::findOrFail($cod);
+            $usuarios = Usuario::all();
+            return view('pedido.edit', compact('pedido', 'usuarios'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('pedidos.paginate')
+                ->with('error', 'Pedido no encontrado');
+        }
     }
     
-    // Función de actualizar
     public function update(Request $request, $cod)
     {
-        // Validamos incluyendo la existencia del usuario_id
-        $request->validate([
-            'fecha' => 'required|date',
-            'estado' => 'required|string',
-            'usuario_id' => 'required|exists:usuarios,id',
-        ]);
-    
         try {
+            // Validamos incluyendo la existencia del usuario_id
+            $request->validate([
+                'fecha' => 'required|date',
+                'estado' => 'required|string',
+                'usuario_id' => 'required|exists:usuarios,id',
+            ]);
+        
             DB::beginTransaction();
             
             $pedido = Pedido::findOrFail($cod);
@@ -74,14 +82,19 @@ class PedidoController extends Controller
             $pedido->save();
             
             DB::commit();
-            return redirect()->route('pedidos.index')->with('success', 'Pedido actualizado exitosamente');
-        } catch (\Exception $e) {
+            return redirect()->route('pedidos.paginate')
+                ->with('success', 'Pedido actualizado exitosamente');
+        } catch (ModelNotFoundException $e) {
             DB::rollBack();
-            return back()->withErrors(['error' => 'Error al actualizar el pedido: ' . $e->getMessage()])->withInput();
+            return redirect()->route('pedidos.paginate')
+                ->with('error', 'Pedido no encontrado');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->withInput()
+                ->with('error', 'Error al actualizar el pedido: ' . $e->getMessage());
         }
     }
     
-    // Función de eliminar
     public function destroy($cod)
     {
         try {
@@ -91,24 +104,64 @@ class PedidoController extends Controller
             $pedido->delete();
             
             DB::commit();
-            return redirect()->route('pedidos.index')->with('success', 'Pedido eliminado exitosamente');
-        } catch (\Exception $e) {
+            return redirect()->route('pedidos.paginate')
+                ->with('success', 'Pedido eliminado exitosamente');
+        } catch (ModelNotFoundException $e) {
             DB::rollBack();
-            return back()->withErrors(['error' => 'Error al eliminar el pedido: ' . $e->getMessage()]);
+            return redirect()->route('pedidos.paginate')
+                ->with('error', 'Pedido no encontrado');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->route('pedidos.paginate')
+                ->with('error', 'Error al eliminar el pedido: ' . $e->getMessage());
         }
     }
     
-    // Agregar también el método index para listar todos los pedidos
-    public function index()
-    {
-        $pedidos = Pedido::with('usuario')->get();
-        return view('pedido.index', compact('pedidos'));
-    }
-    
-    // Agregar el método show para ver un pedido específico
     public function show($cod)
     {
-        $pedido = Pedido::with('usuario', 'lineaPedidos.producto')->findOrFail($cod);
-        return view('pedido.show', compact('pedido'));
+        try {
+            $pedido = Pedido::with('usuario', 'lineaPedidos.producto')->findOrFail($cod);
+            return view('pedido.show', compact('pedido'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('pedidos.paginate')
+                ->with('error', 'Pedido no encontrado');
+        }
+    }
+    
+    public function paginate(Request $request)
+    {
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+        
+        $query = Pedido::with('usuario');
+        
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('cod', 'like', "%{$search}%")
+                  ->orWhere('estado', 'like', "%{$search}%")
+                  ->orWhere('fecha', 'like', "%{$search}%")
+                  ->orWhereHas('usuario', function($query) use ($search) {
+                      $query->where('nombre', 'like', "%{$search}%");
+                  });
+            });
+        }
+        
+        $pedidos = $query->paginate($perPage);
+        
+        return view('pedido.paginate', ['pedidos' => $pedidos]);
+    }
+    
+    public function verificarCodigo(Request $request)
+    {
+        $codigo = $request->input('cod');
+        $exists = Pedido::where('cod', $codigo)->exists();
+            
+        return response()->json(['exists' => $exists]);
+    }
+
+    // Mantener este método para compatibilidad
+    public function index()
+    {
+        return $this->paginate(request());
     }
 }

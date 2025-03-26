@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 
 class LineaPedido extends Model
 {
@@ -19,6 +19,8 @@ class LineaPedido extends Model
     protected $casts = [
         'cantidad' => 'integer',
         'precio' => 'float',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     // Relación con pedido
@@ -37,5 +39,17 @@ class LineaPedido extends Model
     public function getSubtotalAttribute()
     {
         return $this->cantidad * $this->precio;
+    }
+    
+    // Asegurar que created_at siempre tenga un valor
+    public function getCreatedAtAttribute($value)
+    {
+        return $value ? Carbon::parse($value) : Carbon::now();
+    }
+    
+    // Asegurar que updated_at siempre tenga un valor
+    public function getUpdatedAtAttribute($value)
+    {
+        return $value ? Carbon::parse($value) : Carbon::now();
     }
 }

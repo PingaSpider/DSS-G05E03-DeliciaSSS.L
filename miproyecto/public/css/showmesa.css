@@ -1,0 +1,196 @@
+/* Estilos adicionales para datos temporales */
+.timestamp {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Elementos para resaltar información importante */
+.highlight-box {
+    background-color: #f9f9f9;
+    border-left: 3px solid #F39221;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+.highlight-box .title {
+    font-weight: 600;
+    color: #F39221;
+    margin-bottom: 8px;
+}
+
+.highlight-box .content {
+    color: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .mesa-details {
+        padding: 15px;
+    }
+    
+    .detail-value {
+        font-size: 1.1rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .action-btn {
+        width: 100%;
+    }
+}/* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Raleway, sans-serif;
+}
+
+body {
+    background-color: #FEFCE0;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #F39221;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+hr {
+    border: 1px solid #ddd;
+    margin-bottom: 25px;
+}
+
+/* Detalles de la mesa */
+.mesa-details {
+    background-color: #fff2d6;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.detail-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.detail-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.detail-value {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* Badges de estado */
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.status-libre {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-ocupada {
+    background-color: #ffecbd;
+    color: #e46a20;
+}
+
+/* Botones de acción */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.action-btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    font-family: Raleway, sans-serif;
+    transition: all 0.2s ease;
+    text-align: center;
+    flex: 1;
+}
+
+.edit-btn {
+    background-color: #F39221;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #e46a20;
+    color: white;
+}
+
+.action-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Enlaces de navegación */
+.action-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.link-back {
+    display: inline-block;
+    color: #555;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    background-color: #f5f5f5;
+    transition: all 0.2s ease;
+}
+
+.link-back:hover {
+    color: #F39221;
+    background-color: #f0f0f0;
+    text-decoration: none;
+}
