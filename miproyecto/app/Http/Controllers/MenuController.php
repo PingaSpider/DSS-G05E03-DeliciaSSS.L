@@ -8,170 +8,146 @@ use App\Models\Producto;
 
 class MenuController extends ProductoBaseController
 {
-    protected $modelClass = Menu::class;
-    protected $viewPrefix = 'menu';
-    protected $routePrefix = 'menus';
-    protected $requiredFields = ['descripcion', 'productos'];
-
-    /**
-     * Constructor para menús
-     */
-    public function __construct()
+    public function create_get()
     {
-        // Agregar reglas de validación específicas para Menu
-        $this->baseValidationRules['descripcion'] = 'required';
-        $this->baseValidationRules['productos'] = 'sometimes|array';
-        
-        // Asegurar que el código sea único en la tabla de menus
-        $this->baseValidationRules['cod'] = 'required|unique:menus';
-
-        $this->baseValidationRules['pvp'] = 'sometimes|numeric';
-        $this->baseValidationRules['stock'] = 'sometimes|integer';
-        $this->baseValidationRules['precioCompra'] = 'sometimes|numeric';
-        
-        parent::__construct();
+        return view('menu.create');
     }
 
-    /**
-     * Mostrar formulario de creación con lista de productos disponibles
-     */
-    public function create()
+    public function create_post(Request $request)
     {
-        $productos = Producto::whereNotIn('cod', function($query) {
-            $query->select('cod')->from('menus');
-        })->get();
-        
-        return view($this->viewPrefix . '.create', compact('productos'));
+        $descripcion = $request->descripcion;
+        $cod = $request->cod;
+
+        $menu = new Menu();
+        $menu->cod = $cod;
+        $menu->descripcion = $descripcion;
+        $menu->save();
+
+        return redirect()->route('menus.paginate')
+            ->with('success', 'Menú creado correctamente');
     }
 
-    /**
-     * Guardar un nuevo menú
-     */
+    public function show_get($cod)
+    {   
+        try {
+            $menu = Menu::where('cod', $cod)->firstOrFail();
+            return view('menu.profile', ['menu' => $menu]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(["message" => "Menu cod = $cod not found"], 404);
+        }
+    }
+
+    public function show_post(Request $request)
+    {
+        $cod = $request->cod;
+        try {
+            $menu = Menu::where('cod', $cod)->firstOrFail();
+            return view('menu.profile', ['menu' => $menu]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(["message" => "Menu cod = $cod not found"], 404);
+        }
+    }
+
     public function store(Request $request)
     {
-        // Validar los campos
-        $validatedData = $request->validate($this->baseValidationRules);
+        try {
+            $validator = $request->validate([
+                'descripcion' => 'required',
+                'cod' => 'required|unique:menus,cod',
+            ]);
 
-        // Crear un producto base con precio y stock especiales para menús
-        $producto = new Producto();
-        $producto->cod = $request->cod;
-        $producto->nombre = $request->descripcion;
-        
-        
-        $producto->pvp = $request->pvp ?? 0; // Precio del menú
-        $producto->stock = 0; // Los menús no tienen stock físico
-        $producto->precioCompra = 0; // Los menús no tienen precio de compra directo
-        $producto->save();
+            $menu = new Menu();
+            $menu->cod = $request->cod;
+            $menu->descripcion = $request->descripcion;
+            $menu->save();
 
-        // Crear el menú asociado
-        $menu = new Menu();
-        $menu->cod = $producto->cod;
-        $menu->descripcion = $request->descripcion;
-        $menu->save();
-
-        // Asociar los productos al menú si se han seleccionado
-        if ($request->has('productos') && is_array($request->productos)) {
-            $menu->productos()->attach($request->productos);
+            return redirect()->route('menus.paginate')
+                ->with('success', 'Menú creado correctamente');
+            
+        } catch (Exception $e) {
+            return back()->withInput()
+                ->with('error', 'Hubo un error al crear el menú: ' . $e->getMessage());
         }
-
-        return redirect()->route($this->routePrefix . '.index')
-            ->with('success', 'Menú creado exitosamente');
     }
 
-    /**
-     * Mostrar formulario de edición con productos disponibles
-     */
-    public function edit($cod)
+    public function paginate(Request $request)
     {
-        $menu = Menu::findOrFail($cod);
-        
-        // Obtener todos los productos que no son menús
-        $productos = Producto::whereNotIn('cod', function($query) {
-            $query->select('cod')->from('menus');
-        })->get();
-        
-        // Obtener los IDs de los productos ya asociados al menú
-        $productosSeleccionados = $menu->productos->pluck('cod')->toArray();
-        
-        return view($this->viewPrefix . '.edit', compact('menu', 'productos', 'productosSeleccionados'));
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+    
+        $query = Menu::query();
+    
+        if ($search) {
+            $query->where('descripcion', 'like', "%{$search}%");
+        }
+    
+        $menus = $query->paginate($perPage);
+    
+        return view('menu.paginate', ['menus' => $menus]);
     }
 
-    /**
-     * Actualizar un menú existente
-     */
+    public function edit(Request $request, $cod)
+    {
+        try {
+            $menu = Menu::where('cod', $cod)->firstOrFail();
+            return view('menu.edit', ['menu' => $menu]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(["message" => "Menu cod = $cod not found"], 404);
+        }
+    }
+
     public function update(Request $request, $cod)
     {
-        // Validar solo los campos específicos del menú
-        $request->validate([
-            'descripcion' => 'required',
-            'productos' => 'sometimes|array',
-        ]);
+        try {
+            $menu = Menu::where('cod', $cod)->firstOrFail();
+        
+            $request->validate([
+                'descripcion' => 'required',
+            ]);
 
-        // Obtener el menú
-        $menu = Menu::findOrFail($cod);
-        $menu->descripcion = $request->descripcion;
-        $menu->save();
+            $menu->descripcion = $request->descripcion;
+            $menu->save();
 
-        // Actualizar productos asociados al menú
-        if ($request->has('productos')) {
-            $menu->productos()->sync($request->productos);
+            return redirect()->route('menus.paginate')
+                ->with('success', 'Menú actualizado correctamente');
             
-            // Recalcular el precio del menú basado en los productos asociados
-            $pvpTotal = 0;
-            foreach ($request->productos as $productoId) {
-                $prod = Producto::find($productoId);
-                if ($prod) {
-                    $pvpTotal += $prod->pvp;
-                }
-            }
-            // Aplicar descuento por ser menú
-            $pvpTotal = $pvpTotal * 0.9; // 10% de descuento
-            
-            // Actualizar el producto base
-            $producto = Producto::find($cod);
-            if ($producto) {
-                $producto->nombre = $request->descripcion;
-                $producto->pvp = $pvpTotal;
-                $producto->save();
-            }
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('menus.paginate')
+                ->with('error', 'Menú no encontrado');
+        } catch (Exception $e) {
+            return redirect()->route('menus.paginate')
+                ->with('error', $e->getMessage());
         }
-
-        return redirect()->route($this->routePrefix . '.index')
-            ->with('success', 'Menú actualizado exitosamente');
     }
 
-    /**
-     * Eliminar un menú
-     * Sobreescribimos el método destroy para desasociar primero los productos
-     */
     public function destroy($cod)
     {
-        $menu = Menu::findOrFail($cod);
+        try {
+            $menu = Menu::where('cod', $cod)->firstOrFail();
+            $menu->delete();
         
-        // Desasociar todos los productos antes de eliminar
-        $menu->productos()->detach();
-        
-        // Eliminar el menú
-        $menu->delete();
-        
-        // Eliminar el producto base
-        $producto = Producto::find($cod);
-        if ($producto) {
-            $producto->delete();
+            return redirect()->route('menus.paginate')
+                ->with('success', 'Menú eliminado correctamente');
+            
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('menus.paginate')
+                ->with('error', 'Menú no encontrado');
+        } catch (Exception $e) {
+            return redirect()->route('menus.paginate')
+                ->with('error', $e->getMessage());
         }
-
-        return redirect()->route($this->routePrefix . '.index')
-            ->with('success', 'Menú eliminado exitosamente');
     }
 
-    /**
-     * Mostrar detalles de un menú con sus productos
-     */
-    public function show($cod)
+    public function delete($cod)
     {
-        $menu = Menu::with('productos')->findOrFail($cod);
-        $producto = Producto::find($cod);
-        
-        return view($this->viewPrefix . '.show', compact('menu', 'producto'));
+        return $this->destroy($cod);
+    }
+
+
+    public function search(Request $request)
+    {
+        $descripcion = $request->descripcion;
+        $menus = Menu::where('descripcion', 'like', "%$descripcion%")->get();
+        return view('menu.search', ['menus' => $menus]);
     }
 }
