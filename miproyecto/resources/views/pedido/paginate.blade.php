@@ -28,7 +28,7 @@
         <div class="search-container">
             <form action="{{ route('pedidos.paginate') }}" method="GET" class="search-form">
                 <div class="search-group">
-                    <input type="text" name="search" placeholder="Buscar por código, estado, fecha o cliente..." value="{{ request('search') }}" class="search-input">
+                    <input type="text" name="search" placeholder="Buscar por código, o cliente..." value="{{ request('search') }}" class="search-input">
                     <button type="submit" class="search-button">Buscar</button>
                     @if(request('search'))
                         <a href="{{ route('pedidos.paginate') }}" class="search-clear">Limpiar</a>

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/lineaPedido.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/lineapedido/create.css') }}">
 </head>
 <body>
     <div class="container">
@@ -30,7 +30,7 @@
             
             <div class="form-group">
                 <label for="linea"><b>Código de Línea</b></label>
-                <input type="text" placeholder="Introduce el código de línea" name="linea" id="linea" value="{{ old('linea') }}" required>
+                <input type="text" placeholder="Introduce el código de línea" name="linea" id="linea" value="{{ old('linea', $siguienteLinea) }}" readonly required autocomplete="off">
                 <div class="error-message" id="lineaError">
                     @error('linea')
                         {{ $message }}
@@ -40,7 +40,7 @@
 
             <div class="form-group">
                 <label for="pedido_id"><b>Pedido</b></label>
-                <select name="pedido_id" required>
+                <select name="pedido_id" id="pedido_id" required>
                     <option value="">Selecciona un pedido</option>
                     @foreach ($pedidos as $pedido)
                         <option value="{{ $pedido->cod }}" {{ old('pedido_id') == $pedido->cod ? 'selected' : '' }}>
@@ -58,8 +58,8 @@
                 <select name="producto_id" id="producto_id" required>
                     <option value="">Selecciona un producto</option>
                     @foreach ($productos as $producto)
-                        <option value="{{ $producto->cod }}" data-precio="{{ $producto->precio }}" {{ old('producto_id') == $producto->cod ? 'selected' : '' }}>
-                            {{ $producto->nombre }} - {{ number_format($producto->precio, 2, ',', '.') }} €
+                        <option value="{{ $producto->cod }}" data-precio="{{ $producto->pvp }}" {{ old('producto_id') == $producto->cod ? 'selected' : '' }}>
+                            {{ $producto->nombre }} - {{ number_format($producto->pvp, 2, ',', '.') }} €
                         </option>
                     @endforeach
                 </select>
@@ -77,17 +77,14 @@
             </div>
 
             <div class="form-group">
-                <label for="precio"><b>Precio Unitario (€)</b></label>
-                <input type="number" name="precio" id="precio" step="0.01" min="0" value="{{ old('precio') }}" required>
-                @error('precio')
-                    <div class="error-message">{{ $message }}</div>
-                @enderror
+                <label><b>Subtotal</b></label>
+                <div class="subtotal-display" id="subtotal">
+                    0,00 €
+                </div>
             </div>
 
-            <div class="form-group">
-                <label><b>Subtotal</b></label>
-                <div class="subtotal-display" id="subtotal">0,00 €</div>
-            </div>
+            <!-- Campo oculto para guardar el precio del producto -->
+            <input type="hidden" name="precio" id="precio" value="{{ old('precio') }}">
 
             <button type="submit" class="submit-btn">Crear Línea de Pedido</button>
             
@@ -106,11 +103,7 @@
             const precioInput = document.getElementById('precio');
             const subtotalDisplay = document.getElementById('subtotal');
             
-            // Generar un código de línea aleatorio por defecto
-            if (lineaInput.value === '') {
-                lineaInput.value = 'LIN' + Math.floor(Math.random() * 10000).toString().padStart(5, '0');
-            }
-            
+
             // Verificar el código cuando pierda el foco
             lineaInput.addEventListener('blur', function() {
                 const linea = this.value.trim();
@@ -148,12 +141,14 @@
                     const precio = selectedOption.getAttribute('data-precio');
                     precioInput.value = precio;
                     updateSubtotal();
+                } else {
+                    precioInput.value = '';
+                    subtotalDisplay.textContent = '0,00 €';
                 }
             });
             
-            // Actualizar subtotal cuando cambia la cantidad o precio
+            // Actualizar subtotal cuando cambia la cantidad
             cantidadInput.addEventListener('input', updateSubtotal);
-            precioInput.addEventListener('input', updateSubtotal);
             
             function updateSubtotal() {
                 const cantidad = parseFloat(cantidadInput.value) || 0;
@@ -165,8 +160,12 @@
                 }) + ' €';
             }
             
-            // Actualizar subtotal inicial
-            updateSubtotal();
+            // Actualizar subtotal inicial si hay un producto seleccionado
+            if (productoSelect.value !== '') {
+                const selectedOption = productoSelect.options[productoSelect.selectedIndex];
+                precioInput.value = selectedOption.getAttribute('data-precio');
+                updateSubtotal();
+            }
             
             // Validación del formulario antes de enviar
             document.getElementById('form_lineaPedido').addEventListener('submit', function(e) {

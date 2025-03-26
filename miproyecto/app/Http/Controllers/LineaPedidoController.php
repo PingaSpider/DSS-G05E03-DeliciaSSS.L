@@ -17,7 +17,21 @@ class LineaPedidoController extends Controller
     {
         $pedidos = Pedido::all();
         $productos = Producto::all();
-        return view('lineaPedido.create', compact('pedidos', 'productos'));
+        
+        // Obtener el último código de línea
+        $ultimaLinea = LineaPedido::orderBy('linea', 'desc')->first();
+        
+        if ($ultimaLinea) {
+            // Extraer el número de la línea (formato Lxxxx)
+            $numeroActual = intval(substr($ultimaLinea->linea, 1));
+            // Incrementa el número y formatea con 4 dígitos
+            $siguienteLinea = 'L' . str_pad($numeroActual + 1, 4, '0', STR_PAD_LEFT);
+        } else {
+            // Si no hay líneas anteriores, comenzar con L0001
+            $siguienteLinea = 'L0001';
+        }
+        
+        return view('lineaPedido.create', compact('pedidos', 'productos', 'siguienteLinea'));
     }
 
     public function store(Request $request)
@@ -26,7 +40,6 @@ class LineaPedidoController extends Controller
             $request->validate([
                 'linea' => 'required|string|unique:linea_pedidos',
                 'cantidad' => 'required|integer|min:1',
-                'precio' => 'required|numeric|min:0',
                 'pedido_id' => 'required|exists:pedidos,cod',
                 'producto_id' => 'required|exists:productos,cod',
             ]);
@@ -34,12 +47,15 @@ class LineaPedidoController extends Controller
             DB::beginTransaction();
 
             // Crear la línea de pedido
+            $producto = Producto::findOrFail($request->producto_id);
+            $pedido = Pedido::findOrFail($request->pedido_id);
             $lineaPedido = new LineaPedido();
             $lineaPedido->linea = $request->linea;
             $lineaPedido->cantidad = $request->cantidad;
-            $lineaPedido->precio = $request->precio;
+            $lineaPedido->precio = $producto->pvp;
             $lineaPedido->pedido_id = $request->pedido_id;
             $lineaPedido->producto_id = $request->producto_id;
+            $lineaPedido->estado = $pedido->estado;
             $lineaPedido->save();
 
             DB::commit();
@@ -70,7 +86,6 @@ class LineaPedidoController extends Controller
         try {
             $request->validate([
                 'cantidad' => 'required|integer|min:1',
-                'precio' => 'required|numeric|min:0',
                 'pedido_id' => 'required|exists:pedidos,cod',
                 'producto_id' => 'required|exists:productos,cod',
             ]);
@@ -79,7 +94,6 @@ class LineaPedidoController extends Controller
 
             $lineaPedido = LineaPedido::findOrFail($linea);
             $lineaPedido->cantidad = $request->cantidad;
-            $lineaPedido->precio = $request->precio;
             $lineaPedido->pedido_id = $request->pedido_id;
             $lineaPedido->producto_id = $request->producto_id;
             $lineaPedido->save();
