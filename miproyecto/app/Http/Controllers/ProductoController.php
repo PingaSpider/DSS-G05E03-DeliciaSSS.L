@@ -8,7 +8,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\Rule;
 
-class ProductoController extends ProductoBaseController
+class ProductoController
 {
     protected $modelClass = Producto::class;
     protected $viewPrefix = 'producto';

@@ -91,3 +91,36 @@ Route::get('/verificar-codigo-linea', [LineaPedidoController::class, 'verificarC
 
 // Ruta para crear línea de pedido directamente desde un pedido
 Route::get('/pedidos/{pedido_id}/lineas/create', [LineaPedidoController::class, 'createForPedido'])->name('lineaPedidos.createForPedido');
+
+// Rutas para el CRUD de productos
+Route::get('/productos', [ProductoController::class, 'paginate'])->name('productos.paginate');
+Route::get('/productos/create', [ProductoController::class, 'create_get'])->name('productos.create');
+Route::post('/productos', [ProductoController::class, 'store'])->name('productos.store');
+Route::get('/productos/{cod}', [ProductoController::class, 'show_get'])->name('productos.show');
+Route::get('/productos/{cod}/edit', [ProductoController::class, 'edit'])->name('productos.edit');
+Route::put('/productos/{cod}', [ProductoController::class, 'update'])->name('productos.update');
+Route::delete('/productos/{cod}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+
+// Rutas adicionales para productos
+Route::post('/productos/create', [ProductoController::class, 'create_post'])->name('productos.create_post');
+Route::post('/productos/show', [ProductoController::class, 'show_post'])->name('productos.show_post');
+Route::get('/productos/search', [ProductoController::class, 'search'])->name('productos.search');
+Route::get('/verificar-codigo-producto', [ProductoController::class, 'verificarCodigo'])->name('productos.verificarCodigo');
+
+// Para mantener compatibilidad con las rutas antiguas
+Route::get('/productos/index', [ProductoController::class, 'paginate'])->name('productos.index');
+
+// Rutas para ComidaController (heredado de Producto)
+Route::get('/comidas', [ComidaController::class, 'paginate'])->name('comidas.paginate');
+Route::get('/comidas/create', [ComidaController::class, 'create_get'])->name('comidas.create');
+Route::post('/comidas', [ComidaController::class, 'store'])->name('comidas.store');
+Route::get('/comidas/{cod}', [ComidaController::class, 'show_get'])->name('comidas.show');
+Route::get('/comidas/{cod}/edit', [ComidaController::class, 'edit'])->name('comidas.edit');
+Route::put('/comidas/{cod}', [ComidaController::class, 'update'])->name('comidas.update');
+Route::delete('/comidas/{cod}', [ComidaController::class, 'destroy'])->name('comidas.destroy');
+
+// Rutas para BebidaController (heredado de Producto)
+Route::get('/bebidas', [BebidaController::class, 'paginate'])->name('bebidas.paginate');
+Route::get('/bebidas/create', [BebidaController::class, 'create_get'])->name('bebidas.create');
+Route::post('/bebidas', [BebidaController::class, 'store'])->name('bebidas.store');
+Route::get('/bebidas/{cod} ', [BebidaController::class, 'show_get'])->name('bebidas.show');
