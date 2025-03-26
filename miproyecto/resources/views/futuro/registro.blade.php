@@ -19,7 +19,7 @@
         <div class="registro-form">
             <h3 class="form-title">Información personal</h3>
             
-            <form >
+            <form class=registro-formulario  >
                 @csrf
                 
                 <div class="form-group">

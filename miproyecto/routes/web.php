@@ -14,10 +14,11 @@ use App\Http\Controllers\ReservaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('home');
+    return view('welcome');
 });
 
 // Rutas temporales para los enlaces del menú
+/*
 Route::get('/home', function () { return view("home"); })->name('home');
 Route::get('/reserva', function () { return view("reserva"); })->name('reserva');
 Route::get('/menu', function () { return view("menu"); })->name('menu');
@@ -28,62 +29,16 @@ Route::get('/user', function () { return view("user"); })->name('user');
 Route::get('/producto', function () { return view("producto"); })->name('producto');
 Route::get('/registro', function () { return view("registro"); })->name('registro');
 Route::get('/login', function () { return view("login"); })->name('login');
+*/
 
-// Ruta para procesar el formulario de reserva
-Route::post('/reservas', function () { 
-    return "Reserva recibida"; 
-})->name('reservas.store');
 
-// Rutas para Producto
-Route::resource('productos', ProductoController::class);
+//Rutas de acceso
+Route::get('foo/user/create', [UsuarioController::class, 'create_get']);
+Route::post('foo/user/create', [UsuarioController::class, 'create_post']);
 
-// Rutas para Bebida
-Route::resource('bebidas', BebidaController::class);
 
-// Rutas para Comida
-Route::resource('comidas', ComidaController::class);
+Route::post('foo/user/store', [UsuarioController::class, 'store'])->name('user.store');
+Route::get('foo/user/show', [UsuarioController::class, 'show'])->name('post.show');
 
-// Rutas para Menu
-Route::resource('menus', MenuController::class);
-
-// Rutas para MenuProducto (relación)
-Route::resource('menu-productos', MenuProductoController::class);
-
-// Rutas adicionales para relaciones de menú-producto
-Route::get('menus/{menu}/add-producto', [MenuController::class, 'addProducto'])
-    ->name('menus.add-producto');
-
-Route::post('menus/{menu}/attach-producto', [MenuController::class, 'attachProducto'])
-    ->name('menus.attach-producto');
-
-Route::delete('menus/{menu}/detach-producto/{producto}', [MenuController::class, 'detachProducto'])
-    ->name('menus.detach-producto');
-
-// Rutas personalizadas para Mesa - CORREGIDAS
-Route::get('mesas', [MesaController::class, 'index'])->name('mesas.index');
-Route::get('mesas/create', [MesaController::class, 'create'])->name('mesas.create');
-Route::post('mesas', [MesaController::class, 'store'])->name('mesas.store');
-Route::get('mesas/{codMesa}', [MesaController::class, 'show'])->name('mesas.show');
-Route::get('mesas/{codMesa}/edit', [MesaController::class, 'edit'])->name('mesas.edit');
-Route::put('mesas/{codMesa}', [MesaController::class, 'update'])->name('mesas.update');
-Route::delete('mesas/{codMesa}', [MesaController::class, 'destroy'])->name('mesas.destroy');
-Route::get('mesas/{codMesa}/delete', [MesaController::class, 'delete'])->name('mesas.delete');
-
-// Rutas para LineaPedido
-Route::resource('linea-pedidos', LineaPedidoController::class);
-
-// Rutas para Usuario
-Route::resource('usuarios', UsuarioController::class);
-
-// Rutas para Reserva
-Route::resource('reservas', ReservaController::class);
-
-// Rutas para Pedido
-Route::resource('pedidos', PedidoController::class);
-//peidido create,edit,update,destroy,store
-Route::get('pedidos/create', [PedidoController::class, 'create'])->name('pedidos.create');
-Route::post('pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
-Route::get('pedidos/{cod}/edit', [PedidoController::class, 'edit'])->name('pedidos.edit');
-Route::put('pedidos/{cod}', [PedidoController::class, 'update'])->name('pedidos.update');
-Route::delete('pedidos/{cod}', [PedidoController::class, 'destroy'])->name('pedidos.destroy');
+Route::get('foo/user/paginate', [UsuarioController::class, 'paginate'])->name('user.paginate');
 

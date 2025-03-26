@@ -31,7 +31,7 @@
         <div class="tab-content">
             <!-- Tab Mi Cuenta -->
             <div id="cuenta" class="tab-pane active">
-                <form class="user-form">
+                <form class="user-form" >
                     @csrf
                     @method('PUT')
                     <div class="content-box">
