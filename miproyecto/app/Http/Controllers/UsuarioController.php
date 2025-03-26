@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Models\Usuario;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UsuarioController extends Controller
 {
@@ -25,7 +27,7 @@ class UsuarioController extends Controller
         $usuario->email = $email;
         $usuario->password = $password;
         $usuario->telefono = $telefono;
-        $usuario->save();  // Changed from $user->save() to $usuario->save()
+        $usuario->save();
 
         return view('user.profile',['usuario'=>$usuario]);
     }
@@ -53,13 +55,12 @@ class UsuarioController extends Controller
 
     public function store(Request $request)
     {
-        
         try{
-            $request->validate([
+            $validator = $request->validate([
                 'nombre' => 'required',
-                'email' => 'required',
-                'password' => 'required',
-                'telefono' => 'nullable',
+                'email' => 'required|email|unique:usuarios',
+                'password' => 'required|min:6',
+                'telefono' => 'required',
             ]);
 
             $usuario = new Usuario();
@@ -71,16 +72,32 @@ class UsuarioController extends Controller
 
             $usuario->save();
 
-            return view('user.show', ['usuario' => $usuario]);
-        }catch(Exception $e){
-            return response()->json(["message" => $e->getMessage()], 500);
+            return redirect()->route('usuarios.paginate')
+                ->with('success', 'Usuario creado correctamente');
+                
+        } catch(Exception $e){
+            return back()->withInput()
+                ->with('error', 'Hubo un error al crear el usuario: ' . $e->getMessage());
         }
-
     }
 
     public function paginate(Request $request)
     {
-        $usuarios = Usuario::paginate($request->per_page);
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+        
+        $query = Usuario::query();
+        
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('telefono', 'like', "%{$search}%");
+            });
+        }
+        
+        $usuarios = $query->paginate($perPage);
+        
         return view('user.paginate', ['usuarios' => $usuarios]);
     }
 
@@ -94,15 +111,60 @@ class UsuarioController extends Controller
         }
     }
 
-    public function delete($id)
+    public function update(Request $request, $id)
+    {
+        try {
+            $usuario = Usuario::findOrFail($id);
+            
+            $request->validate([
+                'nombre' => 'required',
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('usuarios')->ignore($id)
+                ],
+                'telefono' => 'required',
+            ]);
+
+            $usuario->nombre = $request->nombre;
+            $usuario->email = $request->email;
+            $usuario->telefono = $request->telefono;
+            
+            $usuario->save();
+
+            return redirect()->route('usuarios.paginate')
+                ->with('success', 'Usuario actualizado correctamente');
+                
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('usuarios.paginate')
+                ->with('error', 'Usuario no encontrado');
+        } catch (Exception $e) {
+            return redirect()->route('usuarios.paginate')
+                ->with('error', $e->getMessage());
+        }
+    }
+
+    public function destroy($id)
     {
         try{
             $usuario = Usuario::findOrFail($id);
             $usuario->delete();
-            return response()->json(["message" => "user id = $id deleted"], 200);
-        }catch(ModelNotFoundException $e){
-            return response()->json(["message" => "user id = $id not found"], 404);
+            
+            return redirect()->route('usuarios.paginate')
+                ->with('success', 'Usuario eliminado correctamente');
+                
+        } catch(ModelNotFoundException $e){
+            return redirect()->route('usuarios.paginate')
+                ->with('error', 'Usuario no encontrado');
+        } catch(Exception $e){
+            return redirect()->route('usuarios.paginate')
+                ->with('error', $e->getMessage());
         }
+    }
+
+    public function delete($id)
+    {
+        return $this->destroy($id);
     }
 
     public function search(Request $request)
@@ -110,5 +172,17 @@ class UsuarioController extends Controller
         $nombre = $request->nombre;
         $usuarios = Usuario::where('nombre', 'like', "%$nombre%")->get();
         return view('user.search', ['usuarios' => $usuarios]);
+    }
+    
+    public function verificarEmail(Request $request)
+    {
+        $email = $request->input('email');
+        $userId = $request->input('userId');
+        
+        $exists = Usuario::where('email', $email)
+            ->where('id', '!=', $userId)
+            ->exists();
+            
+        return response()->json(['exists' => $exists]);
     }
 }

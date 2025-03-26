@@ -1,4 +1,66 @@
-/* Estilos generales */
+/* Formulario de búsqueda */
+.search-container {
+    margin-bottom: 25px;
+}
+
+.search-form {
+    width: 100%;
+}
+
+.search-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.search-input:focus {
+    border-color: #F39221;
+    outline: none;
+    box-shadow: 0 0 5px rgba(243, 146, 33, 0.3);
+}
+
+.search-button {
+    background-color: #F39221;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.search-button:hover {
+    background-color: #e46a20;
+}
+
+.search-clear {
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.search-clear:hover {
+    background-color: #e0e0e0;
+}
+
+/* Estilo para resultados de búsqueda */
+.search-results-info {
+    margin-bottom: 15px;
+    font-style: italic;
+    color: #666;
+}/* Estilos generales */
 * {
     margin: 0;
     padding: 0;
@@ -10,6 +72,26 @@ body {
     background-color: #FEFCE0;
     color: #333;
     line-height: 1.6;
+}
+
+/* Alertas */
+.alert {
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border-left: 4px solid #2e7d32;
+}
+
+.alert-error {
+    background-color: #ffebee;
+    color: #c62828;
+    border-left: 4px solid #c62828;
 }
 
 .container {
@@ -60,6 +142,7 @@ tbody tr:last-child td {
     border-bottom: none;
 }
 
+
 .pagination {
     display: flex;
     list-style: none;
@@ -99,31 +182,32 @@ tbody tr:last-child td {
 
 /* Botones de acción */
 .action-btn {
-    padding: 6px 12px;
+    padding: 8px 15px;
     border-radius: 4px;
     font-size: 0.9rem;
     text-decoration: none;
     margin-right: 8px;
     display: inline-block;
+    border: none;
+    cursor: pointer;
+    font-family: Raleway, sans-serif;
+    transition: all 0.2s ease;
 }
 
-.view-btn {
+.edit-btn {
     background-color: #F39221;
     color: white;
 }
 
-.edit-btn {
-    background-color: #2196F3;
-    color: white;
-}
-
 .delete-btn {
-    background-color: #f44336;
+    background-color: #e46a20;
     color: white;
 }
 
 .action-btn:hover {
     opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive */
@@ -139,4 +223,117 @@ tbody tr:last-child td {
         display: block;
         text-align: center;
     }
+}
+
+/* Estilos para el modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: #F39221;
+}
+
+.modal-header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+    color: #F39221;
+    font-size: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    border-color: #F39221;
+    outline: none;
+    box-shadow: 0 0 5px rgba(243, 146, 33, 0.3);
+}
+
+.form-group .error-message {
+    color: #f44336;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+
+.modal-footer {
+    margin-top: 25px;
+    text-align: right;
+}
+
+.btn {
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    font-family: Raleway, sans-serif;
+    margin-left: 10px;
+}
+
+.btn-primary {
+    background-color: #F39221;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #FEFCE0;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.btn:hover {
+    opacity: 0.9;
 }

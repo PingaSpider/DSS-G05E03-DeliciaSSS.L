@@ -32,13 +32,30 @@ Route::get('/login', function () { return view("login"); })->name('login');
 */
 
 
-//Rutas de acceso
-Route::get('foo/user/create', [UsuarioController::class, 'create_get']);
-Route::post('foo/user/create', [UsuarioController::class, 'create_post']);
+// Rutas para el CRUD de usuarios
+Route::get('/usuarios', [UsuarioController::class, 'paginate'])->name('usuarios.paginate');
+Route::get('/usuarios/create', [UsuarioController::class, 'create_get'])->name('usuarios.create');
+Route::post('/usuarios', [UsuarioController::class, 'store'])->name('user.store');
+Route::get('/usuarios/{id}', [UsuarioController::class, 'show_get'])->name('usuarios.show');
+Route::get('/usuarios/{id}/edit', [UsuarioController::class, 'edit'])->name('usuarios.edit');
+Route::put('/usuarios/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
+Route::delete('/usuarios/{id}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
+
+// Ruta para verificar email
+Route::get('/verificar-email', [UsuarioController::class, 'verificarEmail'])->name('usuarios.verificar-email');
 
 
-Route::post('foo/user/store', [UsuarioController::class, 'store'])->name('user.store');
-Route::get('foo/user/show', [UsuarioController::class, 'show'])->name('post.show');
+// Rutas para el CRUD de mesas
+Route::get('/mesas', [MesaController::class, 'paginate'])->name('mesas.paginate');
+Route::get('/mesas/create', [MesaController::class, 'create'])->name('mesas.create');
+Route::post('/mesas', [MesaController::class, 'store'])->name('mesas.store');
+Route::get('/mesas/{codMesa}', [MesaController::class, 'show'])->name('mesas.show');
+Route::get('/mesas/{codMesa}/edit', [MesaController::class, 'edit'])->name('mesas.edit');
+Route::put('/mesas/{codMesa}', [MesaController::class, 'update'])->name('mesas.update');
+Route::delete('/mesas/{codMesa}', [MesaController::class, 'destroy'])->name('mesas.destroy');
 
-Route::get('foo/user/paginate', [UsuarioController::class, 'paginate'])->name('user.paginate');
+// Ruta para verificar código de mesa
+Route::get('/verificar-codigo-mesa', [MesaController::class, 'verificarCodigo'])->name('mesas.verificar-codigo');
 
+// Para mantener compatibilidad con las rutas antiguas
+Route::get('/mesas/index', [MesaController::class, 'index'])->name('mesas.index');
