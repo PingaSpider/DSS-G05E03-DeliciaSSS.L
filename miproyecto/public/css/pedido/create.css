@@ -489,3 +489,32 @@ color: #444444;
 }
 
 }
+
+.product-details {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.detail-row {
+    display: flex;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.detail-label {
+    font-weight: bold;
+    width: 200px;
+}
+
+.detail-value {
+    flex: 1;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}

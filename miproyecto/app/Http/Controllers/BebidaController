@@ -1,0 +1,108 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Producto;
+use App\Models\Bebida;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+class BebidaController extends ProductoController
+{
+    protected $modelClass = Bebida::class;
+    protected $viewPrefix = 'bebida';
+    protected $routePrefix = 'bebidas';
+    protected $requiredFields = ['nombre', 'pvp', 'stock', 'precioCompra', 'tamanio', 'alcoholica'];
+    
+    public function create_get()
+    {
+        return view('bebida.create');
+    }
+    
+    public function store(Request $request)
+    {
+        try {
+            $validator = $request->validate([
+                'cod' => 'required|unique:productos',
+                'nombre' => 'required',
+                'pvp' => 'required|numeric',
+                'stock' => 'required|numeric',
+                'precioCompra' => 'required|numeric',
+                'tamanio' => 'required',
+                'alcoholica' => 'boolean',
+            ]);
+            
+            // Primero creamos el producto base
+            $producto = new Producto();
+            $producto->cod = $request->cod;
+            $producto->pvp = $request->pvp;
+            $producto->nombre = $request->nombre;
+            $producto->stock = $request->stock;
+            $producto->precioCompra = $request->precioCompra;
+            $producto->save();
+            
+            // Luego creamos la bebida que hereda del producto
+            $bebida = new Bebida();
+            $bebida->cod = $request->cod;
+            $bebida->tamanio = $request->tamanio;
+            $bebida->alcoholica = $request->alcoholica ?? false;
+            $bebida->save();
+            
+            return redirect()->route('bebidas.paginate')
+                ->with('success', 'Bebida creada exitosamente');
+        } catch (Exception $e) {
+            return back()->withInput()
+                ->with('error', 'Error al crear la bebida: ' . $e->getMessage());
+        }
+    }
+    
+    public function update(Request $request, $cod)
+    {
+        try {
+            $bebida = Bebida::findOrFail($cod);
+            $producto = Producto::findOrFail($cod);
+            
+            $request->validate([
+                'nombre' => 'required',
+                'pvp' => 'required|numeric',
+                'stock' => 'required|numeric',
+                'precioCompra' => 'required|numeric',
+                'tamanio' => 'required',
+                'alcoholica' => 'boolean',
+            ]);
+            
+            // Actualizar producto base
+            $producto->pvp = $request->pvp;
+            $producto->nombre = $request->nombre;
+            $producto->stock = $request->stock;
+            $producto->precioCompra = $request->precioCompra;
+            $producto->save();
+            
+            // Actualizar bebida
+            $bebida->tamanio = $request->tamanio;
+            $bebida->alcoholica = $request->alcoholica ?? false;
+            $bebida->save();
+            
+            return redirect()->route('bebidas.paginate')
+                ->with('success', 'Bebida actualizada exitosamente');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('bebidas.paginate')
+                ->with('error', 'Bebida no encontrada');
+        } catch (Exception $e) {
+            return redirect()->route('bebidas.paginate')
+                ->with('error', $e->getMessage());
+        }
+    }
+    
+    public function edit($cod)
+    {
+        try {
+            $bebida = Bebida::findOrFail($cod);
+            $producto = Producto::findOrFail($cod);
+            return view('bebida.edit', ['bebida' => $bebida, 'producto' => $producto]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(["message" => "bebida cod = $cod not found"], 404);
+        }
+    }
+}

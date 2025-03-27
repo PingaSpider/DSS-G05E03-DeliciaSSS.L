@@ -15,7 +15,8 @@ class Bebida extends Model
     //get public para obtener la descripcion de la comida
     public function getDescripcionAttribute()
     {
-        return $this->fillable['tipoBebida'];
+        return $this->fillable['tamanyo'];
+        
     }
 
     // Relación con el producto

@@ -1,215 +1,203 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Base de datos de productos (simulada)
-    const products = [
-        {
-            id: 0,
-            name: "Hamburguesa especial",
-            price: 18.00,
-            description: "Carne de vacuno con tomate, lechuga, queso y salsa de bacon",
-            image: "hamburguesa.jpg",
-            rating: 5,
-            reviews: 4
-        },
-        {
-            id: 1,
-            name: "Hamburguesa Clásica",
-            price: 7.00,
-            description: "Carne de ternera, lechuga, tomate y queso americano",
-            image: "hamburguesa-clasica.jpg",
-            rating: 3,
-            reviews: 8
-        },
-        {
-            id: 2,
-            name: "Hamburguesa Deluxe",
-            price: 9.00,
-            description: "Doble carne, queso, cebolla caramelizada y salsa especial",
-            image: "hamburguesa-deluxe.jpg",
-            rating: 4,
-            reviews: 6
-        },
-        {
-            id: 3,
-            name: "Hamburguesa Vegetariana",
-            price: 8.00,
-            description: "Hamburguesa de verduras, aguacate, tomate y rúcula",
-            image: "hamburguesa-vegetariana.jpg",
-            rating: 4,
-            reviews: 3
-        },
-        {
-            id: 4,
-            name: "Hamburguesa de Pollo",
-            price: 7.50,
-            description: "Pechuga de pollo empanada, lechuga y mayonesa",
-            image: "hamburguesa-pollo.jpg",
-            rating: 3,
-            reviews: 5
-        },
-        {
-            id: 5,
-            name: "Hamburguesa Doble",
-            price: 9.00,
-            description: "Doble carne, doble queso, bacon y salsa BBQ",
-            image: "hamburguesa-doble.jpg",
-            rating: 5,
-            reviews: 7
-        }
-    ];
+// Abrir modal de edición
+function openEditModal(cod, nombre, pvp, stock, precioCompra) {
+    document.getElementById('edit_cod').value = cod;
+    document.getElementById('edit_nombre').value = nombre;
+    document.getElementById('edit_pvp').value = pvp;
+    document.getElementById('edit_stock').value = stock;
+    document.getElementById('edit_precioCompra').value = precioCompra;
     
-    // Referencias a elementos del DOM
-    const mainProductImage = document.getElementById('main-product-image');
-    const productTitle = document.getElementById('product-title');
-    const productPrice = document.getElementById('product-price');
-    const productDescription = document.getElementById('product-description');
-    const productCards = document.querySelectorAll('.product-card');
+    // Determinar el tipo de producto basado en el código
+    const tipo = cod.charAt(0);
+    document.getElementById('edit_tipo').value = tipo;
     
-    // Función para actualizar la información del producto principal
-    function updateProductDetails(productId) {
-        const product = products[productId];
-        
-        if (product) {
-            // Actualizar imagen
-            mainProductImage.src = product.image;
-            mainProductImage.alt = product.name;
-            
-            // Actualizar título
-            productTitle.textContent = product.name;
-            
-            // Actualizar precio
-            productPrice.textContent = `$ ${product.price.toFixed(2)}`;
-            
-            // Actualizar descripción
-            productDescription.innerHTML = `<p>${product.description}</p>`;
-            
-            // Actualizar estrellas de valoración (opcional)
-            updateRatingStars(product.rating);
-            
-            // Actualizar contador de reviews (opcional)
-            document.querySelector('.reviews-count').textContent = `${product.reviews} reviews`;
-            
-            // Actualizar URL (opcional, para permitir compartir enlaces directos)
-            updateURL(product.id, product.name);
-        }
+    // Ocultar todos los campos específicos primero
+    document.getElementById('edit_campos_comida').style.display = 'none';
+    document.getElementById('edit_campos_bebida').style.display = 'none';
+    document.getElementById('edit_campos_menu').style.display = 'none';
+    
+    // Cargar los datos específicos del producto según su tipo
+    if (tipo === 'C') {
+        document.getElementById('edit_campos_comida').style.display = 'block';
+        cargarDatosComida(cod);
+    } else if (tipo === 'B') {
+        document.getElementById('edit_campos_bebida').style.display = 'block';
+        cargarDatosBebida(cod);
+    } else if (tipo === 'M') {
+        document.getElementById('edit_campos_menu').style.display = 'block';
+        cargarDatosMenu(cod);
     }
     
-    // Función para actualizar las estrellas de valoración
-    function updateRatingStars(rating) {
-        const stars = document.querySelectorAll('.stars .star');
-        
-        // Restablecer todas las estrellas
-        stars.forEach((star, index) => {
-            if (index < rating) {
-                star.style.color = '#ff8c38'; // Estrellas llenas
-            } else {
-                star.style.color = '#ddd'; // Estrellas vacías
-            }
-        });
-    }
+    // Establece la acción del formulario con la ruta correcta
+    document.getElementById('editProductoForm').action = `/productos/${cod}`;
     
-    // Función para actualizar la URL para compartir
-    function updateURL(productId, productName) {
-        // Crear un slug a partir del nombre del producto
-        const slug = productName.toLowerCase().replace(/ /g, '-');
-        
-        // Actualizar la URL sin recargar la página
-        if (history.pushState) {
-            const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?product=${productId}&name=${slug}`;
-            window.history.pushState({ path: newUrl }, '', newUrl);
+    // Limpia los mensajes de error
+    clearErrors();
+    
+    // Muestra el modal
+    document.getElementById('editModal').style.display = 'block';
+}
+
+// Cargar datos específicos de comida
+function cargarDatosComida(cod) {
+    fetch(`/productos/${cod}/datos-especificos?tipo=comida`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
-    }
-    
-    // Evento para los productos similares
-    productCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const productId = this.getAttribute('data-product-id');
-            updateProductDetails(productId);
-            
-            // Añadir efecto visual (opcional)
-            highlightSelectedProduct(this);
-            
-            // Hacer scroll hasta arriba (opcional)
-            scrollToProductDetail();
-        });
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.comida) {
+            document.getElementById('edit_descripcion').value = data.comida.descripcion || '';
+        }
+    })
+    .catch(error => {
+        console.error('Error al cargar datos de comida:', error);
     });
+}
+
+// Cargar datos específicos de bebida
+function cargarDatosBebida(cod) {
+    fetch(`/productos/${cod}/datos-especificos?tipo=bebida`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.bebida) {
+            document.getElementById('edit_tamanio').value = data.bebida.tamanio || '';
+            document.getElementById('edit_tipoBebida').value = data.bebida.tipoBebida || '';
+            document.getElementById('edit_alcoholica').checked = data.bebida.alcoholica ? true : false;
+        }
+    })
+    .catch(error => {
+        console.error('Error al cargar datos de bebida:', error);
+    });
+}
+
+// Cargar datos específicos de menú
+function cargarDatosMenu(cod) {
+    fetch(`/productos/${cod}/datos-especificos?tipo=menu`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.menu) {
+            document.getElementById('edit_descripcion_menu').value = data.menu.descripcion || '';
+        }
+    })
+    .catch(error => {
+        console.error('Error al cargar datos de menú:', error);
+    });
+}
+
+// Cerrar modal de edición
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
+
+// Función para eliminar producto
+function deleteProducto(cod) {
+    if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+        const form = document.getElementById('deleteProductoForm');
+        form.action = `/productos/${cod}`;
+        form.submit();
+    }
+}
+
+// Limpiar mensajes de error
+function clearErrors() {
+    document.getElementById('nombreError').textContent = '';
+    document.getElementById('pvpError').textContent = '';
+    document.getElementById('stockError').textContent = '';
+    document.getElementById('precioCompraError').textContent = '';
     
-    // Función para destacar visualmente el producto seleccionado
-    function highlightSelectedProduct(selectedCard) {
-        // Quitar highlight de todos los productos
-        productCards.forEach(card => {
-            card.style.borderColor = '#ddd';
-        });
-        
-        // Añadir highlight al producto seleccionado
-        selectedCard.style.borderColor = '#ff8c38';
-        selectedCard.style.borderWidth = '2px';
+    // Errores de campos específicos
+    const errorElements = document.querySelectorAll('.error-message');
+    errorElements.forEach(element => {
+        element.textContent = '';
+    });
+}
+
+// Validación del formulario de edición
+document.getElementById('editProductoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    clearErrors();
+    
+    const nombre = document.getElementById('edit_nombre').value;
+    const pvp = document.getElementById('edit_pvp').value;
+    const stock = document.getElementById('edit_stock').value;
+    const precioCompra = document.getElementById('edit_precioCompra').value;
+    const tipo = document.getElementById('edit_tipo').value;
+    let hasErrors = false;
+    
+    // Validación básica
+    if (nombre.trim() === '') {
+        document.getElementById('nombreError').textContent = 'El nombre es obligatorio';
+        hasErrors = true;
     }
     
-    // Función para hacer scroll hasta los detalles del producto
-    function scrollToProductDetail() {
-        const productDetailSection = document.querySelector('.product-detail');
+    if (pvp.trim() === '' || isNaN(pvp) || Number(pvp) <= 0) {
+        document.getElementById('pvpError').textContent = 'El precio de venta debe ser un número positivo';
+        hasErrors = true;
+    }
+    
+    if (stock.trim() === '' || isNaN(stock) || Number(stock) < 0) {
+        document.getElementById('stockError').textContent = 'El stock debe ser un número no negativo';
+        hasErrors = true;
+    }
+    
+    if (precioCompra.trim() === '' || isNaN(precioCompra) || Number(precioCompra) <= 0) {
+        document.getElementById('precioCompraError').textContent = 'El precio de compra debe ser un número positivo';
+        hasErrors = true;
+    }
+    
+    // Validación específica según el tipo
+    if (tipo === 'C') {
+        const descripcion = document.getElementById('edit_descripcion').value;
+        if (descripcion.trim() === '') {
+            document.getElementById('descripcionError').textContent = 'La descripción es obligatoria';
+            hasErrors = true;
+        }
+    } else if (tipo === 'B') {
+        const tamanio = document.getElementById('edit_tamanio').value;
+        const tipoBebida = document.getElementById('edit_tipoBebida').value;
         
-        if (productDetailSection) {
-            productDetailSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (tamanio.trim() === '') {
+            document.getElementById('tamanioError').textContent = 'Debe seleccionar un tamaño';
+            hasErrors = true;
+        }
+        
+        if (tipoBebida.trim() === '') {
+            document.getElementById('tipoBebidaError').textContent = 'Debe seleccionar un tipo de bebida';
+            hasErrors = true;
+        }
+    } else if (tipo === 'M') {
+        const descripcionMenu = document.getElementById('edit_descripcion_menu').value;
+        
+        if (descripcionMenu.trim() === '') {
+            document.getElementById('descripcion_menuError').textContent = 'La descripción del menú es obligatoria';
+            hasErrors = true;
         }
     }
     
-    // Funcionalidad para el botón de añadir a favoritos
-    const wishlistButton = document.querySelector('.btn-wishlist');
-    wishlistButton.addEventListener('click', function() {
-        const heartIcon = this.querySelector('.heart-icon');
-        
-        // Alternar entre corazón vacío y lleno
-        if (heartIcon.textContent === '♡') {
-            heartIcon.textContent = '♥';
-            heartIcon.style.color = '#ff6b6b';
-        } else {
-            heartIcon.textContent = '♡';
-            heartIcon.style.color = '#666';
-        }
-    });
-    
-    // Funcionalidad para añadir al carrito
-    const addToCartButton = document.querySelector('.add-to-cart');
-    addToCartButton.addEventListener('click', function() {
-        // Obtener el ID del producto actual
-        const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('product') || 0;
-        
-        // Simulación de añadir al carrito
-        console.log(`Producto ${products[productId].name} añadido al carrito`);
-        
-        // Feedback visual
-        this.textContent = 'Added to Cart';
-        setTimeout(() => {
-            this.textContent = 'Add to Cart';
-        }, 2000);
-    });
-    
-    // Inicializar la página con el producto por defecto o desde la URL
-    function initProductPage() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('product') || 0;
-        
-        // Cargar el producto inicial
-        updateProductDetails(productId);
-        
-        // Destacar el producto en la sección "Similar Products" (opcional)
-        productCards.forEach(card => {
-            if (card.getAttribute('data-product-id') === productId) {
-                highlightSelectedProduct(card);
-            }
-        });
-        
-        // Crear placeholders para imágenes si no están disponibles
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
-            img.addEventListener('error', function() {
-                this.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1759e369f07%20text%20%7B%20fill%3A%23999%3Bfont-weight%3Anormal%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1759e369f07%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23f8f8f8%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2296.828125%22%20y%3D%2296.3%22%3EImagen%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E';
-            });
-        });
+    if (hasErrors) {
+        return;
     }
     
-    // Inicializar la página
-    initProductPage();
+    // Si todo está correcto, enviar el formulario
+    this.submit();
 });
+
+// Cerrar el modal si se hace clic fuera de él
+window.onclick = function(event) {
+    const modal = document.getElementById('editModal');
+    if (event.target == modal) {
+        closeEditModal();
+    }
+}

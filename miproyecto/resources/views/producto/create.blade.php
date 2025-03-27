@@ -7,6 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/pedido/create.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pedido/opcional.css') }}">
+    <script src="{{ asset('js/producto.js') }}" defer></script>
 </head>
 <body>
     <div class="container">
@@ -29,13 +31,17 @@
             @csrf
             
             <div class="form-group">
-                <label for="cod"><b>Código del Producto</b></label>
-                <input type="text" placeholder="Introduce el código (máx. 5 caracteres)" name="cod" id="cod" value="{{ old('cod') }}" maxlength="5" required>
-                <div class="error-message" id="codError">
-                    @error('cod')
-                        {{ $message }}
-                    @enderror
-                </div>
+                <label for="tipo"><b>Tipo de Producto</b></label>
+                <select name="tipo" id="tipo" required onchange="mostrarCamposEspecificos()">
+                    <option value="">Seleccione un tipo</option>
+                    <option value="C" {{ old('tipo') == 'C' ? 'selected' : '' }}>Comida (C)</option>
+                    <option value="B" {{ old('tipo') == 'B' ? 'selected' : '' }}>Bebida (B)</option>
+                    <option value="M" {{ old('tipo') == 'M' ? 'selected' : '' }}>Menú (M)</option>
+                </select>
+                <p class="info-text">El código se generará automáticamente según el tipo seleccionado</p>
+                @error('tipo')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
@@ -70,6 +76,108 @@
                 @enderror
             </div>
 
+            <!-- Campos específicos para Comida -->
+            <div id="campos-comida" class="campos-especificos">
+                <h3>Datos específicos de la Comida</h3>
+                <div class="form-group">
+                    <label for="descripcion"><b>Descripción</b></label>
+                    <textarea placeholder="Introduce la descripción de la comida" name="descripcion" id="descripcion" rows="4">{{ old('descripcion') }}</textarea>
+                    @error('descripcion')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <!-- Campos específicos para Bebida -->
+            <div id="campos-bebida" class="campos-especificos">
+                <h3>Datos específicos de la Bebida</h3>
+                <div class="form-group">
+                    <label for="tamanio"><b>Tamaño</b></label>
+                    <select name="tamanio" id="tamanio">
+                        <option value="">Seleccione un tamaño</option>
+                        <option value="Pequeño" {{ old('tamanio') == 'Pequeño' ? 'selected' : '' }}>Pequeño</option>
+                        <option value="Mediano" {{ old('tamanio') == 'Mediano' ? 'selected' : '' }}>Mediano</option>
+                        <option value="Grande" {{ old('tamanio') == 'Grande' ? 'selected' : '' }}>Grande</option>
+                    </select>
+                    @error('tamanio')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="tipoBebida"><b>Tipo de Bebida</b></label>
+                    <select name="tipoBebida" id="tipoBebida">
+                        <option value="">Seleccione un tipo</option>
+                        <option value="Refresco" {{ old('tipoBebida') == 'Refresco' ? 'selected' : '' }}>Refresco</option>
+                        <option value="Vino" {{ old('tipoBebida') == 'Vino' ? 'selected' : '' }}>Vino</option>
+                        <option value="Cerveza" {{ old('tipoBebida') == 'Cerveza' ? 'selected' : '' }}>Cerveza</option>
+                        <option value="Agua" {{ old('tipoBebida') == 'Agua' ? 'selected' : '' }}>Agua</option>
+                    </select>
+                    @error('tipoBebida')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="alcoholica">
+                        <input type="checkbox" name="alcoholica" id="alcoholica" value="1" {{ old('alcoholica') ? 'checked' : '' }}>
+                        <b>Bebida alcohólica</b>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Campos específicos para Menú -->
+            <div id="campos-menu" class="campos-especificos">
+                <h3>Datos específicos del Menú</h3>
+                <div class="form-group">
+                    <label for="descripcion_menu"><b>Descripción del Menú</b></label>
+                    <textarea placeholder="Introduce la descripción del menú" name="descripcion_menu" id="descripcion_menu" rows="4">{{ old('descripcion_menu') }}</textarea>
+                    @error('descripcion_menu')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                <h4>Productos incluidos en el Menú:</h4>
+                
+                <!-- Pestañas para elegir entre bebidas y comidas -->
+                <div class="tabs-container">
+                    <div class="tabs">
+                        <button type="button" class="tab-btn active" onclick="cambiarTab('bebidas')">Bebidas</button>
+                        <button type="button" class="tab-btn" onclick="cambiarTab('comidas')">Comidas</button>
+                    </div>
+                    
+                    <!-- Tab de Bebidas -->
+                    <div id="tab-bebidas" class="tab-content active">
+                        <div class="form-group">
+                            <label for="bebida-select"><b>Seleccionar Bebida</b></label>
+                            <select id="bebida-select" class="producto-select">
+                                <option value="">Seleccione una bebida</option>
+                                <!-- Las opciones se cargarán dinámicamente -->
+                            </select>
+                            <button type="button" onclick="agregarProductoSeleccionado('B')" class="btn-agregar-seleccionado">Agregar Bebida</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab de Comidas -->
+                    <div id="tab-comidas" class="tab-content">
+                        <div class="form-group">
+                            <label for="comida-select"><b>Seleccionar Comida</b></label>
+                            <select id="comida-select" class="producto-select">
+                                <option value="">Seleccione una comida</option>
+                                <!-- Las opciones se cargarán dinámicamente -->
+                            </select>
+                            <button type="button" onclick="agregarProductoSeleccionado('C')" class="btn-agregar-seleccionado">Agregar Comida</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lista de productos seleccionados -->
+                <div class="productos-seleccionados-container">
+                    <h4>Productos seleccionados:</h4>
+                    <div id="productos-seleccionados" class="productos-seleccionados">
+                        <p class="empty-message"><i>No hay productos seleccionados</i></p>
+                    </div>
+                </div>
+            </div>
+
             <button type="submit" class="submit-btn">Crear Producto</button>
             
             <div class="action-links">
@@ -77,86 +185,5 @@
             </div>
         </form>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const codInput = document.getElementById('cod');
-            const codError = document.getElementById('codError');
-            
-            // Verificar el código cuando pierda el foco
-            codInput.addEventListener('blur', function() {
-                const codigo = this.value.trim();
-                
-                if (codigo === '') {
-                    return;
-                }
-                
-                // Verificar si el código ya existe
-                fetch(`{{ route('productos.verificarCodigo') }}?cod=${encodeURIComponent(codigo)}`, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.exists) {
-                        codError.textContent = 'Este código de producto ya está registrado';
-                        codInput.classList.add('error-input');
-                    } else {
-                        codError.textContent = '';
-                        codInput.classList.remove('error-input');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            });
-            
-            // Validación del formulario antes de enviar
-            document.getElementById('form_producto').addEventListener('submit', function(e) {
-                const codigo = codInput.value.trim();
-                const nombre = document.getElementById('nombre').value.trim();
-                const pvp = document.getElementById('pvp').value.trim();
-                const stock = document.getElementById('stock').value.trim();
-                const precioCompra = document.getElementById('precioCompra').value.trim();
-                let hasErrors = false;
-                
-                if (codigo === '') {
-                    codError.textContent = 'El código del producto es obligatorio';
-                    codInput.classList.add('error-input');
-                    hasErrors = true;
-                }
-                
-                if (nombre === '') {
-                    document.querySelector('#nombre + .error-message').textContent = 'El nombre del producto es obligatorio';
-                    document.getElementById('nombre').classList.add('error-input');
-                    hasErrors = true;
-                }
-                
-                if (pvp === '' || isNaN(pvp) || Number(pvp) <= 0) {
-                    document.querySelector('#pvp + .error-message').textContent = 'El precio de venta debe ser un número positivo';
-                    document.getElementById('pvp').classList.add('error-input');
-                    hasErrors = true;
-                }
-                
-                if (stock === '' || isNaN(stock) || Number(stock) < 0) {
-                    document.querySelector('#stock + .error-message').textContent = 'El stock debe ser un número no negativo';
-                    document.getElementById('stock').classList.add('error-input');
-                    hasErrors = true;
-                }
-                
-                if (precioCompra === '' || isNaN(precioCompra) || Number(precioCompra) <= 0) {
-                    document.querySelector('#precioCompra + .error-message').textContent = 'El precio de compra debe ser un número positivo';
-                    document.getElementById('precioCompra').classList.add('error-input');
-                    hasErrors = true;
-                }
-                
-                if (hasErrors) {
-                    e.preventDefault();
-                }
-            });
-        });
-    </script>
 </body>
 </html>
