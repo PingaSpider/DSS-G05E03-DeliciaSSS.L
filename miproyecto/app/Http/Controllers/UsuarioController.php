@@ -29,14 +29,14 @@ class UsuarioController extends Controller
         $usuario->telefono = $telefono;
         $usuario->save();
 
-        return view('user.profile',['usuario'=>$usuario]);
+        return view('user.show',['usuario'=>$usuario]);
     }
 
     public function show_get($id)
     {   
         try{
             $usuario = Usuario::findOrFail($id);
-            return view('user.profile', ['usuario' => $usuario]);
+            return view('user.show', ['usuario' => $usuario]);
         }catch(ModelNotFoundException $e){
             return response()->json(["message" => "user id = $id not found"], 404);
         }
@@ -47,7 +47,7 @@ class UsuarioController extends Controller
         $id = $request->id;
         try{
             $usuario = Usuario::findOrFail($id);
-            return view('user.profile', ['usuario' => $usuario]);
+            return view('user.show', ['usuario' => $usuario]);
         }catch(ModelNotFoundException $e){
             return response()->json(["message" => "user id = $id not found"], 404);
         }
