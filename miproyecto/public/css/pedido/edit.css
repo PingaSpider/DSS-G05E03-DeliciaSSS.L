@@ -1,0 +1,115 @@
+    /* Estilos específicos para la página de edición de menús */
+    .section-divider {
+        border-top: 1px solid #ddd;
+        margin: 30px 0 20px;
+        position: relative;
+    }
+    
+    .section-title {
+        position: absolute;
+        top: -12px;
+        left: 20px;
+        background-color: #fff;
+        padding: 0 10px;
+        color: #F39221;
+        font-weight: 600;
+    }
+    
+    .tabs {
+        display: flex;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 20px;
+    }
+    
+    .tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-right: 5px;
+        border: 1px solid transparent;
+        border-bottom: none;
+        border-radius: 4px 4px 0 0;
+    }
+    
+    .tab.active {
+        background-color: #fff2d6;
+        border-color: #ddd;
+        color: #F39221;
+        font-weight: 500;
+    }
+    
+    .tab-content {
+        display: none;
+        margin-bottom: 20px;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    .productos-container {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+    }
+    
+    .producto-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .producto-item:last-child {
+        border-bottom: none;
+    }
+    
+    .producto-seleccionado {
+        background-color: #fff2d6;
+    }
+    
+    .producto-details {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px dashed #ddd;
+    }
+    
+    .cantidad-input {
+        width: 60px;
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    .delete-producto {
+        color: #e46a20;
+        cursor: pointer;
+        margin-left: 15px;
+    }
+    
+    .delete-producto:hover {
+        text-decoration: underline;
+    }
+    
+    .productos-seleccionados {
+        margin-top: 30px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        background-color: #fff2d6;
+    }
+    
+    .readonly-input {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+    }
+    
+    .input-info {
+        font-size: 0.85rem;
+        color: #666;
+        margin-top: 5px;
+    }
+    

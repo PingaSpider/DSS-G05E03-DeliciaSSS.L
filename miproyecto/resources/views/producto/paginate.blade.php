@@ -85,7 +85,19 @@
                                 }
                             @endphp
                             <a href="{{ route($rutaShow, $producto->cod) }}" class="action-btn view-btn">Ver</a>
-                            <button type="button" class="action-btn edit-btn" onclick="openEditModal('{{ $producto->cod }}', '{{ $producto->nombre }}', {{ $producto->pvp }}, {{ $producto->stock }}, {{ $producto->precioCompra }})">Editar</button>
+                            @php
+                                $tipoProducto = substr($producto->cod, 0, 1);
+                                $rutaEdit = 'productos.edit';
+
+                                if ($tipoProducto === 'C') {
+                                    $rutaEdit = 'comida.edit';
+                                } elseif ($tipoProducto === 'B') {
+                                    $rutaEdit = 'bebidas.edit';
+                                } elseif ($tipoProducto === 'M') {
+                                    $rutaEdit = 'menus.edit';
+                                }
+                            @endphp
+                            <a href="{{ route($rutaEdit, $producto->cod) }}" class="action-btn edit-btn">Editar</a>
                             <button type="button" class="action-btn delete-btn" onclick="deleteProducto('{{ $producto->cod }}')">Eliminar</button>
                         </td>
                     </tr>

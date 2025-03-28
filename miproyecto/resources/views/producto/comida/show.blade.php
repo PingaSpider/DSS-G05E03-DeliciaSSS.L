@@ -25,55 +25,73 @@
             </div>
         @endif
         
-        <div class="product-card">
-            <div class="product-header">
-                <h2 class="product-title">{{ $producto->nombre }}</h2>
-                <span class="product-code">Código: {{ $producto->cod }}</span>
+        <div class="pedido-details">
+            <div class="detail-item">
+                <span class="detail-label">Código del Producto:</span>
+                <span class="detail-value">{{ $producto->cod }}</span>
             </div>
             
-            <div class="product-data">
-                <h3>Información General</h3>
-                <div class="data-row">
-                    <span class="data-label">Precio de Venta:</span>
-                    <span class="data-value">{{ number_format($producto->pvp, 2) }} €</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">Precio de Compra:</span>
-                    <span class="data-value">{{ number_format($producto->precioCompra, 2) }} €</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">Stock:</span>
-                    <span class="data-value">{{ $producto->stock }} unidades</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">Margen:</span>
-                    <span class="data-value">
-                        @php
-                            $margen = $producto->pvp - $producto->precioCompra;
-                            $porcentaje = ($producto->precioCompra > 0) ? ($margen / $producto->precioCompra) * 100 : 0;
-                        @endphp
-                        {{ number_format($margen, 2) }} € ({{ number_format($porcentaje, 2) }}%)
-                    </span>
-                </div>
+            <div class="detail-item">
+                <span class="detail-label">Nombre:</span>
+                <span class="detail-value">{{ $producto->nombre }}</span>
             </div>
             
-            <div class="product-data">
-                <h3>Descripción</h3>
-                <div class="description-box">
-                    {{ $comida->descripcion }}
-                </div>
+            <div class="detail-item">
+                <span class="detail-label">Precio de Venta:</span>
+                <span class="detail-value">{{ number_format($producto->pvp, 2, ',', '.') }} €</span>
             </div>
             
-            <div class="action-buttons">
-                <a href="{{ route('comida.edit', $producto->cod) }}" class="btn btn-primary">Editar</a>
-                <a href="{{ route('productos.paginate') }}" class="btn btn-secondary">Volver al Listado</a>
-                <form action="{{ route('comida.destroy', $producto->cod) }}" method="POST" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta comida?')">Eliminar</button>
-                </form>
+            <div class="detail-item">
+                <span class="detail-label">Precio de Compra:</span>
+                <span class="detail-value">{{ number_format($producto->precioCompra, 2, ',', '.') }} €</span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label">Stock:</span>
+                <span class="detail-value">{{ $producto->stock }} unidades</span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label">Margen:</span>
+                <span class="detail-value">
+                    @php
+                        $margen = $producto->pvp - $producto->precioCompra;
+                        $porcentaje = ($producto->precioCompra > 0) ? ($margen / $producto->precioCompra) * 100 : 0;
+                    @endphp
+                    {{ number_format($margen, 2, ',', '.') }} € ({{ number_format($porcentaje, 2, ',', '.') }}%)
+                </span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label">Descripción:</span>
+                <span class="detail-value">{{ $comida->descripcion }}</span>
             </div>
         </div>
+        
+        <div class="action-buttons">
+            <a href="{{ route('comida.edit', $producto->cod) }}" class="action-btn edit-btn">Editar Comida</a>
+            
+            <form action="{{ route('comida.destroy', $producto->cod) }}" method="POST" style="display: inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="action-btn delete-btn" onclick="return confirm('¿Estás seguro de que deseas eliminar esta comida?')">Eliminar Comida</button>
+            </form>
+            
+            <a href="{{ route('productos.paginate') }}" class="action-btn view-btn">Volver al Listado</a>
+        </div>
     </div>
+    
+    <style>
+        /* Ajustes responsivos */
+        @media (max-width: 576px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 </body>
 </html>

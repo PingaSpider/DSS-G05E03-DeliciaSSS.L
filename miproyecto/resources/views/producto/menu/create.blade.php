@@ -7,67 +7,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/pedido/create.css') }}">
-    <style>
-        .producto-item {
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .producto-seleccionado {
-            background-color: #f0f8ff;
-            border-left: 4px solid #007bff;
-        }
-        .productos-container {
-            margin-top: 20px;
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .productos-seleccionados {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f5f5f5;
-        }
-        .cantidad-input {
-            width: 60px;
-            text-align: center;
-        }
-        .delete-producto {
-            color: #dc3545;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        .tabs {
-            display: flex;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-        .tab {
-            padding: 10px 15px;
-            cursor: pointer;
-            border: 1px solid transparent;
-            border-bottom: none;
-            border-radius: 5px 5px 0 0;
-            margin-right: 5px;
-        }
-        .tab.active {
-            background-color: #f9f9f9;
-            border-color: #ddd;
-            margin-bottom: -1px;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -311,14 +250,6 @@
                                         <i class="fas fa-trash-alt"></i> Eliminar
                                     </span>
                                 </div>
-                            </div>
-                            <div class="mt-2">
-                                <label>Notas: 
-                                    <input type="text" class="form-control descripcion-input" 
-                                        placeholder="Notas adicionales (opcional)" 
-                                        data-cod="${producto.cod}" 
-                                        onchange="actualizarDescripcion('${producto.cod}', this.value)">
-                                </label>
                             </div>
                         </div>
                     `;
