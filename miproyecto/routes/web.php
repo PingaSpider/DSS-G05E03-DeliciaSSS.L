@@ -107,12 +107,62 @@ Route::post('/productos/show', [ProductoController::class, 'show_post'])->name('
 Route::get('/productos/search', [ProductoController::class, 'search'])->name('productos.search');
 Route::get('/verificar-codigo-producto', [ProductoController::class, 'verificarCodigo'])->name('productos.verificarCodigo');
 
-// Ruta para buscar productos (AJAX)
-Route::get('/buscar-productos', [App\Http\Controllers\ProductoController::class, 'buscarProductos'])->name('productos.buscar');
-// Añade esta ruta en routes/web.php
+// Rutas para el CRUD de comidas
+Route::prefix('comida')->group(function () {
+    Route::get('/', [ComidaController::class, 'paginate'])->name('comida.paginate');
+    Route::get('/create', [ComidaController::class, 'create_get'])->name('comida.create');
+    Route::post('/store', [ComidaController::class, 'store'])->name('comida.store');
+    Route::get('/{cod}', [ComidaController::class, 'show_get'])->name('comida.show');
+    Route::get('/{cod}/edit', [ComidaController::class, 'edit'])->name('comida.edit');
+    Route::put('/{cod}', [ComidaController::class, 'update'])->name('comida.update');
+    Route::delete('/{cod}', [ComidaController::class, 'destroy'])->name('comida.destroy');
+    
+    // Rutas de compatibilidad
+    Route::post('/create', [ComidaController::class, 'create_post'])->name('comida.create_post');
+    Route::post('/show_post', [ComidaController::class, 'show_post'])->name('comida.show_post');
+    // Rutas de utilidad
+    Route::get('/verificar-codigo', [ComidaController::class, 'verificarCodigo'])->name('comida.verificar-codigo');
+    Route::post('/search', [ComidaController::class, 'search'])->name('comida.search');
+});
 
-// Ruta para obtener datos específicos de un producto
-Route::get('/productos/{cod}/datos-especificos', [App\Http\Controllers\ProductoController::class, 'getDatosEspecificos'])->name('productos.datos-especificos');
+// Rutas para el CRUD de bebidas
+Route::prefix('bebidas')->group(function () {
+    Route::get('/', [BebidaController::class, 'paginate'])->name('bebidas.paginate');
+    Route::get('/create', [BebidaController::class, 'create_get'])->name('bebidas.create');
+    Route::post('/store', [BebidaController::class, 'store'])->name('bebidas.store');
+    Route::get('/{cod}', [BebidaController::class, 'show'])->name('bebidas.show');
+    Route::get('/{cod}/edit', [BebidaController::class, 'edit'])->name('bebidas.edit');
+    Route::put('/{cod}', [BebidaController::class, 'update'])->name('bebidas.update');
+    Route::delete('/{cod}', [BebidaController::class, 'destroy'])->name('bebidas.destroy');
+    
+    // Rutas de compatibilidad
+    Route::post('/create_post', [BebidaController::class, 'create_post'])->name('bebidas.create_post');
+    Route::post('/show_post', [BebidaController::class, 'show_post'])->name('bebidas.show_post');
+    
+    // Rutas de utilidad
+    Route::get('/verificar-codigo', [BebidaController::class, 'verificarCodigo'])->name('bebidas.verificar-codigo');
+    Route::post('/search', [BebidaController::class, 'search'])->name('bebidas.search');
+    // Alias para delete (compatibilidad)
+    Route::get('/{cod}/delete', [BebidaController::class, 'delete'])->name('bebidas.delete');
+});
 
-// Para mantener compatibilidad con las rutas antiguas
-Route::get('/productos/index', [ProductoController::class, 'paginate'])->name('productos.index');
+// Rutas para el CRUD de menús
+Route::prefix('menus')->group(function () {
+    Route::get('/', [MenuController::class, 'paginate'])->name('menus.paginate');
+    Route::get('/create', [MenuController::class, 'create_get'])->name('menus.create');
+    Route::post('/store', [MenuController::class, 'store'])->name('menus.store');
+    Route::get('/{cod}', [MenuController::class, 'show'])->name('menus.show');
+    Route::get('/{cod}/edit', [MenuController::class, 'edit'])->name('menus.edit');
+    Route::put('/{cod}', [MenuController::class, 'update'])->name('menus.update');
+    Route::delete('/{cod}', [MenuController::class, 'destroy'])->name('menus.destroy');
+    
+    // Rutas de compatibilidad
+    Route::post('/create_post', [MenuController::class, 'create_post'])->name('menus.create_post');
+    Route::post('/show_post', [MenuController::class, 'show_post'])->name('menus.show_post');
+    
+    // Rutas de utilidad
+    Route::get('/verificar-codigo', [MenuController::class, 'verificarCodigo'])->name('menus.verificar-codigo');
+    Route::post('/search', [MenuController::class, 'search'])->name('menus.search');
+    // Alias para delete (compatibilidad)
+    Route::get('/{cod}/delete', [MenuController::class, 'delete'])->name('menus.delete');
+});

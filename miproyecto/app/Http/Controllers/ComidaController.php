@@ -22,7 +22,7 @@ class ComidaController extends ProductoController
      */
     public function create_get()
     {
-        return view('comida.create');
+        return view('producto.comida.create');
     }
 
     /**
@@ -48,7 +48,7 @@ class ComidaController extends ProductoController
         $comida->descripcion = $request->descripcion;
         $comida->save();
 
-        return view('comida.show', ['comida' => $comida, 'producto' => $producto]);
+        return view('producto.comida.show', ['comida' => $comida, 'producto' => $producto]);
     }
 
     /**
@@ -59,7 +59,7 @@ class ComidaController extends ProductoController
         try {
             $comida = Comida::findOrFail($cod);
             $producto = Producto::findOrFail($cod);
-            return view('comida.show', ['comida' => $comida, 'producto' => $producto]);
+            return view('producto.comida.show', ['comida' => $comida, 'producto' => $producto]);
         } catch (ModelNotFoundException $e) {
             return response()->json(["message" => "comida cod = $cod not found"], 404);
         }
@@ -74,7 +74,7 @@ class ComidaController extends ProductoController
         try {
             $comida = Comida::findOrFail($cod);
             $producto = Producto::findOrFail($cod);
-            return view('comida.show', ['comida' => $comida, 'producto' => $producto]);
+            return view('producto.comida.show', ['comida' => $comida, 'producto' => $producto]);
         } catch (ModelNotFoundException $e) {
             return response()->json(["message" => "comida cod = $cod not found"], 404);
         }
@@ -112,7 +112,7 @@ class ComidaController extends ProductoController
             $comida->descripcion = $request->descripcion;
             $comida->save();
 
-            return redirect()->route('comida.paginate')
+            return redirect()->route('productos.paginate')
                 ->with('success', 'Comida creada exitosamente con código: ' . $cod);
         } catch (Exception $e) {
             return back()->withInput()
@@ -142,7 +142,7 @@ class ComidaController extends ProductoController
         
         $comidas = $query->paginate($perPage);
         
-        return view('comida.paginate', ['comidas' => $comidas]);
+        return view('producto.paginate', ['productos' => $comidas]);
     }
 
     /**
@@ -153,7 +153,7 @@ class ComidaController extends ProductoController
         try {
             $comida = Comida::findOrFail($cod);
             $producto = Producto::findOrFail($cod);
-            return view('comida.edit', ['comida' => $comida, 'producto' => $producto]);
+            return view('producto.comida.edit', ['comida' => $comida, 'producto' => $producto]);
         } catch (ModelNotFoundException $e) {
             return response()->json(["message" => "comida cod = $cod not found"], 404);
         }
@@ -187,13 +187,13 @@ class ComidaController extends ProductoController
             $comida->descripcion = $request->descripcion;
             $comida->save();
 
-            return redirect()->route($this->routePrefix . '.paginate')
+            return redirect()->route('productos.paginate')
                 ->with('success', 'Comida actualizada exitosamente');
         } catch (ModelNotFoundException $e) {
-            return redirect()->route($this->routePrefix . '.paginate')
+            return redirect()->route('productos.paginate')
                 ->with('error', 'Comida no encontrada');
         } catch (Exception $e) {
-            return redirect()->route($this->routePrefix . '.paginate')
+            return redirect()->route('productos.paginate')
                 ->with('error', $e->getMessage());
         }
     }
@@ -209,13 +209,13 @@ class ComidaController extends ProductoController
             
             // El producto base se eliminará automáticamente por la restricción de clave foránea con onDelete('cascade')
             
-            return redirect()->route($this->routePrefix . '.paginate')
+            return redirect()->route('productos.paginate')
                 ->with('success', 'Comida eliminada exitosamente');
         } catch (ModelNotFoundException $e) {
-            return redirect()->route($this->routePrefix . '.paginate')
+            return redirect()->route('productos.paginate')
                 ->with('error', 'Comida no encontrada');
         } catch (Exception $e) {
-            return redirect()->route($this->routePrefix . '.paginate')
+            return redirect()->route('productos.paginate')
                 ->with('error', $e->getMessage());
         }
     }
@@ -238,7 +238,7 @@ class ComidaController extends ProductoController
                          ->where('productos.nombre', 'like', "%$nombre%")
                          ->select('comidas.*', 'productos.nombre', 'productos.pvp', 'productos.stock', 'productos.precioCompra')
                          ->get();
-        return view('comida.search', ['comidas' => $comidas]);
+        return view('producto.comida.search', ['comidas' => $comidas]);
     }
     
     /**

@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\DB;
 class MenuController extends ProductoController
 {
     protected $modelClass = Menu::class;
-    protected $viewPrefix = 'menu';
+    protected $viewPrefix = 'producto.menu';
     protected $routePrefix = 'menus';
     protected $requiredFields = ['nombre', 'pvp', 'stock', 'precioCompra', 'descripcion'];
 
     /**
      * Mostrar formulario para crear un nuevo menú
      */
-    public function create_get()
+    public function create()
     {
         // Obtener productos de tipo comida (C) y bebida (B) para el menú
         $productos = Producto::where(function($query) {
@@ -31,7 +31,15 @@ class MenuController extends ProductoController
             ->orderBy('nombre')
             ->get();
             
-        return view('menu.create', ['productos' => $productos]);
+        return view('producto.menu.create', ['productos' => $productos]);
+    }
+    
+    /**
+     * Alias para create() para mantener compatibilidad
+     */
+    public function create_get()
+    {
+        return $this->create();
     }
 
     /**
@@ -81,7 +89,7 @@ class MenuController extends ProductoController
             ->select('menu_producto.*', 'productos.nombre', 'productos.pvp')
             ->get();
 
-        return view('menu.show', [
+        return view('producto.menu.show', [
             'menu' => $menu, 
             'producto' => $producto,
             'menuProductos' => $menuProductos
@@ -91,7 +99,7 @@ class MenuController extends ProductoController
     /**
      * Mostrar detalles de un menú específico
      */
-    public function show_get($cod)
+    public function show($cod)
     {
         try {
             $menu = Menu::findOrFail($cod);
@@ -103,14 +111,23 @@ class MenuController extends ProductoController
                 ->select('menu_producto.*', 'productos.nombre', 'productos.pvp')
                 ->get();
                 
-            return view('menu.show', [
+            return view('producto.menu.show', [
                 'menu' => $menu, 
                 'producto' => $producto,
                 'menuProductos' => $menuProductos
             ]);
         } catch (ModelNotFoundException $e) {
-            return response()->json(["message" => "menu cod = $cod not found"], 404);
+            return redirect()->route('productos.paginate')
+                ->with('error', 'Menú no encontrado');
         }
+    }
+    
+    /**
+     * Alias para show() para mantener compatibilidad
+     */
+    public function show_get($cod)
+    {
+        return $this->show($cod);
     }
 
     /**
@@ -119,24 +136,7 @@ class MenuController extends ProductoController
     public function show_post(Request $request)
     {
         $cod = $request->cod;
-        try {
-            $menu = Menu::findOrFail($cod);
-            $producto = Producto::findOrFail($cod);
-            
-            // Obtener los productos que componen el menú
-            $menuProductos = MenuProducto::where('menu_cod', $cod)
-                ->join('productos', 'menu_producto.producto_cod', '=', 'productos.cod')
-                ->select('menu_producto.*', 'productos.nombre', 'productos.pvp')
-                ->get();
-                
-            return view('menu.show', [
-                'menu' => $menu, 
-                'producto' => $producto,
-                'menuProductos' => $menuProductos
-            ]);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(["message" => "menu cod = $cod not found"], 404);
-        }
+        return $this->show($cod);
     }
     
     /**
@@ -204,7 +204,7 @@ class MenuController extends ProductoController
                 // Confirmar la transacción
                 DB::commit();
 
-                return redirect()->route('menus.paginate')
+                return redirect()->route('productos.paginate')
                     ->with('success', 'Menú creado exitosamente con código: ' . $cod);
                 
             } catch (Exception $e) {
@@ -240,13 +240,21 @@ class MenuController extends ProductoController
         
         $menus = $query->paginate($perPage);
         
-        return view('menu.paginate', ['menus' => $menus]);
+        return view('producto.menu.paginate', ['menus' => $menus]);
+    }
+
+    /**
+     * Mantener este método para compatibilidad
+     */
+    public function index()
+    {
+        return $this->paginate(request());
     }
 
     /**
      * Mostrar formulario para editar un menú
      */
-    public function edit($cod)
+    public function edit(Request $request, $cod)
     {
         try {
             $menu = Menu::findOrFail($cod);
@@ -266,14 +274,15 @@ class MenuController extends ProductoController
                 ->orderBy('nombre')
                 ->get();
             
-            return view('menu.edit', [
+            return view('producto.menu.edit', [
                 'menu' => $menu, 
                 'producto' => $producto,
                 'menuProductos' => $menuProductos,
                 'productos' => $productos
             ]);
         } catch (ModelNotFoundException $e) {
-            return response()->json(["message" => "menu cod = $cod not found"], 404);
+            return redirect()->route('productos.paginate')
+                ->with('error', 'Menú no encontrado');
         }
     }
 
@@ -341,7 +350,7 @@ class MenuController extends ProductoController
                 // Confirmar la transacción
                 DB::commit();
 
-                return redirect()->route($this->routePrefix . '.paginate')
+                return redirect()->route('productos.paginate')
                     ->with('success', 'Menú actualizado exitosamente');
                 
             } catch (Exception $e) {
@@ -350,10 +359,10 @@ class MenuController extends ProductoController
                 throw $e;
             }
         } catch (ModelNotFoundException $e) {
-            return redirect()->route($this->routePrefix . '.paginate')
+            return redirect()->route('productos.paginate')
                 ->with('error', 'Menú no encontrado');
         } catch (Exception $e) {
-            return redirect()->route($this->routePrefix . '.paginate')
+            return redirect()->route('productos.paginate')
                 ->with('error', $e->getMessage());
         }
     }
@@ -381,7 +390,7 @@ class MenuController extends ProductoController
                 // Confirmar la transacción
                 DB::commit();
                 
-                return redirect()->route($this->routePrefix . '.paginate')
+                return redirect()->route('productos.paginate')
                     ->with('success', 'Menú eliminado exitosamente');
                 
             } catch (Exception $e) {
@@ -390,10 +399,10 @@ class MenuController extends ProductoController
                 throw $e;
             }
         } catch (ModelNotFoundException $e) {
-            return redirect()->route($this->routePrefix . '.paginate')
+            return redirect()->route('productos.paginate')
                 ->with('error', 'Menú no encontrado');
         } catch (Exception $e) {
-            return redirect()->route($this->routePrefix . '.paginate')
+            return redirect()->route('productos.paginate')
                 ->with('error', $e->getMessage());
         }
     }
@@ -416,7 +425,7 @@ class MenuController extends ProductoController
                      ->where('productos.nombre', 'like', "%$nombre%")
                      ->select('menus.*', 'productos.nombre', 'productos.pvp', 'productos.stock', 'productos.precioCompra')
                      ->get();
-        return view('menu.search', ['menus' => $menus]);
+        return view('producto.menu.search', ['menus' => $menus]);
     }
     
     /**
