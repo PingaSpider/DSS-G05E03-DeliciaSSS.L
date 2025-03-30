@@ -120,7 +120,7 @@ class PedidoController extends Controller
     public function show($cod)
     {
         try {
-            $pedido = Pedido::with('usuario', 'lineaPedidos.producto')->findOrFail($cod);
+            $pedido = Pedido::with('usuario','lineasPedido.producto')->findOrFail($cod);
             return view('pedido.show', compact('pedido'));
         } catch (ModelNotFoundException $e) {
             return redirect()->route('pedidos.paginate')
@@ -139,7 +139,6 @@ class PedidoController extends Controller
             $query->where(function($q) use ($search) {
                 $q->where('cod', 'like', "%{$search}%")
                   ->orWhere('estado', 'like', "%{$search}%")
-                  ->orWhere('fecha', 'like', "%{$search}%")
                   ->orWhereHas('usuario', function($query) use ($search) {
                       $query->where('nombre', 'like', "%{$search}%");
                   });
