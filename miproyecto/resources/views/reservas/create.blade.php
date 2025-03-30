@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -24,22 +25,33 @@
                 {{ session('error') }}
             </div>
         @endif
-        
+
+        <!-- Errores generales de validación -->
+        @if ($errors->any())
+            <div class="alert alert-error">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form id="form_reserva" action="{{ route('reservas.store') }}" method="POST">
             @csrf
             
             <div class="form-group">
-                <label for="codReserva"><b>Código de Reserva</b></label>
+                <label for="codReserva"><b>Código de Reserva</b><span class="required">*</span></label>
                 <input type="number" placeholder="Introduce el código" name="codReserva" id="codReserva" value="{{ old('codReserva') }}" required>
                 <div class="error-message" id="codReservaError">
                     @error('codReserva')
-                        {{ $message }}
+                        <div>{{ $message }}</div>
                     @enderror
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="fecha"><b>Fecha de la Reserva</b></label>
+                <label for="fecha"><b>Fecha de la Reserva</b><span class="required">*</span></label>
                 <input type="date" name="fecha" value="{{ old('fecha', date('Y-m-d')) }}" required>
                 @error('fecha')
                     <div class="error-message">{{ $message }}</div>
@@ -47,7 +59,7 @@
             </div>
 
             <div class="form-group">
-                <label for="hora"><b>Hora de la Reserva</b></label>
+                <label for="hora"><b>Hora de la Reserva</b><span class="required">*</span></label>
                 <input type="time" name="hora" value="{{ old('hora') }}" required>
                 @error('hora')
                     <div class="error-message">{{ $message }}</div>
@@ -55,7 +67,7 @@
             </div>
 
             <div class="form-group">
-                <label for="cantPersona"><b>Cantidad de Personas</b></label>
+                <label for="cantPersona"><b>Cantidad de Personas</b><span class="required">*</span></label>
                 <input type="number" name="cantPersona" value="{{ old('cantPersona') }}" min="1" required>
                 @error('cantPersona')
                     <div class="error-message">{{ $message }}</div>
@@ -68,7 +80,7 @@
             </div>
 
             <div class="form-group">
-                <label for="mesa_id"><b>Mesa</b></label>
+                <label for="mesa_id"><b>Mesa</b><span class="required">*</span></label>
                 <select name="mesa_id" required>
                     <option value="">Selecciona una mesa</option>
                     @foreach ($mesas as $mesa)
@@ -83,7 +95,7 @@
             </div>
 
             <div class="form-group">
-                <label for="usuario_id"><b>Cliente</b></label>
+                <label for="usuario_id"><b>Cliente</b><span class="required">*</span></label>
                 <select name="usuario_id" required>
                     <option value="">Selecciona un cliente</option>
                     @foreach ($usuarios as $usuario)

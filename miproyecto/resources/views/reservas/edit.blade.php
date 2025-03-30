@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+v<!DOCTYPE html>
 <html lang="es">
 <head>
     <title>Editar Reserva</title>
@@ -37,7 +37,7 @@
             </div>
             
             <div class="form-group">
-                <label for="fecha"><b>Fecha</b></label>
+                <label for="fecha"><b>Fecha</b><span class="required">*</span></label>
                 <input type="date" name="fecha" id="fecha" value="{{ old('fecha', $reserva->fecha) }}" required>
                 @error('fecha')
                     <div class="error-message">{{ $message }}</div>
@@ -45,7 +45,7 @@
             </div>
 
             <div class="form-group">
-                <label for="hora"><b>Hora</b></label>
+                <label for="hora"><b>Hora</b><span class="required">*</span></label>
                 <input type="time" name="hora" id="hora" value="{{ old('hora', $reserva->hora) }}" required>
                 @error('hora')
                     <div class="error-message">{{ $message }}</div>
@@ -53,7 +53,7 @@
             </div>
 
             <div class="form-group">
-                <label for="cantPersona"><b>Cantidad de Personas</b></label>
+                <label for="cantPersona"><b>Cantidad de Personas</b><span class="required">*</span></label>
                 <input type="number" min="1" name="cantPersona" id="cantPersona" value="{{ old('cantPersona', $reserva->cantPersona) }}" required>
                 @error('cantPersona')
                     <div class="error-message">{{ $message }}</div>
@@ -69,11 +69,11 @@
             </div>
 
             <div class="form-group">
-                <label for="mesa_id"><b>Mesa</b></label>
+                <label for="mesa_id"><b>Mesa</b><span class="required">*</span></label>
                 <select name="mesa_id" id="mesa_id" required>
                     @foreach ($mesas as $mesa)
                         <option value="{{ $mesa->codMesa }}" {{ $mesa->codMesa == old('mesa_id', $reserva->mesa_id) ? 'selected' : '' }}>
-                            {{ $mesa->codMesa }}
+                            Mesa {{ $mesa->codMesa }}
                         </option>
                     @endforeach
                 </select>
@@ -83,7 +83,7 @@
             </div>
 
             <div class="form-group">
-                <label for="usuario_id"><b>Usuario</b></label>
+                <label for="usuario_id"><b>Usuario</b><span class="required">*</span></label>
                 <select name="usuario_id" id="usuario_id" required>
                     @foreach ($usuarios as $usuario)
                         <option value="{{ $usuario->id }}" {{ $usuario->id == old('usuario_id', $reserva->usuario_id) ? 'selected' : '' }}>
