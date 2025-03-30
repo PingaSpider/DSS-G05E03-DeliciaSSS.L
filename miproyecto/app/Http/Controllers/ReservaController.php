@@ -2,96 +2,170 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mesa;
-use App\Models\Reserva;
 use Illuminate\Http\Request;
+use App\Models\Reserva;
+use App\Models\Usuario;
+use App\Models\Mesa;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class ReservaController extends Controller
 {
-
     public function create()
     {
-        // Obtener todas las mesas
+        $usuarios = Usuario::all();
         $mesas = Mesa::all();
-        // Mostrar la vista para crear una reserva
-        return view('reservas.create', compact('mesas'));
+        return view('reserva.create', compact('usuarios', 'mesas'));
     }
-
-    public function index()
-    {
-        // Obtener todas las reservas
-        $reservas = Reserva::all();
-        // Mostrar la vista con todas las reservas
-        return view('reservas.index', compact('reservas'));
-    }
-
-    // Listar todas las reservas
+    
     public function store(Request $request)
     {
-        // Validar que la mesa esté disponible
-        $mesa = Mesa::findOrFail($request->mesa_id);
-        
-        // Si la mesa no está disponible, mostrar un mensaje de error
-        if (!$mesa->estaDisponible($request->fecha, $request->hora)) {
-            return back()->withErrors(['mesa' => 'Esta mesa ya está reservada para la fecha y hora seleccionadas.']);
+        try {
+            $request->validate([
+                'codReserva' => 'required|integer|unique:reservas',
+                'fecha' => 'required|date',
+                'hora' => 'required',
+                'cantPersona' => 'required|integer|min:1',
+                'reservaConfirmada' => 'boolean',
+                'mesa_id' => 'required|exists:mesas,codMesa',
+                'usuario_id' => 'required|exists:usuarios,id',
+            ]);
+    
+            DB::beginTransaction();
+    
+            $reserva = new Reserva();
+            $reserva->codReserva = $request->codReserva;
+            $reserva->fecha = $request->fecha;
+            $reserva->hora = $request->hora;
+            $reserva->cantPersona = $request->cantPersona;
+            $reserva->reservaConfirmada = $request->reservaConfirmada ?? false;
+            $reserva->mesa_id = $request->mesa_id;
+            $reserva->usuario_id = $request->usuario_id;
+            $reserva->save();
+    
+            DB::commit();
+            return redirect()->route('reservas.paginate')
+                ->with('success', 'Reserva creada exitosamente');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->withInput()
+                ->with('error', 'Error al crear la reserva: ' . $e->getMessage());
         }
-        
-        // Crear la reserva si está disponible
-        Reserva::create([
-            'fecha' => $request->fecha,
-            'hora' => $request->hora,
-            'mesa_id' => $request->mesa_id,
-            'codReserva' => $request->codReserva,
-            'cantPersona' => $request->cantPersona,
-            'usuario_id' => auth()->id(), // Asume que el usuario está autenticado
-
-        ]);
-        // Redirigir a la lista de reservas con un mensaje de éxito
-        return redirect()->route('reservas.index')->with('success', 'Reserva creada exitosamente.');
     }
-
-    //Modificar una reserva
-    public function edit($id)
+    
+    public function edit($codReserva)
     {
-        // Obtener la reserva por su id
-        $reserva = Reserva::findOrFail($id);
-        // Obtener todas las mesas
-        $mesas = Mesa::all();
-        // Mostrar la vista para editar la reserva
-        return view('reservas.edit', compact('reserva', 'mesas'));
+        try {
+            $reserva = Reserva::findOrFail($codReserva);
+            $usuarios = Usuario::all();
+            $mesas = Mesa::all();
+            return view('reserva.edit', compact('reserva', 'usuarios', 'mesas'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('reservas.paginate')
+                ->with('error', 'Reserva no encontrada');
+        }
     }
-
-    //Actualizar una reserva
-    public function update(Request $request, $id)
+    
+    public function update(Request $request, $codReserva)
     {
-        // Validar los datos del formulario
-        $request->validate([
-            'fecha' => 'required',
-            'hora' => 'required',
-            'mesa_id' => 'required',
-            'codReserva' => 'required',
-            'cantPersona' => 'required',
-        ]);
-        // Actualizar la reserva con los nuevos datos
-        $reserva = Reserva::findOrFail($id);
-        $reserva->fecha = $request->fecha;
-        $reserva->hora = $request->hora;
-        $reserva->mesa_id = $request->mesa_id;
-        $reserva->codReserva = $request->codReserva;
-        $reserva->cantPersona = $request->cantPersona;
-        $reserva->save();
-        // Redirigir a la lista de reservas con un mensaje de éxito
-        return redirect()->route('reservas.index')->with('success', 'Reserva actualizada exitosamente.');
+        try {
+            $request->validate([
+                'fecha' => 'required|date',
+                'hora' => 'required',
+                'cantPersona' => 'required|integer|min:1',
+                'reservaConfirmada' => 'boolean',
+                'mesa_id' => 'required|exists:mesas,codMesa',
+                'usuario_id' => 'required|exists:usuarios,id',
+            ]);
+    
+            DB::beginTransaction();
+    
+            $reserva = Reserva::findOrFail($codReserva);
+            $reserva->fecha = $request->fecha;
+            $reserva->hora = $request->hora;
+            $reserva->cantPersona = $request->cantPersona;
+            $reserva->reservaConfirmada = $request->reservaConfirmada ?? false;
+            $reserva->mesa_id = $request->mesa_id;
+            $reserva->usuario_id = $request->usuario_id;
+            $reserva->save();
+    
+            DB::commit();
+            return redirect()->route('reservas.paginate')
+                ->with('success', 'Reserva actualizada exitosamente');
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            return redirect()->route('reservas.paginate')
+                ->with('error', 'Reserva no encontrada');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->withInput()
+                ->with('error', 'Error al actualizar la reserva: ' . $e->getMessage());
+        }
     }
-
-    //Eliminar una reserva
-    public function destroy($id)
+    
+    public function destroy($codReserva)
     {
-        // Encontrar la reserva por su id
-        $reserva = Reserva::findOrFail($id);
-        // Eliminar la reserva
-        $reserva->delete();
-        // Redirigir a la lista de reservas con un mensaje de éxito
-        return redirect()->route('reservas.index')->with('success', 'Reserva eliminada exitosamente.');
+        try {
+            DB::beginTransaction();
+    
+            $reserva = Reserva::findOrFail($codReserva);
+            $reserva->delete();
+    
+            DB::commit();
+            return redirect()->route('reservas.paginate')
+                ->with('success', 'Reserva eliminada exitosamente');
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            return redirect()->route('reservas.paginate')
+                ->with('error', 'Reserva no encontrada');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->route('reservas.paginate')
+                ->with('error', 'Error al eliminar la reserva: ' . $e->getMessage());
+        }
+    }
+    
+    public function show($codReserva)
+    {
+        try {
+            $reserva = Reserva::with('usuario', 'mesa')->findOrFail($codReserva);
+            return view('reserva.show', compact('reserva'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('reservas.paginate')
+                ->with('error', 'Reserva no encontrada');
+        }
+    }
+    
+    public function paginate(Request $request)
+    {
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+    
+        $query = Reserva::with('usuario', 'mesa');
+    
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('codReserva', 'like', "%{$search}%")
+                  ->orWhereHas('usuario', function($query) use ($search) {
+                      $query->where('nombre', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('mesa', function($query) use ($search) {
+                      $query->where('codMesa', 'like', "%{$search}%");
+                  });
+            });
+        }
+    
+        $reservas = $query->paginate($perPage);
+    
+        return view('reserva.paginate', ['reservas' => $reservas]);
+    }
+    
+    public function verificarCodigo(Request $request)
+    {
+        $codigo = $request->input('codReserva');
+        $exists = Reserva::where('codReserva', $codigo)->exists();
+            
+        return response()->json(['exists' => $exists]);
     }
 }
