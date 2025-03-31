@@ -165,17 +165,18 @@ Route::prefix('menus')->group(function () {
     Route::post('/search', [MenuController::class, 'search'])->name('menus.search');
     // Alias para delete (compatibilidad)
     Route::get('/{cod}/delete', [MenuController::class, 'delete'])->name('menus.delete');
+});
 
-    // Rutas para el CRUD de reservas
-    Route::get('/reservas', [ReservaController::class, 'paginate'])->name('reservas.paginate');
-    Route::get('/reservas/create', [ReservaController::class, 'create'])->name('reservas.create');
-    Route::post('/reservas', [ReservaController::class, 'store'])->name('reservas.store');
-    Route::get('/reservas/{codReserva}', [ReservaController::class, 'show'])->name('reservas.show');
-    Route::get('/reservas/{codReserva}/edit', [ReservaController::class, 'edit'])->name('reservas.edit');
-    Route::put('/reservas/{codReserva}', [ReservaController::class, 'update'])->name('reservas.update');
-    Route::delete('/reservas/{codReserva}', [ReservaController::class, 'destroy'])->name('reservas.destroy');
+// Rutas para el CRUD de reservas
+Route::prefix('reservas')->group(function () {
+    Route::get('/', [ReservaController::class, 'paginate'])->name('reservas.paginate');
+    Route::get('/create', [ReservaController::class, 'create'])->name('reservas.create');
+    Route::post('/store', [ReservaController::class, 'store'])->name('reservas.store');
+    Route::get('/{codReserva}', [ReservaController::class, 'show'])->name('reservas.show');
+    Route::get('/{codReserva}/edit', [ReservaController::class, 'edit'])->name('reservas.edit');
+    Route::put('/{codReserva}', [ReservaController::class, 'update'])->name('reservas.update');
+    Route::delete('{codReserva}', [ReservaController::class, 'destroy'])->name('reservas.destroy');
 
     // Ruta para verificar código de reserva (si aplica)
     Route::get('/verificar-codigo-reserva', [ReservaController::class, 'verificarCodigo'])->name('reservas.verificar-codigo');
-
 });
