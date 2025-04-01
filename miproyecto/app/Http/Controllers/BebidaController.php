@@ -324,6 +324,7 @@ class BebidaController extends ProductoController
             $nuevoCodigo = $tipo . '0001';
         }
         
+        // Verificar si el código generado ya existe
         return $nuevoCodigo;
     }
 }
