@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Lista de Mesas</title>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/tailwindcss@1.9.6/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/paginatemesa.css') }}">
 </head>
 <body>
@@ -29,9 +30,11 @@
             <form action="{{ route('mesas.paginate') }}" method="GET" class="search-form">
                 <div class="search-group">
                     <input type="text" name="search" placeholder="Buscar por código o capacidad..." value="{{ request('search') }}" class="search-input">
+                    <input type="hidden" name="sort_by" value="{{ request('sort_by', 'codMesa') }}">
+                    <input type="hidden" name="sort_order" value="{{ request('sort_order', 'asc') }}">
                     <button type="submit" class="search-button">Buscar</button>
                     @if(request('search'))
-                        <a href="{{ route('mesas.paginate') }}" class="search-clear">Limpiar</a>
+                        <a href="{{ route('mesas.paginate', ['sort_by' => request('sort_by'), 'sort_order' => request('sort_order')]) }}" class="search-clear">Limpiar</a>
                     @endif
                 </div>
             </form>
@@ -52,9 +55,32 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Código</th>
-                        <th>Capacidad</th>
-                        <th>Estado</th>
+                        <th>
+                            @php
+                                $sortBy = request('sort_by', 'codMesa');
+                                $sortOrder = request('sort_order', 'asc');
+                                $newSortOrder = ($sortBy === 'codMesa' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                            @endphp
+                            <a href="{{ route('mesas.paginate', ['sort_by' => 'codMesa', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}">
+                                Código {{ $sortBy === 'codMesa' ? ($sortOrder === 'asc' ? '↑' : '↓') : '' }}
+                            </a>
+                        </th>
+                        <th>
+                            @php
+                                $newSortOrder = ($sortBy === 'cantidadMesa' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                            @endphp
+                            <a href="{{ route('mesas.paginate', ['sort_by' => 'cantidadMesa', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}">
+                                Capacidad {{ $sortBy === 'cantidadMesa' ? ($sortOrder === 'asc' ? '↑' : '↓') : '' }}
+                            </a>
+                        </th>
+                        <th>
+                            @php
+                                $newSortOrder = ($sortBy === 'ocupada' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                            @endphp
+                            <a href="{{ route('mesas.paginate', ['sort_by' => 'ocupada', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}">
+                                Estado {{ $sortBy === 'ocupada' ? ($sortOrder === 'asc' ? '↑' : '↓') : '' }}
+                            </a>
+                        </th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -81,6 +107,9 @@
         <!-- Paginación -->
         <div class="mt-4 flex justify-center">
             {{ $mesas->appends(request()->query())->links() }}
+        </div>
+        <div>
+            <a href="{{ url('/') }}" class="action-btn edit-btn">Volver al Panel Admin</a>
         </div>
     </div>
 

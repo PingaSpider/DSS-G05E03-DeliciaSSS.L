@@ -7,7 +7,7 @@
     <title>Lista de Usuarios</title>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/tailwindcss@1.9.6/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/paginate.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/lineapedido/create.css') }}">
 </head>
 <body>
     <div class="container">
@@ -30,9 +30,11 @@
             <form action="{{ route('usuarios.paginate') }}" method="GET" class="search-form">
                 <div class="search-group">
                     <input type="text" name="search" placeholder="Buscar por nombre, email o teléfono..." value="{{ request('search') }}" class="search-input">
+                    <input type="hidden" name="sort_by" value="{{ request('sort_by', 'nombre') }}">
+                    <input type="hidden" name="sort_order" value="{{ request('sort_order', 'asc') }}">
                     <button type="submit" class="search-button">Buscar</button>
                     @if(request('search'))
-                        <a href="{{ route('usuarios.paginate') }}" class="search-clear">Limpiar</a>
+                        <a href="{{ route('usuarios.paginate', ['sort_by' => request('sort_by'), 'sort_order' => request('sort_order')]) }}" class="search-clear">Limpiar</a>
                     @endif
                 </div>
             </form>
@@ -44,14 +46,39 @@
                 ({{ $usuarios->total() }} {{ $usuarios->total() == 1 ? 'resultado' : 'resultados' }})
             </div>
         @endif
-        
+        <div class="action-links">
+            <a href="{{ route('usuarios.create') }}" class="submit-btn">Crear Nuevo Usuario</a>
+        </div>
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Teléfono</th>
+                        <th>
+                            @php
+                                $sortBy = request('sort_by', 'nombre');
+                                $sortOrder = request('sort_order', 'asc');
+                                $newSortOrder = ($sortBy === 'nombre' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                            @endphp
+                            <a href="{{ route('usuarios.paginate', ['sort_by' => 'nombre', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}">
+                                Nombre {{ $sortBy === 'nombre' ? ($sortOrder === 'asc' ? '↑' : '↓') : '' }}
+                            </a>
+                        </th>
+                        <th>
+                            @php
+                                $newSortOrder = ($sortBy === 'email' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                            @endphp
+                            <a href="{{ route('usuarios.paginate', ['sort_by' => 'email', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}">
+                                Correo {{ $sortBy === 'email' ? ($sortOrder === 'asc' ? '↑' : '↓') : '' }}
+                            </a>
+                        </th>
+                        <th>
+                            @php
+                                $newSortOrder = ($sortBy === 'telefono' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                            @endphp
+                            <a href="{{ route('usuarios.paginate', ['sort_by' => 'telefono', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}">
+                                Teléfono {{ $sortBy === 'telefono' ? ($sortOrder === 'asc' ? '↑' : '↓') : '' }}
+                            </a>
+                        </th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -62,6 +89,7 @@
                         <td>{{ $user->email }}</td>
                         <td>+{{ $user->telefono }}</td>
                         <td>
+                            <a href="{{ route('usuarios.show', $user->id) }}" class="action-btn view-btn">Ver</a>
                             <button type="button" class="action-btn edit-btn" onclick="openEditModal({{ $user->id }}, '{{ $user->nombre }}', '{{ $user->email }}', '{{ $user->telefono }}')">Editar</button>
                             <button type="button" class="action-btn delete-btn" onclick="deleteUser({{ $user->id }})">Eliminar</button>
                         </td>
@@ -73,7 +101,10 @@
         
         <!-- Paginación -->
         <div class="mt-4 flex justify-center">
-            {{ $usuarios->links() }}
+            {{ $usuarios->appends(request()->query())->links() }}
+        </div>
+        <div>
+            <a href="{{ url('/') }}" class="action-btn edit-btn">Volver al Panel Admin</a>
         </div>
     </div>
 

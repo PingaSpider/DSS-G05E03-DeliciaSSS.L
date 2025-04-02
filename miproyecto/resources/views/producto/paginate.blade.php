@@ -30,9 +30,11 @@
             <form action="{{ route('productos.paginate') }}" method="GET" class="search-form">
                 <div class="search-group">
                     <input type="text" name="search" placeholder="Buscar por código o nombre..." value="{{ request('search') }}" class="search-input">
+                    <input type="hidden" name="sort_by" value="{{ request('sort_by', 'cod') }}">
+                    <input type="hidden" name="sort_order" value="{{ request('sort_order', 'asc') }}">
                     <button type="submit" class="search-button">Buscar</button>
                     @if(request('search'))
-                        <a href="{{ route('productos.paginate') }}" class="search-clear">Limpiar</a>
+                        <a href="{{ route('productos.paginate', ['sort_by' => request('sort_by', 'cod'), 'sort_order' => request('sort_order', 'asc')]) }}" class="search-clear">Limpiar</a>
                     @endif
                 </div>
             </form>
@@ -46,20 +48,77 @@
         @endif
         
         <div class="action-links">
-            <a href="{{ route('comida.create') }}" class="submit-btn" >Crear Nueva Comida</a>
-            <a href="{{ route('bebidas.create') }}" class="submit-btn" >Crear Nueva Bebida</a>
-            <a href="{{ route('menus.create') }}" class="submit-btn" >Crear Nueva Menú</Menu></a>    
+            <a href="{{ route('comida.create') }}" class="submit-btn">Crear Nueva Comida</a>
+            <a href="{{ route('bebidas.create') }}" class="submit-btn">Crear Nueva Bebida</a>
+            <a href="{{ route('menus.create') }}" class="submit-btn">Crear Nuevo Menú</a>    
         </div>
         
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>Código</th>
-                        <th>Nombre</th>
-                        <th>Precio Venta (€)</th>
-                        <th>Stock</th>
-                        <th>Precio Compra (€)</th>
+                        <th>
+                            @php
+                                $sortBy = request('sort_by', 'cod');
+                                $sortOrder = request('sort_order', 'asc');
+                                $newSortOrder = ($sortBy === 'cod' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                                $isActive = $sortBy === 'cod';
+                            @endphp
+                            <a href="{{ route('productos.paginate', ['sort_by' => 'cod', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}" class="sort-link {{ $isActive ? 'sort-active' : '' }}">
+                                Código
+                                @if($isActive)
+                                    <span class="sort-icon">{{ $sortOrder === 'asc' ? '↑' : '↓' }}</span>
+                                @endif
+                            </a>
+                        </th>
+                        <th>
+                            @php
+                                $newSortOrder = ($sortBy === 'nombre' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                                $isActive = $sortBy === 'nombre';
+                            @endphp
+                            <a href="{{ route('productos.paginate', ['sort_by' => 'nombre', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}" class="sort-link {{ $isActive ? 'sort-active' : '' }}">
+                                Nombre
+                                @if($isActive)
+                                    <span class="sort-icon">{{ $sortOrder === 'asc' ? '↑' : '↓' }}</span>
+                                @endif
+                            </a>
+                        </th>
+                        <th>
+                            @php
+                                $newSortOrder = ($sortBy === 'pvp' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                                $isActive = $sortBy === 'pvp';
+                            @endphp
+                            <a href="{{ route('productos.paginate', ['sort_by' => 'pvp', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}" class="sort-link {{ $isActive ? 'sort-active' : '' }}">
+                                Precio Venta (€)
+                                @if($isActive)
+                                    <span class="sort-icon">{{ $sortOrder === 'asc' ? '↑' : '↓' }}</span>
+                                @endif
+                            </a>
+                        </th>
+                        <th>
+                            @php
+                                $newSortOrder = ($sortBy === 'stock' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                                $isActive = $sortBy === 'stock';
+                            @endphp
+                            <a href="{{ route('productos.paginate', ['sort_by' => 'stock', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}" class="sort-link {{ $isActive ? 'sort-active' : '' }}">
+                                Stock
+                                @if($isActive)
+                                    <span class="sort-icon">{{ $sortOrder === 'asc' ? '↑' : '↓' }}</span>
+                                @endif
+                            </a>
+                        </th>
+                        <th>
+                            @php
+                                $newSortOrder = ($sortBy === 'precioCompra' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                                $isActive = $sortBy === 'precioCompra';
+                            @endphp
+                            <a href="{{ route('productos.paginate', ['sort_by' => 'precioCompra', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}" class="sort-link {{ $isActive ? 'sort-active' : '' }}">
+                                Precio Compra (€)
+                                @if($isActive)
+                                    <span class="sort-icon">{{ $sortOrder === 'asc' ? '↑' : '↓' }}</span>
+                                @endif
+                            </a>
+                        </th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -109,6 +168,10 @@
         <!-- Paginación -->
         <div class="mt-4 flex justify-center">
             {{ $productos->appends(request()->query())->links() }}
+        </div>
+
+        <div>
+            <a href="{{ url('/') }}" class="action-btn edit-btn">Volver al Panel Admin</a>
         </div>
     </div>
     <!-- Form oculto para eliminar producto -->

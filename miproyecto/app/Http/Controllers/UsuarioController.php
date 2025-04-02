@@ -83,22 +83,39 @@ class UsuarioController extends Controller
 
     public function paginate(Request $request)
     {
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
-        
+        // Iniciar consulta
         $query = Usuario::query();
         
-        if ($search) {
+        // Filtrar por búsqueda si existe
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('nombre', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('telefono', 'like', "%{$search}%");
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('telefono', 'like', "%{$search}%");
             });
         }
         
-        $usuarios = $query->paginate($perPage);
+        // Obtener parámetros de ordenación
+        $sortBy = $request->get('sort_by', 'nombre');
+        $sortOrder = $request->get('sort_order', 'asc');
         
-        return view('user.paginate', ['usuarios' => $usuarios]);
+        // Lista de campos permitidos para ordenar
+        $allowedSortFields = ['nombre', 'email', 'telefono'];
+        
+        // Verificar que el campo de ordenación sea válido
+        if (in_array($sortBy, $allowedSortFields)) {
+            $query->orderBy($sortBy, $sortOrder);
+        } else {
+            // Ordenación por defecto
+            $query->orderBy('nombre', 'asc');
+        }
+        
+        // Paginar resultados
+        $usuarios = $query->paginate(10);
+        
+        // Mostrar vista con resultados
+        return view('user.paginate', compact('usuarios'));
     }
 
     public function edit(Request $request, $id)

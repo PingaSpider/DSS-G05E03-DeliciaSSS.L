@@ -30,9 +30,11 @@
             <form action="{{ route('lineaPedidos.paginate') }}" method="GET" class="search-form">
                 <div class="search-group">
                     <input type="text" name="search" placeholder="Buscar por código, pedido, producto..." value="{{ request('search') }}" class="search-input">
+                    <input type="hidden" name="sort_by" value="{{ request('sort_by', 'linea') }}">
+                    <input type="hidden" name="sort_order" value="{{ request('sort_order', 'asc') }}">
                     <button type="submit" class="search-button">Buscar</button>
                     @if(request('search'))
-                        <a href="{{ route('lineaPedidos.paginate') }}" class="search-clear">Limpiar</a>
+                        <a href="{{ route('lineaPedidos.paginate', ['sort_by' => request('sort_by'), 'sort_order' => request('sort_order')]) }}" class="search-clear">Limpiar</a>
                     @endif
                 </div>
             </form>
@@ -53,12 +55,51 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Código</th>
-                        <th>Pedido</th>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio Unitario</th>
-                        <th>Subtotal</th>
+                        <th>
+                            @php
+                                $sortBy = request('sort_by', 'linea');
+                                $sortOrder = request('sort_order', 'asc');
+                                $newSortOrder = ($sortBy === 'linea' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                            @endphp
+                            <a href="{{ route('lineaPedidos.paginate', ['sort_by' => 'linea', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}">
+                                Código {{ $sortBy === 'linea' ? ($sortOrder === 'asc' ? '↑' : '↓') : '' }}
+                            </a>
+                        </th>
+                        <th>
+                            @php
+                                $newSortOrder = ($sortBy === 'pedido_id' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                            @endphp
+                            <a href="{{ route('lineaPedidos.paginate', ['sort_by' => 'pedido_id', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}">
+                                Pedido {{ $sortBy === 'pedido_id' ? ($sortOrder === 'asc' ? '↑' : '↓') : '' }}
+                            </a>
+                        </th>
+                        <th>
+                            @php
+                                $newSortOrder = ($sortBy === 'producto_id' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                            @endphp
+                            <a href="{{ route('lineaPedidos.paginate', ['sort_by' => 'producto_id', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}">
+                                Producto {{ $sortBy === 'producto_id' ? ($sortOrder === 'asc' ? '↑' : '↓') : '' }}
+                            </a>
+                        </th>
+                        <th>
+                            @php
+                                $newSortOrder = ($sortBy === 'cantidad' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                            @endphp
+                            <a href="{{ route('lineaPedidos.paginate', ['sort_by' => 'cantidad', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}">
+                                Cantidad {{ $sortBy === 'cantidad' ? ($sortOrder === 'asc' ? '↑' : '↓') : '' }}
+                            </a>
+                        </th>
+                        <th>
+                            @php
+                                $newSortOrder = ($sortBy === 'precio' && $sortOrder === 'asc') ? 'desc' : 'asc';
+                            @endphp
+                            <a href="{{ route('lineaPedidos.paginate', ['sort_by' => 'precio', 'sort_order' => $newSortOrder, 'search' => request('search')]) }}">
+                                Precio Unitario {{ $sortBy === 'precio' ? ($sortOrder === 'asc' ? '↑' : '↓') : '' }}
+                            </a>
+                        </th>
+                        <th>
+                            Subtotal
+                        </th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -89,6 +130,9 @@
         <!-- Paginación -->
         <div class="mt-4 flex justify-center">
             {{ $lineaPedidos->appends(request()->query())->links() }}
+        </div>
+        <div>
+            <a href="{{ url('/') }}" class="action-btn edit-btn">Volver al Panel Admin</a>
         </div>
     </div>
 

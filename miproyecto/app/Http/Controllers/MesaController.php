@@ -105,21 +105,38 @@ class MesaController extends Controller
 
     public function paginate(Request $request)
     {
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
-        
+        // Iniciar consulta
         $query = Mesa::query();
         
-        if ($search) {
+        // Filtrar por búsqueda si existe
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('codMesa', 'like', "%{$search}%")
-                  ->orWhere('cantidadMesa', 'like', "%{$search}%");
+                ->orWhere('cantidadMesa', $search);
             });
         }
         
-        $mesas = $query->paginate($perPage);
+        // Obtener parámetros de ordenación
+        $sortBy = $request->get('sort_by', 'codMesa');
+        $sortOrder = $request->get('sort_order', 'asc');
         
-        return view('mesa.paginate', ['mesas' => $mesas]);
+        // Lista de campos permitidos para ordenar
+        $allowedSortFields = ['codMesa', 'cantidadMesa', 'ocupada'];
+        
+        // Verificar que el campo de ordenación sea válido
+        if (in_array($sortBy, $allowedSortFields)) {
+            $query->orderBy($sortBy, $sortOrder);
+        } else {
+            // Ordenación por defecto
+            $query->orderBy('codMesa', 'asc');
+        }
+        
+        // Paginar resultados
+        $mesas = $query->paginate(10);
+        
+        // Mostrar vista con resultados
+        return view('mesa.paginate', compact('mesas'));
     }
 
     public function verificarCodigo(Request $request)

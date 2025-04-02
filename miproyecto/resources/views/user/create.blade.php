@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/create.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pedido/create.css') }}">
 </head>
 <body>
     <div class="container">
@@ -51,8 +51,11 @@
                 <div class="error-message">{{ $message }}</div>
             @enderror
 
-            <button type="submit" class="registerbtn">Registrar</button>
+            <button type="submit" class="submit-btn">Registrar</button>
         </form>
+        <div class="action-links">
+                <a href="{{ route('usuarios.paginate') }}" class="link-back">Volver al listado</a>
+        </div>
     </div>
 </body>
 </html>

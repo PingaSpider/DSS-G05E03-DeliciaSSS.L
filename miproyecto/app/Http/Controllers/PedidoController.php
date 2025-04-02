@@ -130,24 +130,47 @@ class PedidoController extends Controller
     
     public function paginate(Request $request)
     {
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
-        
+        // Iniciar consulta
         $query = Pedido::with('usuario');
         
-        if ($search) {
+        // Filtrar por búsqueda si existe
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('cod', 'like', "%{$search}%")
-                  ->orWhere('estado', 'like', "%{$search}%")
                   ->orWhereHas('usuario', function($query) use ($search) {
                       $query->where('nombre', 'like', "%{$search}%");
                   });
             });
         }
         
-        $pedidos = $query->paginate($perPage);
+        // Obtener parámetros de ordenación
+        $sortBy = $request->get('sort_by', 'cod');
+        $sortOrder = $request->get('sort_order', 'asc');
         
-        return view('pedido.paginate', ['pedidos' => $pedidos]);
+        // Lista de campos permitidos para ordenar
+        $allowedSortFields = ['cod', 'fecha', 'estado', 'usuario_id'];
+        
+        // Verificar que el campo de ordenación sea válido
+        if (in_array($sortBy, $allowedSortFields)) {
+            if ($sortBy === 'usuario_id') {
+                // Ordenar por nombre de usuario requiere un join
+                $query->join('usuarios', 'pedidos.usuario_id', '=', 'usuarios.id')
+                      ->orderBy('usuarios.nombre', $sortOrder)
+                      ->select('pedidos.*');
+            } else {
+                $query->orderBy($sortBy, $sortOrder);
+            }
+        } else {
+            // Ordenación por defecto
+            $query->orderBy('cod', 'asc');
+        }
+        
+        // Paginar resultados
+        $pedidos = $query->paginate(10);
+        
+        // Mostrar vista con resultados
+        return view('pedido.paginate', compact('pedidos'));
     }
     
     public function verificarCodigo(Request $request)

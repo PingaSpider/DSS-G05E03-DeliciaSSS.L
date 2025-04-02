@@ -14,11 +14,10 @@ use App\Http\Controllers\ReservaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('paneladmin');
+})->name('paneladmin');
 
 // Rutas temporales para los enlaces del menú
-/*
 Route::get('/home', function () { return view("home"); })->name('home');
 Route::get('/reserva', function () { return view("reserva"); })->name('reserva');
 Route::get('/menu', function () { return view("menu"); })->name('menu');
@@ -29,8 +28,6 @@ Route::get('/user', function () { return view("user"); })->name('user');
 Route::get('/producto', function () { return view("producto"); })->name('producto');
 Route::get('/registro', function () { return view("registro"); })->name('registro');
 Route::get('/login', function () { return view("login"); })->name('login');
-*/
-
 
 // Rutas para el CRUD de usuarios
 Route::get('/usuarios', [UsuarioController::class, 'paginate'])->name('usuarios.paginate');
@@ -43,7 +40,6 @@ Route::delete('/usuarios/{id}', [UsuarioController::class, 'destroy'])->name('us
 
 // Ruta para verificar email
 Route::get('/verificar-email', [UsuarioController::class, 'verificarEmail'])->name('usuarios.verificar-email');
-
 
 // Rutas para el CRUD de mesas
 Route::get('/mesas', [MesaController::class, 'paginate'])->name('mesas.paginate');
@@ -60,7 +56,6 @@ Route::get('/verificar-codigo-mesa', [MesaController::class, 'verificarCodigo'])
 // Para mantener compatibilidad con las rutas antiguas
 Route::get('/mesas/index', [MesaController::class, 'index'])->name('mesas.index');
 
-
 // Rutas para el CRUD de pedidos
 Route::get('/pedidos', [PedidoController::class, 'paginate'])->name('pedidos.paginate');
 Route::get('/pedidos/create', [PedidoController::class, 'create'])->name('pedidos.create');
@@ -75,7 +70,6 @@ Route::get('/verificar-codigo-pedido', [PedidoController::class, 'verificarCodig
 
 // Para mantener compatibilidad con las rutas antiguas
 Route::get('/pedidos/index', [PedidoController::class, 'index'])->name('pedidos.index');
-
 
 // Rutas para el CRUD de líneas de pedido
 Route::get('/lineas-pedido', [LineaPedidoController::class, 'paginate'])->name('lineaPedidos.paginate');
@@ -167,16 +161,26 @@ Route::prefix('menus')->group(function () {
     Route::get('/{cod}/delete', [MenuController::class, 'delete'])->name('menus.delete');
 });
 
-// Rutas para el CRUD de reservas
+// Rutas para el CRUD para reservas
 Route::prefix('reservas')->group(function () {
     Route::get('/', [ReservaController::class, 'paginate'])->name('reservas.paginate');
-    Route::get('/create', [ReservaController::class, 'create'])->name('reservas.create');
+    Route::get('/create', [ReservaController::class, 'create'])->name('reservas.create');  // Corregido: 'create' en lugar de 'create_get'
     Route::post('/store', [ReservaController::class, 'store'])->name('reservas.store');
-    Route::get('/{codReserva}', [ReservaController::class, 'show'])->name('reservas.show');
-    Route::get('/{codReserva}/edit', [ReservaController::class, 'edit'])->name('reservas.edit');
-    Route::put('/{codReserva}', [ReservaController::class, 'update'])->name('reservas.update');
-    Route::delete('{codReserva}', [ReservaController::class, 'destroy'])->name('reservas.destroy');
-
-    // Ruta para verificar código de reserva (si aplica)
-    Route::get('/verificar-codigo-reserva', [ReservaController::class, 'verificarCodigo'])->name('reservas.verificar-codigo');
+    Route::get('/{codReserva}', [ReservaController::class, 'show'])->name('reservas.show');  // Corregido: 'codReserva' en lugar de 'cod'
+    Route::get('/{codReserva}/edit', [ReservaController::class, 'edit'])->name('reservas.edit');  // Corregido: 'codReserva' en lugar de 'cod'
+    Route::put('/{codReserva}', [ReservaController::class, 'update'])->name('reservas.update');  // Corregido: 'codReserva' en lugar de 'cod'
+    Route::delete('/{codReserva}', [ReservaController::class, 'destroy'])->name('reservas.destroy');  // Corregido: 'codReserva' en lugar de 'cod'
+    
+    // Rutas para acciones adicionales
+    Route::get('/{codReserva}/confirmar', [ReservaController::class, 'confirmarReserva'])->name('reservas.confirmar');
+    Route::get('/{codReserva}/cancelar', [ReservaController::class, 'cancelarReserva'])->name('reservas.cancelar');
+    Route::get('/mesas-disponibles', [ReservaController::class, 'getMesasDisponibles'])->name('reservas.mesas-disponibles');
+    
+    // Rutas de utilidad
+    Route::get('/verificar-codigo', [ReservaController::class, 'verificarCodigo'])->name('reservas.verificar-codigo');
+    // Las siguientes rutas no son necesarias ya que no existen en tu ReservaController
+    // Route::post('/search', [ReservaController::class, 'search'])->name('reservas.search');
+    // Route::post('/create_post', [ReservaController::class, 'create_post'])->name('reservas.create_post');
+    // Route::post('/show_post', [ReservaController::class, 'show_post'])->name('reservas.show_post');
+    // Route::get('/{cod}/delete', [ReservaController::class, 'delete'])->name('reservas.delete');
 });

@@ -7,6 +7,7 @@
     <title>DeliciaSS</title>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/show.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pedido/create.css') }}">
 </head>
 
 <body>
@@ -41,6 +42,9 @@
                     <div class="detail-value">{{ $usuario->telefono }}</div>
                 </div>
             </div>
+        </div>
+        <div class="action-links">
+        <a href="{{ route('usuarios.paginate') }}" class="link-back">Volver al listado</a>
         </div>
     </div>
 </body>

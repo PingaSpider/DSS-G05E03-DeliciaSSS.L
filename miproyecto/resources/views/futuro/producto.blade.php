@@ -6,7 +6,7 @@
     <title>{{ $producto->nombre ?? 'Detalle de Producto' }} - Delicias de la Vida</title>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/7b1fbf0d4d.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{{ asset('css/producto.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/cssFuturo/producto.css') }}">
     <script src="{{ asset('js/producto.js') }}"></script>
 </head>
 <body>

@@ -147,28 +147,48 @@ class LineaPedidoController extends Controller
 
     public function paginate(Request $request)
     {
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
-        
+        // Iniciar consulta
         $query = LineaPedido::with(['pedido', 'producto']);
         
-        if ($search) {
+        // Filtrar por búsqueda si existe
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('linea', 'like', "%{$search}%")
-                  ->orWhere('cantidad', 'like', "%{$search}%")
-                  ->orWhere('precio', 'like', "%{$search}%")
-                  ->orWhereHas('pedido', function($query) use ($search) {
-                      $query->where('cod', 'like', "%{$search}%");
-                  })
+                  ->orWhere('pedido_id', 'like', "%{$search}%")
                   ->orWhereHas('producto', function($query) use ($search) {
                       $query->where('nombre', 'like', "%{$search}%");
                   });
             });
         }
         
-        $lineaPedidos = $query->paginate($perPage);
+        // Obtener parámetros de ordenación
+        $sortBy = $request->get('sort_by', 'linea');
+        $sortOrder = $request->get('sort_order', 'asc');
         
-        return view('lineaPedido.paginate', ['lineaPedidos' => $lineaPedidos]);
+        // Lista de campos permitidos para ordenar
+        $allowedSortFields = ['linea', 'pedido_id', 'producto_id', 'cantidad', 'precio'];
+        
+        // Verificar que el campo de ordenación sea válido
+        if (in_array($sortBy, $allowedSortFields)) {
+            if ($sortBy === 'producto_id') {
+                // Ordenar por nombre de producto requiere un join
+                $query->join('productos', 'linea_pedidos.producto_id', '=', 'productos.cod')
+                      ->orderBy('productos.nombre', $sortOrder)
+                      ->select('linea_pedidos.*');
+            } else {
+                $query->orderBy($sortBy, $sortOrder);
+            }
+        } else {
+            // Ordenación por defecto
+            $query->orderBy('linea', 'asc');
+        }
+        
+        // Paginar resultados
+        $lineaPedidos = $query->paginate(10);
+        
+        // Mostrar vista con resultados
+        return view('lineaPedido.paginate', compact('lineaPedidos'));
     }
     
     public function verificarCodigo(Request $request)

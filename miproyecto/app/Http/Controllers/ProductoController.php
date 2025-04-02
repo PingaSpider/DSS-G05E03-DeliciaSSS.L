@@ -232,21 +232,32 @@ class ProductoController
 
     public function paginate(Request $request)
     {
-        $search = $request->input('search');
-        $perPage = $request->input('perpage', 10);
-        
         $query = Producto::query();
         
-        if ($search) {
-            $query->where(function($q) use ($search) {
-                $q->where('cod', 'like', "%{$search}%")
-                  ->orWhere('nombre', 'like', "%{$search}%");
-            });
+        // Filtrar por búsqueda si existe
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('cod', 'like', "%{$search}%")
+                ->orWhere('nombre', 'like', "%{$search}%");
         }
         
-        $productos = $query->paginate($perPage);
+        // Ordenar resultados
+        $sortBy = $request->get('sort_by', 'cod');
+        $sortOrder = $request->get('sort_order', 'asc');
         
-        return view('producto.paginate', ['productos' => $productos]);
+        // Lista de campos permitidos para ordenar
+        $allowedSortFields = ['cod', 'nombre', 'pvp', 'stock', 'precioCompra'];
+        
+        // Verificar que el campo de ordenación sea válido
+        if (in_array($sortBy, $allowedSortFields)) {
+            $query->orderBy($sortBy, $sortOrder);
+        } else {
+            $query->orderBy('cod', 'asc');
+        }
+        
+        $productos = $query->paginate(10);
+        
+        return view('producto.paginate', compact('productos'));
     }
 
     public function edit(Request $request, $cod)
