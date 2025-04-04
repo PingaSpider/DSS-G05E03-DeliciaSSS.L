@@ -531,3 +531,6 @@ class MenuController extends ProductoController
         return parent::generarCodigoAutomatico($tipo);
     }
 }
+
+
+//Entrega2

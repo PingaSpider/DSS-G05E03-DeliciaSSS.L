@@ -153,3 +153,5 @@ class MesaController extends Controller
         return $this->paginate(request());
     }
 }
+
+//Entrega2

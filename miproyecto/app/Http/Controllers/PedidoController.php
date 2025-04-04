@@ -187,3 +187,6 @@ class PedidoController extends Controller
         return $this->paginate(request());
     }
 }
+
+
+//Entrega2

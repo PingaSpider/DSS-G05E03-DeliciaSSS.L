@@ -434,3 +434,5 @@ class ReservaController extends Controller
         return $this->belongsTo(Mesa::class, 'mesa_id', 'codMesa');
     }
 }
+
+//Entrega2

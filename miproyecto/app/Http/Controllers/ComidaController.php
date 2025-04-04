@@ -256,3 +256,6 @@ class ComidaController extends ProductoController
         return $nuevoCodigo;
     }
 }
+
+
+//Entrega2
