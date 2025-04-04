@@ -184,3 +184,5 @@ Route::prefix('reservas')->group(function () {
     // Route::post('/show_post', [ReservaController::class, 'show_post'])->name('reservas.show_post');
     // Route::get('/{cod}/delete', [ReservaController::class, 'delete'])->name('reservas.delete');
 });
+
+//Entrega2

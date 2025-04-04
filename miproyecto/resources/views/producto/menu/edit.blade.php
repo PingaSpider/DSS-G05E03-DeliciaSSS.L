@@ -195,3 +195,6 @@
     <script src="{{ asset('js/menu-edit.js') }}"></script>
 </body>
 </html>
+
+
+<!--Entrega2-->
