@@ -18,9 +18,7 @@ class MenuController extends ProductoController
     protected $routePrefix = 'menus';
     protected $requiredFields = ['nombre', 'pvp', 'stock', 'precioCompra', 'descripcion'];
 
-    /**
-     * Mostrar formulario para crear un nuevo menú
-     */
+  
     public function create()
     {
         // Obtener productos de tipo comida (C) y bebida (B) para el menú
@@ -34,17 +32,13 @@ class MenuController extends ProductoController
         return view('producto.menu.create', ['productos' => $productos]);
     }
     
-    /**
-     * Alias para create() para mantener compatibilidad
-     */
+    
     public function create_get()
     {
         return $this->create();
     }
 
-    /**
-     * Crear un nuevo menú (proceso POST)
-     */
+  
     public function create_post(Request $request)
     {
         // Generar código automático para menú (M)
@@ -96,9 +90,6 @@ class MenuController extends ProductoController
         ]);
     }
 
-    /**
-     * Mostrar detalles de un menú específico
-     */
     public function show($cod)
     {
         try {
@@ -364,9 +355,6 @@ class MenuController extends ProductoController
         }
     }
 
-    /**
-     * Eliminar un menú
-     */
     public function destroy($cod)
     {
         try {
@@ -404,17 +392,13 @@ class MenuController extends ProductoController
         }
     }
 
-    /**
-     * Alias para método destroy
-     */
+   
     public function delete($cod)
     {
         return $this->destroy($cod);
     }
 
-    /**
-     * Buscar menús por nombre
-     */
+  
     public function search(Request $request)
     {
         $nombre = $request->nombre;
@@ -425,9 +409,7 @@ class MenuController extends ProductoController
         return view('producto.menu.search', ['menus' => $menus]);
     }
     
-    /**
-     * Verificar si ya existe un código de menú
-     */
+  
     public function verificarCodigo(Request $request)
     {
         $cod = $request->input('cod');
@@ -440,9 +422,7 @@ class MenuController extends ProductoController
         return response()->json(['exists' => $exists]);
     }
 
-    /**
-     * Agregar un producto al menú mediante AJAX
-     */
+   
     public function agregarProducto(Request $request)
     {
         $menuCod = $request->menu_cod;
@@ -508,9 +488,6 @@ class MenuController extends ProductoController
         }
     }
 
-    /**
-     * Eliminar un producto del menú
-     */
     public function eliminarProducto(Request $request)
     {
         $menuCod = $request->menu_cod;
@@ -545,10 +522,7 @@ class MenuController extends ProductoController
         }
     }
     
-    /**
-     * Sobrescribir el método generarCodigoAutomatico para menús
-     * Esta implementación garantiza que los menús siempre tengan código M
-     */
+
     protected function generarCodigoAutomatico($tipo = 'M')
     {
         // Para menús, forzamos a que siempre sea M

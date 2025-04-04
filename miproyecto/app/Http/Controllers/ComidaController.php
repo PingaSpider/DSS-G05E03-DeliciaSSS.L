@@ -17,17 +17,13 @@ class ComidaController extends ProductoController
     protected $routePrefix = 'comida'; // Singular para coincidir con web.php
     protected $requiredFields = ['nombre', 'pvp', 'stock', 'precioCompra', 'descripcion'];
 
-    /**
-     * Mostrar formulario para crear una nueva comida
-     */
+    
     public function create_get()
     {
         return view('producto.comida.create');
     }
 
-    /**
-     * Crear una nueva comida (proceso POST)
-     */
+  
     public function create_post(Request $request)
     {
         // Generar código automático para comida (C)
@@ -51,9 +47,7 @@ class ComidaController extends ProductoController
         return view('producto.comida.show', ['comida' => $comida, 'producto' => $producto]);
     }
 
-    /**
-     * Mostrar detalles de una comida específica
-     */
+  
     public function show_get($cod)
     {
         try {
@@ -65,9 +59,7 @@ class ComidaController extends ProductoController
         }
     }
 
-    /**
-     * Mostrar detalles de una comida mediante POST
-     */
+    
     public function show_post(Request $request)
     {
         $cod = $request->cod;
@@ -80,9 +72,7 @@ class ComidaController extends ProductoController
         }
     }
     
-    /**
-     * Almacenar una nueva comida en la base de datos
-     */
+ 
     public function store(Request $request)
     {
         try {
@@ -120,9 +110,7 @@ class ComidaController extends ProductoController
         }
     }
 
-    /**
-     * Mostrar lista paginada de comidas
-     */
+  
     public function paginate(Request $request)
     {
         $search = $request->input('search');
@@ -145,9 +133,7 @@ class ComidaController extends ProductoController
         return view('producto.paginate', ['productos' => $comidas]);
     }
 
-    /**
-     * Mostrar formulario para editar una comida
-     */
+   
     public function edit(Request $request, $cod)
     {
         try {
@@ -159,9 +145,7 @@ class ComidaController extends ProductoController
         }
     }
 
-    /**
-     * Actualizar una comida existente
-     */
+ 
     public function update(Request $request, $cod)
     {
         try {
@@ -198,9 +182,6 @@ class ComidaController extends ProductoController
         }
     }
 
-    /**
-     * Eliminar una comida
-     */
     public function destroy($cod)
     {
         try {
@@ -220,17 +201,13 @@ class ComidaController extends ProductoController
         }
     }
 
-    /**
-     * Alias para método destroy
-     */
+    
     public function delete($cod)
     {
         return $this->destroy($cod);
     }
 
-    /**
-     * Buscar comidas por nombre
-     */
+   
     public function search(Request $request)
     {
         $nombre = $request->nombre;
@@ -241,9 +218,7 @@ class ComidaController extends ProductoController
         return view('producto.comida.search', ['comidas' => $comidas]);
     }
     
-    /**
-     * Verificar si ya existe un código de comida
-     */
+   
     public function verificarCodigo(Request $request)
     {
         $cod = $request->input('cod');
@@ -256,11 +231,7 @@ class ComidaController extends ProductoController
         return response()->json(['exists' => $exists]);
     }
     
-    /**
-     * Generar código automático para comidas
-     * El método está heredado de ProductoController pero lo sobrecargamos
-     * para garantizar que siempre empiece con C para comidas
-     */
+
     protected function generarCodigoAutomatico($tipo = 'C')
     {
         // Para comidas, forzamos a que siempre sea C

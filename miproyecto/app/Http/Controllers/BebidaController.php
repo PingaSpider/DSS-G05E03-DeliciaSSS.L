@@ -17,25 +17,18 @@ class BebidaController extends ProductoController
     protected $routePrefix = 'bebidas';
     protected $requiredFields = ['nombre', 'pvp', 'stock', 'precioCompra', 'tamanio', 'tipo'];
     
-    /**
-     * Mostrar formulario para crear una nueva bebida
-     */
+
     public function create()
     {
         return view('producto.bebida.create');
     }
     
-    /**
-     * Alias para create() para mantener compatibilidad
-     */
     public function create_get()
     {
         return $this->create();
     }
     
-    /**
-     * Almacenar una nueva bebida en la base de datos
-     */
+
     public function store(Request $request)
     {
         try {
@@ -81,9 +74,7 @@ class BebidaController extends ProductoController
         }
     }
     
-    /**
-     * Crear una nueva bebida mediante POST (método alternativo para compat.)
-     */
+
     public function create_post(Request $request)
     {
         // Generar código automático para bebida (B)
@@ -107,10 +98,7 @@ class BebidaController extends ProductoController
 
         return view('producto.bebida.show', ['bebida' => $bebida, 'producto' => $producto]);
     }
-    
-    /**
-     * Mostrar formulario para editar una bebida
-     */
+
     public function edit(Request $request, $cod)
     {
         try {
@@ -123,9 +111,7 @@ class BebidaController extends ProductoController
         }
     }
     
-    /**
-     * Actualizar una bebida existente
-     */
+    
     public function update(Request $request, $cod)
     {
         try {
@@ -170,9 +156,7 @@ class BebidaController extends ProductoController
         }
     }
     
-    /**
-     * Eliminar una bebida
-     */
+   
     public function destroy($cod)
     {
         try {
@@ -198,17 +182,13 @@ class BebidaController extends ProductoController
         }
     }
     
-    /**
-     * Alias para método destroy
-     */
+
     public function delete($cod)
     {
         return $this->destroy($cod);
     }
     
-    /**
-     * Mostrar detalles de una bebida específica
-     */
+   
     public function show($cod)
     {
         try {
@@ -221,26 +201,20 @@ class BebidaController extends ProductoController
         }
     }
     
-    /**
-     * Alias para show() para mantener compatibilidad
-     */
+   
     public function show_get($cod)
     {
         return $this->show($cod);
     }
     
-    /**
-     * Mostrar detalles de una bebida mediante POST
-     */
+   
     public function show_post(Request $request)
     {
         $cod = $request->cod;
         return $this->show($cod);
     }
     
-    /**
-     * Mostrar lista paginada de bebidas
-     */
+  
     public function paginate(Request $request)
     {
         $search = $request->input('search');
@@ -264,17 +238,13 @@ class BebidaController extends ProductoController
         return view('producto.paginate', ['productos' => $bebidas]);
     }
     
-    /**
-     * Mantener este método para compatibilidad
-     */
+
     public function index()
     {
         return $this->paginate(request());
     }
     
-    /**
-     * Verificar si ya existe un código de bebida
-     */
+    
     public function verificarCodigo(Request $request)
     {
         $cod = $request->input('cod');
@@ -287,9 +257,7 @@ class BebidaController extends ProductoController
         return response()->json(['exists' => $exists]);
     }
     
-    /**
-     * Buscar bebidas por nombre
-     */
+  
     public function search(Request $request)
     {
         $nombre = $request->nombre;
@@ -300,9 +268,7 @@ class BebidaController extends ProductoController
         return view('producto.bebida.search', ['bebidas' => $bebidas]);
     }
     
-    /**
-     * Generar código automático para bebidas
-     */
+  
     protected function generarCodigoAutomatico($tipo = 'B')
     {
         // Para bebidas, forzamos a que siempre sea B

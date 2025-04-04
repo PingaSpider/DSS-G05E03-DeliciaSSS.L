@@ -20,17 +20,13 @@ class ProductoController
     protected $routePrefix = 'productos';
     protected $requiredFields = ['nombre', 'pvp', 'stock', 'precioCompra'];
 
-    /**
-     * Mostrar formulario para crear un producto
-     */
+ 
     public function create_get()
     {
         return view('producto.create');
     }
 
-    /**
-     * Crear un nuevo producto (proceso POST)
-     */
+   
     public function create_post(Request $request)
     {
         // Generar código automático según el tipo
@@ -78,9 +74,6 @@ class ProductoController
         return view('producto.show', ['producto' => $producto]);
     }
 
-    /**
-     * Mostrar detalles de un producto
-     */
     public function show_get($cod)
     {
         try {
@@ -120,9 +113,7 @@ class ProductoController
         }
     }
 
-    /**
-     * Mostrar detalles de un producto mediante POST
-     */
+   
     public function show_post(Request $request)
     {
         $cod = $request->cod;
@@ -134,9 +125,7 @@ class ProductoController
         }
     }
     
-    /**
-     * Almacenar un nuevo producto en la base de datos
-     */
+ 
     public function store(Request $request)
     {
         try {
@@ -298,9 +287,7 @@ class ProductoController
         }
     }
 
-    /**
-     * Actualizar un producto existente
-     */
+
     public function update(Request $request, $cod)
     {
         try {
@@ -446,10 +433,7 @@ class ProductoController
         return response()->json(['exists' => $exists]);
     }
     
-    /**
-     * Generar código automático según el tipo de producto
-     * C: Comida, B: Bebida, M: Menú
-     */
+  
     protected function generarCodigoAutomatico($tipo)
     {
         // Obtener el último código con el prefijo indicado
@@ -470,12 +454,7 @@ class ProductoController
         
         return $nuevoCodigo;
     }
-    
-    // Añade esta función al ProductoController.php
-
-        /**
-     * Buscar productos para agregar a un menú (AJAX)
-     */
+  
     public function buscarProductos(Request $request)
     {
         $search = $request->input('q', ''); // Hacemos que la búsqueda sea opcional
@@ -509,9 +488,7 @@ class ProductoController
         return response()->json($productos);
     }
 
-        /**
-     * Obtener datos específicos de un producto según su tipo
-     */
+  
     public function getDatosEspecificos(Request $request, $cod)
     {
         try {
