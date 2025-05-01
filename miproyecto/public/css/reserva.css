@@ -1,0 +1,278 @@
+/* Estilos para la página de reservas */
+
+/* Estilos generales */
+body {
+    background-color: #FEFCE0;
+    margin: 0;
+    padding: 20px;
+    font-family: 'Raleway', sans-serif;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Estilos de encabezado */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.logo img {
+    height: 50px;
+}
+
+.search-input-1 {
+    position: relative;
+    margin-right: 50px;
+}
+
+.search-input-1 input {
+    width: 200px;
+    height: 30px;
+    padding-left: 10px;
+    border: 1px solid #FEFCE0;
+    background-color: transparent;
+    border-bottom: 1px solid #333;
+}
+
+.link-bar-1 {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 20px;
+}
+
+.link-bar-1 a {
+    text-decoration: none;
+    color: #000000;
+    margin: 0 20px;
+    font-weight: 500;
+}
+
+.button-1-copy-1 {
+    background-color: #E6B422;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+}
+
+.avatar-1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.avatar-1 img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+/* Estilos de los títulos */
+.reserva-tu-mesa {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.para-poder-ofrecerte-la-mejor-mesa-del-local-sele {
+    text-align: center;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    color: #666;
+}
+
+/* Estilos para formularios */
+label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.cantidad-de-personas-1,
+.fecha-1,
+.hora {
+    font-size: 1.1rem;
+}
+
+.select-1,
+.select-2,
+.date-picker-1 {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 150px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1rem;
+}
+
+.horizontal-line-1 {
+    border: none;
+    height: 1px;
+    background-color: #ddd;
+    margin: 30px 0;
+}
+
+.elige-una-franja-horaria-disponible- {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+/* Botones de franja horaria */
+.button-1,
+.button-2,
+.button-3,
+.button-4 {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.button-1:hover,
+.button-2:hover,
+.button-3:hover,
+.button-4:hover {
+    background-color: #f0f0f0;
+}
+
+.button-1.selected,
+.button-2.selected,
+.button-3.selected,
+.button-4.selected {
+    background-color: #E6B422;
+    color: white;
+    border-color: #E6B422;
+}
+
+/* Botón principal de reserva */
+.rectangle-1 {
+    background-color: #E6B422;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.rectangle-1:hover {
+    background-color: #d4a520;
+}
+
+.reservar-ahora {
+    color: white;
+}
+
+/* Estilos para el modal de confirmación */
+.modal-hidden {
+    display: none !important;
+}
+
+.rectangle-2 {
+    background-color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 20px;
+    width: 350px;
+}
+
+.confirmar-reserva- {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.rectangle-3,
+.rectangle-5 {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+    border: none;
+}
+
+.rectangle-3 {
+    background-color: #E6B422;
+    color: white;
+}
+
+.rectangle-5 {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.rectangle-3:hover {
+    background-color: #d4a520;
+}
+
+.rectangle-5:hover {
+    background-color: #e5e5e5;
+}
+
+.paragraph-1,
+.accept {
+    font-weight: 500;
+}
+
+/* Estilos para elementos de pie de página */
+.captura-de-pantalla-2025-03-12-a-las-17-20-04-png-1 {
+    height: 50px;
+}
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-input-1 {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .link-bar-1 {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    form > div:first-of-type {
+        flex-direction: column;
+    }
+
+    form > div:first-of-type > div {
+        margin-bottom: 20px;
+    }
+
+    .select-1,
+    .select-2,
+    .date-picker-1 {
+        width: 100%;
+    }
+
+    .reservas-list {
+        padding: 0 10px;
+    }
+}

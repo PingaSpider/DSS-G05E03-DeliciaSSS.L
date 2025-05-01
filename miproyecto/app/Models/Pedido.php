@@ -13,13 +13,26 @@ class Pedido extends Model
     protected $keyType = 'string';
     
     protected $fillable = [
-        'cod', 'fecha', 'estado', 'usuario_id'
+        'cod', 'fecha', 'estado', 'usuario_id', 'direccion_id', 'metodo_pago', 'notas'
     ];
 
     protected $casts = [
         'fecha' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+    ];
+
+    /**
+     * Estados posibles del pedido
+     */
+    const ESTADOS = [
+        'en_cesta',
+        'pendiente',
+        'confirmado',
+        'preparando',
+        'listo',
+        'entregado',
+        'cancelado'
     ];
 
     // Relación con usuario
@@ -32,6 +45,14 @@ class Pedido extends Model
     public function lineasPedido()
     {
         return $this->hasMany(LineaPedido::class, 'pedido_id', 'cod');
+    }
+    
+    /**
+     * Relación con la dirección de entrega
+     */
+    public function direccion()
+    {
+        return $this->belongsTo(Direccion::class, 'direccion_id');
     }
 
     // Obtener cesta actual del usuario o crear una nueva si no existe
@@ -71,10 +92,11 @@ class Pedido extends Model
             return $lineaExistente;
         } else {
             // Si no existe, crear nueva línea
+            $producto = Producto::find($productoId);
             return LineaPedido::create([
                 'linea' => uniqid(), // Generar ID único para la línea
                 'cantidad' => $cantidad,
-                'precio' => Producto::find($productoId)->pvp,
+                'precio' => $producto->pvp,
                 'estado' => 'en_cesta',
                 'pedido_id' => $this->cod,
                 'producto_id' => $productoId
@@ -169,5 +191,94 @@ class Pedido extends Model
         return $this->lineasPedido()
                     ->where('estado', $this->estado) // Usar el mismo estado que el pedido
                     ->sum(\DB::raw('precio * cantidad'));
+    }
+    
+    /**
+     * Obtiene el monto total calculado del pedido
+     */
+    public function getTotalAttribute()
+    {
+        return $this->calcularTotal();
+    }
+    
+    /**
+     * Cambia el estado del pedido
+     */
+    public function cambiarEstado($estado)
+    {
+        if (in_array($estado, self::ESTADOS)) {
+            $this->estado = $estado;
+            $this->save();
+            
+            // Actualizar estado de todas las líneas
+            $this->lineasPedido()
+                 ->update(['estado' => $estado]);
+                 
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Repite un pedido existente creando una copia con estado pendiente
+     */
+    public static function repetirPedido($pedidoId, $usuarioId)
+    {
+        $pedidoAnterior = self::with('lineasPedido')->findOrFail($pedidoId);
+        
+        // Verificar que el pedido pertenece al usuario
+        if ($pedidoAnterior->usuario_id != $usuarioId) {
+            return false;
+        }
+        
+        // Crear nuevo pedido
+        $nuevoPedido = self::create([
+            'cod' => 'P' . time() . rand(100, 999), // Generar código único
+            'fecha' => Carbon::now(),
+            'estado' => 'pendiente',
+            'usuario_id' => $usuarioId,
+            'direccion_id' => $pedidoAnterior->direccion_id,
+            'metodo_pago' => $pedidoAnterior->metodo_pago,
+            'notas' => $pedidoAnterior->notas
+        ]);
+        
+        // Copiar líneas de pedido
+        foreach ($pedidoAnterior->lineasPedido as $lineaAnterior) {
+            LineaPedido::create([
+                'linea' => uniqid(), // Generar ID único para la línea
+                'cantidad' => $lineaAnterior->cantidad,
+                'precio' => $lineaAnterior->precio,
+                'estado' => 'pendiente',
+                'pedido_id' => $nuevoPedido->cod,
+                'producto_id' => $lineaAnterior->producto_id
+            ]);
+        }
+        
+        return $nuevoPedido;
+    }
+    
+    /**
+     * Scope para filtrar por estado
+     */
+    public function scopeEstado($query, $estado)
+    {
+        return $query->where('estado', $estado);
+    }
+    
+    /**
+     * Scope para filtrar pedidos recientes
+     */
+    public function scopeRecientes($query, $dias = 30)
+    {
+        return $query->where('fecha', '>=', Carbon::now()->subDays($dias));
+    }
+    
+    /**
+     * Scope para filtrar por usuario
+     */
+    public function scopeUsuario($query, $usuarioId)
+    {
+        return $query->where('usuario_id', $usuarioId);
     }
 }

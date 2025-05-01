@@ -41,25 +41,18 @@
                         <span class="error-message">{{ $message }}</span>
                     @enderror
                 </div>
-                
-                <div class="remember-forgot">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">Recordarme</label>
-                    </div>
-                    
-                    <div class="forgot-password">
-                        ¿Olvidaste tu contraseña?
-                    </div>
-                </div>
-                
+                                
                 <div class="form-actions">
                     <button type="submit" class="btn-primary">Iniciar sesión</button>
+                </div>
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Recordarme</label>
                 </div>
                 
                 <div class="register-link">
                     ¿No tienes una cuenta?
-                    Regístrate ahora
+                    <a href="{{ route('registro.form') }}">Regístrate ahora</a>
                 </div>
             </form>
         </div>

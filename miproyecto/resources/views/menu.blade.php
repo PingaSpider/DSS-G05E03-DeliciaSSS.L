@@ -44,26 +44,12 @@
             
             <!-- Menu Categories -->
             <div class="menu-categories">
-                @foreach($categorias ?? [
-                    ['id' => 'desayunos', 'nombre' => 'DESAYUNOS', 'icono' => 'fas fa-coffee'],
-                    ['id' => 'combinados', 'nombre' => 'COMBINADOS', 'icono' => 'material-symbols-outlined'],
-                    ['id' => 'bebidas', 'nombre' => 'BEBIDAS', 'icono' => 'fas fa-glass-martini-alt'],
-                    ['id' => 'hamburguesas', 'nombre' => 'HAMBURGUESAS', 'icono' => 'fas fa-hamburger'],
-                    ['id' => 'pizzas', 'nombre' => 'PIZZAS', 'icono' => 'icon-pizzas.png'],
-                    ['id' => 'postres', 'nombre' => 'POSTRES', 'icono' => 'icon-postres.png']
+                <button class="menu-category active" data-target="menuDelDia">Menu del Día</button>
+                @foreach($categoriasSecciones ?? [
+                    ['id' => 'desayunos', 'nombre' => 'Desayunos'],
+                    ['id' => 'combinados', 'nombre' => 'Combinados'],
                 ] as $categoria)
-                <div class="category" data-category="{{ $categoria['id'] }}">
-                    <div class="category-icon">
-                        @if(strpos($categoria['icono'], '.png') !== false)
-                            <img src="{{ asset('assets/icons/' . $categoria['icono']) }}" alt="{{ $categoria['nombre'] }}">
-                        @elseif($categoria['icono'] == 'material-symbols-outlined')
-                            <span class="material-symbols-outlined">lunch_dining</span>
-                        @else
-                            <i class="{{ $categoria['icono'] }}"></i>
-                        @endif
-                    </div>
-                    <span>{{ $categoria['nombre'] }}</span>
-                </div>
+                <button class="menu-category" data-target="{{ $categoria['id'] }}">{{ $categoria['nombre'] }}</button>
                 @endforeach
             </div>
             

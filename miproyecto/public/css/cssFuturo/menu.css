@@ -435,3 +435,26 @@ a {
         min-width: 100%;
     }
 }
+
+button.menu-category {
+    background-color: transparent; /* Remove background color */
+    border: none; /* Remove border */
+    border-radius: 0; /* Remove border radius to make it completely flat */
+    padding: 5px;
+    color: black;
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    transition: color 0.3s ease; /* Smooth color transition */
+    cursor: pointer; /* Add cursor pointer for better user experience */
+    outline: none; /* Remove focus outline */
+}
+
+button.menu-category:hover {
+    background-color: transparent; /* Keep background transparent on hover */
+    color: #ff8c38; /* Change text color on hover */
+}
+
+/* Optional: Add a subtle underline on hover if you want a hover effect */
+button.menu-category:hover {
+    text-decoration:solid underline #ff8c38;
+}

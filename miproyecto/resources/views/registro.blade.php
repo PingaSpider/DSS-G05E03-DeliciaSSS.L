@@ -19,7 +19,7 @@
         <div class="registro-form">
             <h3 class="form-title">Información personal</h3>
             
-            <form class=registro-formulario  >
+            <form class="registro-formulario" action="{{ route('registro') }}" method="POST">
                 @csrf
                 
                 <div class="form-group">
@@ -64,7 +64,7 @@
                 </div>
                 
                 <div class="login-link">
-                    ¿Ya tienes una cuenta? <a href="{{ route('login') }}">Iniciar sesión</a>
+                    ¿Ya tienes una cuenta? <a href="{{ route('login.form') }}">Iniciar sesión</a>
                 </div>
             </form>
         </div>

@@ -26,11 +26,10 @@
                 
                 <!-- Enlaces de navegación -->
                 <div class="link-bar-1">
-                    <a href="{{ route('reserva') }}">Nosotros</a>
+                    <a href="{{ route('reservaciones.index') }}">Nosotros</a>
                     |
                     <a href="{{ route('menu') }}">Menu</a>
                     |
-                    <a href="{{ route('producto') }}">Productos</a>
                     |
                 </div>
                 

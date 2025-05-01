@@ -6,6 +6,7 @@
     <title>Confirmación de Reserva - Delicias de la Vida</title>
     <link rel="stylesheet" href="{{ asset('css/csssFuturo/confirmareserva.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/create.css') }}">
     
 </head>
 <body>
@@ -14,9 +15,6 @@
         <nav class="navegacion">
             <ul>
                 <li><a href="{{ route('home') }}">Inicio</a></li>
-                <li>|</li>
-                <li><a href="{{ route('reserva') }}">Reserva</a></li>
-                <li>|</li>
                 <li class="active">Confirmación</li>
             </ul>
         </nav>

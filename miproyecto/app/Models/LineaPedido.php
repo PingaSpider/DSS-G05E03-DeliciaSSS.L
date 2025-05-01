@@ -13,7 +13,7 @@ class LineaPedido extends Model
     protected $keyType = 'string';
     
     protected $fillable = [
-        'linea', 'cantidad', 'precio', 'estado', 'pedido_id', 'producto_id'
+        'linea', 'cantidad', 'precio', 'estado', 'pedido_id', 'producto_id', 'notas'
     ];
 
     protected $casts = [
@@ -51,5 +51,47 @@ class LineaPedido extends Model
     public function getUpdatedAtAttribute($value)
     {
         return $value ? Carbon::parse($value) : Carbon::now();
+    }
+    
+    /**
+     * Actualiza la cantidad de la línea de pedido
+     */
+    public function actualizarCantidad($cantidad)
+    {
+        if ($cantidad <= 0) {
+            return $this->delete();
+        }
+        
+        $this->cantidad = $cantidad;
+        return $this->save();
+    }
+    
+    /**
+     * Replica una línea de pedido para un nuevo pedido
+     */
+    public function replicarPara($nuevoPedidoId)
+    {
+        $nuevaLinea = $this->replicate();
+        $nuevaLinea->linea = uniqid(); // Generar un nuevo ID único
+        $nuevaLinea->pedido_id = $nuevoPedidoId;
+        $nuevaLinea->save();
+        
+        return $nuevaLinea;
+    }
+    
+    /**
+     * Obtener nombre del producto (acceso directo)
+     */
+    public function getNombreProductoAttribute()
+    {
+        return $this->producto ? $this->producto->nombre : 'Producto no disponible';
+    }
+    
+    /**
+     * Obtener imagen del producto (acceso directo)
+     */
+    public function getImagenProductoAttribute()
+    {
+        return $this->producto && isset($this->producto->imagen) ? $this->producto->imagen : null;
     }
 }

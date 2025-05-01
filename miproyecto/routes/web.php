@@ -10,6 +10,13 @@ use App\Http\Controllers\MesaController;
 use App\Http\Controllers\LineaPedidoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ReservaController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WebProductoController;
+use App\Http\Controllers\WebMenuController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegistroController;
+use App\Providers\RouteServiceProvider;
+use App\Http\Controllers\WebReservaController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -17,17 +24,6 @@ Route::get('/', function () {
     return view('paneladmin');
 })->name('paneladmin');
 
-// Rutas temporales para los enlaces del menú
-Route::get('/home', function () { return view("home"); })->name('home');
-Route::get('/reserva', function () { return view("reserva"); })->name('reserva');
-Route::get('/menu', function () { return view("menu"); })->name('menu');
-Route::get('/contacto', function () { return view("contacto"); })->name('contacto');
-Route::get('/carrito', function () { return view("carrito"); })->name('carrito');
-Route::get('/confirmacionreserva', function () { return view("confirmacionreserva"); })->name('confirmacionreserva');
-Route::get('/user', function () { return view("user"); })->name('user');
-Route::get('/producto', function () { return view("producto"); })->name('producto');
-Route::get('/registro', function () { return view("registro"); })->name('registro');
-Route::get('/login', function () { return view("login"); })->name('login');
 
 // Rutas para el CRUD de usuarios
 Route::get('/usuarios', [UsuarioController::class, 'paginate'])->name('usuarios.paginate');
@@ -185,4 +181,153 @@ Route::prefix('reservas')->group(function () {
     // Route::get('/{cod}/delete', [ReservaController::class, 'delete'])->name('reservas.delete');
 });
 
-//Entrega2
+//ENTREGA 3 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// Rutas para el perfil y funcionalidades del usuario en la web pública
+
+// Perfil de usuario - Punto central después de login
+Route::prefix('mi-perfil')->group(function () {
+    Route::get('/', [UserController::class, 'profile'])
+        ->name('user.profile')
+        ->middleware('auth'); // Protege la ruta
+    
+    Route::put('/actualizar', [UserController::class, 'updateProfile'])
+        ->name('user.updateProfile')
+        ->middleware('auth');
+
+    // Pedidos
+    Route::get('/pedidos', [UserController::class, 'orders'])
+        ->name('user.orders')
+        ->middleware('auth');
+    
+    Route::get('/pedidos/{orderId}', [UserController::class, 'showOrder'])
+        ->name('user.showOrder')
+        ->middleware('auth');
+    
+    Route::post('/pedidos/{orderId}/repetir', [UserController::class, 'repeatOrder'])
+        ->name('user.repeatOrder')
+        ->middleware('auth');
+    
+    Route::get('/pedidos/{orderId}/cancelar', [UserController::class, 'cancelOrder'])
+        ->name('user.cancelOrder')
+        ->middleware('auth');
+});
+
+// Rutas para autenticación
+// Nota: Estas rutas reemplazan las existentes en el grupo 'mi-perfil'
+Route::post('/logout', [LoginController::class, 'cerrarSesion'])
+    ->name('logout')
+    ->middleware('auth');
+
+Route::get('/login', [LoginController::class, 'mostrar'])
+    ->name('login.form')
+    ->middleware('guest');
+    
+Route::post('/login', [LoginController::class, 'autenticar'])
+    ->name('login')
+    ->middleware('guest');
+
+// Rutas para registro
+Route::get('/registro', [RegistroController::class, 'mostrar'])
+    ->name('registro.form')
+    ->middleware('guest');
+    
+Route::post('/registro', [RegistroController::class, 'registrar'])
+    ->name('registro')
+    ->middleware('guest');
+
+// Redirección explícita para /home
+Route::redirect('/home', '/mi-perfil');
+
+//Ruta para la pagina home principal (acceso público)
+Route::get('/home', function () {
+    return view('home');
+})->name('home');
+
+//Ruta para la pagina de menu (acceso público)
+Route::get('/menu', [WebMenuController::class, 'index'])->name('menu');
+
+// Rutas para productos en el frontend (acceso público)
+Route::prefix('producto')->group(function () {
+    // Ruta para mostrar la lista de productos o un producto específico
+    Route::get('/{cod?}', [WebProductoController::class, 'show'])
+        ->name('producto.show');
+
+    // Ruta para añadir al carrito (protegida)
+    Route::post('/add-to-cart', [WebProductoController::class, 'addToCart'])
+        ->middleware('auth')
+        ->name('producto.addToCart');
+
+    // Ruta para toggle de wishlist (protegida)
+    Route::post('/toggle-wishlist/{productoId}', [WebProductoController::class, 'toggleWishlist'])
+        ->middleware('auth')
+        ->name('producto.toggleWishlist');
+});
+
+// Para mantener compatibilidad con las rutas que tienes para el UserController
+// Estas rutas serán redirigidas a las nuevas rutas de autenticación
+Route::prefix('mi-perfil')->group(function () {
+    // Redirecciones para evitar duplicidad
+    Route::get('/registro', function() {
+        return redirect()->route('registro.form');
+    });
+    
+    Route::post('/registro', function() {
+        return redirect()->route('registro');
+    });
+    
+    Route::get('/login', function() {
+        return redirect()->route('login.form');
+    });
+    
+    Route::post('/login', function() {
+        return redirect()->route('login');
+    });
+    
+    Route::post('/logout', function() {
+        return redirect()->route('logout');
+    });
+
+    // Mantén ruta para verificar email si es necesario
+    Route::get('/verificar-email', [UserController::class, 'checkEmail'])
+        ->name('user.checkEmail');
+});
+
+// Rutas para reservaciones en el frontend
+Route::prefix('reservaciones')->middleware('auth')->group(function () {
+    // Muestra el formulario de reserva
+    Route::get('/', [App\Http\Controllers\WebReservaController::class, 'index'])
+        ->name('reservaciones.index');
+    
+    // Procesa la reserva
+    Route::post('/', [App\Http\Controllers\WebReservaController::class, 'store'])
+        ->name('reservaciones.store');
+    
+    // Página de confirmación de reserva
+    Route::get('/confirmacion/{id}', [App\Http\Controllers\WebReservaController::class, 'confirmacion'])
+        ->name('reservaciones.confirmacion');
+    
+    // Cancelar una reserva
+    Route::delete('/{id}', [App\Http\Controllers\WebReservaController::class, 'cancelar'])
+        ->name('reservaciones.cancelar');
+    
+    // Ver mis reservas
+    Route::get('/mis-reservaciones', [App\Http\Controllers\WebReservaController::class, 'misReservas'])
+        ->name('reservaciones.mis-reservaciones');
+});
+
+// Redireccionamiento para mantener compatibilidad con URLs actuales
+Route::get('/reserva', function() {
+    return redirect()->route('reservaciones.index');
+});
+
+Route::post('/reserva', function() {
+    return redirect()->route('reservaciones.store');
+});
+
+Route::get('/reserva/confirmacion/{id}', function($id) {
+    return redirect()->route('reservaciones.confirmacion', ['id' => $id]);
+});
+
+Route::get('/mis-reservas', function() {
+    return redirect()->route('reservaciones.mis-reservaciones');
+});
