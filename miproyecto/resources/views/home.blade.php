@@ -32,6 +32,7 @@
                     |
                     <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Reservar</a>
                     |
+                    <a href="{{ route('producto.show') }}" class="link-bar-name">Carta</a>
                 </div>
                 
                 <!-- Botón de pedido -->

@@ -16,12 +16,52 @@ class WebProductoController extends Controller
      */
     public function show($cod = null)
     {
-        // Si no se proporciona un código, mostrar la lista de productos
         if ($cod === null) {
-            $productos = Producto::where('disponible', true)->get();
+            // Obtener productos agrupados por categoría
+            $bebidas = Producto::where('disponible', true)
+                ->whereHas('bebida')
+                ->get();
+                
+            $comidas = Producto::where('disponible', true)
+                ->whereHas('comida')
+                ->get();
+                
+            $menus = Producto::where('disponible', true)
+                ->whereHas('menu')
+                ->get();
             
-            return view('producto', [
-                'productos' => $productos,
+            // También podríamos clasificar las comidas por subcategorías
+            $desayunos = Producto::where('disponible', true)
+                ->whereHas('comida')
+                ->where('nombre', 'like', '%Desayuno%')
+                ->get();
+                
+            $hamburguesas = Producto::where('disponible', true)
+                ->whereHas('comida')
+                ->where('nombre', 'like', '%Burger%')
+                ->get();
+                
+            $pizzas = Producto::where('disponible', true)
+                ->whereHas('comida')
+                ->where('nombre', 'like', '%Pizza%')
+                ->get();
+                
+            $postres = Producto::where('disponible', true)
+                ->whereHas('comida')
+                ->where(function($query) {
+                    $query->where('nombre', 'like', '%Tarta%')
+                          ->orWhere('nombre', 'like', '%Helado%');
+                })
+                ->get();
+            
+            return view('productos-lista', [
+                'bebidas' => $bebidas,
+                'comidas' => $comidas,
+                'menus' => $menus,
+                'desayunos' => $desayunos,
+                'hamburguesas' => $hamburguesas,
+                'pizzas' => $pizzas,
+                'postres' => $postres,
                 'footer' => $this->getFooterData()
             ]);
         }
@@ -34,33 +74,48 @@ class WebProductoController extends Controller
             $producto->descripcion = $producto->comida->descripcion ?? 'Descripción no disponible';
         }
 
-        // Convertir los atributos para que coincidan con la vista
-        $producto->imagen = $producto->imagen ?? asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/especialburguer.png');
-        $producto->rating = 5; // Valor por defecto
-        $producto->reviews_count = 4; // Valor por defecto
-        $producto->precio = $producto->pvp;
+        // Generar rating aleatorio entre 3 y 5
+        $producto->rating = rand(3, 5);
+        $producto->reviews_count = rand(10, 100); // Reviews aleatorios
 
-        // Buscar productos similares
+        // Buscar productos similares (de la misma categoría)
         $similarProducts = Producto::where('cod', '!=', $cod)
             ->where('disponible', true)
             ->limit(5)
             ->get()
             ->map(function($similar) {
-                $similar->rating = 3; // Valor por defecto
-                $similar->precio = $similar->pvp;
+                $similar->rating = rand(3, 5); // Rating aleatorio para cada producto similar
                 return $similar;
             });
 
-        // Reviews de ejemplo
+        // Reviews de ejemplo con datos más realistas
         $reviews = collect([
             (object)[
                 'usuario' => (object)[
-                    'nombre' => 'John Doe',
-                    'avatar' => asset('user-avatar.jpg')
+                    'nombre' => 'María García',
+                    'avatar' => asset('assets/images/avatars/user-1.jpg')
                 ],
-                'fecha' => now(),
-                'rating' => 5,
-                'comentario' => 'Excelente producto, muy recomendado.'
+                'fecha' => now()->subDays(5),
+                'rating' => rand(4, 5),
+                'comentario' => 'Excelente producto, muy recomendado. El sabor es increíble y la presentación impecable.'
+            ],
+            (object)[
+                'usuario' => (object)[
+                    'nombre' => 'Carlos Martínez',
+                    'avatar' => asset('assets/images/avatars/user-2.jpg')
+                ],
+                'fecha' => now()->subDays(12),
+                'rating' => rand(3, 5),
+                'comentario' => 'Muy buena calidad. El precio es justo para lo que ofrece. Definitivamente volveré a pedir.'
+            ],
+            (object)[
+                'usuario' => (object)[
+                    'nombre' => 'Ana López',
+                    'avatar' => asset('assets/images/avatars/user-3.jpg')
+                ],
+                'fecha' => now()->subDays(20),
+                'rating' => rand(4, 5),
+                'comentario' => 'Me encantó el servicio y la calidad del producto. Lo recomiendo ampliamente.'
             ]
         ]);
 

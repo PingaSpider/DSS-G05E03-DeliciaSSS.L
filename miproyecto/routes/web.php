@@ -326,3 +326,43 @@ Route::get('/reserva/confirmacion/{id}', function($id) {
 Route::get('/mis-reservas', function() {
     return redirect()->route('reservaciones.mis-reservaciones');
 });
+
+
+// Rutas para productos en el frontend (acceso público)
+Route::prefix('producto')->group(function () {
+    // Ruta para mostrar la lista de productos o un producto específico
+    Route::get('/{cod?}', [WebProductoController::class, 'show'])
+        ->name('producto.show');
+});
+
+// Rutas protegidas del carrito (requieren autenticación)
+Route::prefix('cart')->middleware('auth')->group(function () {
+    // Añadir al carrito
+    Route::post('/add', [WebProductoController::class, 'addToCart'])
+        ->name('cart.add');
+    
+    // Ver carrito
+    Route::get('/', [WebProductoController::class, 'viewCart'])
+        ->name('cart.view');
+    
+    // Actualizar cantidad en carrito
+    Route::post('/update', [WebProductoController::class, 'updateCart'])
+        ->name('cart.update');
+    
+    // Eliminar del carrito
+    Route::post('/remove', [WebProductoController::class, 'removeFromCart'])
+        ->name('cart.remove');
+    
+    // Procesar compra
+    Route::post('/checkout', [WebProductoController::class, 'checkout'])
+        ->name('cart.checkout');
+});
+
+// Rutas para wishlist (requieren autenticación)
+Route::prefix('wishlist')->middleware('auth')->group(function () {
+    Route::post('/toggle/{productoId}', [WebProductoController::class, 'toggleWishlist'])
+        ->name('wishlist.toggle');
+    
+    Route::get('/', [WebProductoController::class, 'viewWishlist'])
+        ->name('wishlist.view');
+});
