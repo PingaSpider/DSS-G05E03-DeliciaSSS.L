@@ -83,6 +83,7 @@
                                 @endif
                             </a>
                         </th>
+                        <th>Imagen</th>
                         <th>
                             @php
                                 $newSortOrder = ($sortBy === 'pvp' && $sortOrder === 'asc') ? 'desc' : 'asc';
@@ -127,6 +128,12 @@
                     <tr>
                         <td>{{ $producto->cod }}</td>
                         <td>{{ $producto->nombre }}</td>
+                        <td>
+                            <img src="{{ $producto->imagen_url }}" 
+                                alt="{{ $producto->nombre }}" 
+                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"
+                                onerror="this.src='{{ asset('assets/images/placeholder.jpg') }}'">
+                        </td>
                         <td>{{ number_format($producto->pvp, 2, ',', '.') }} €</td>
                         <td>{{ $producto->stock }}</td>
                         <td>{{ number_format($producto->precioCompra, 2, ',', '.') }} €</td>

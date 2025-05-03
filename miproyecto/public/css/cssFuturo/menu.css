@@ -68,6 +68,7 @@ a {
 
 .main-nav a:hover {
     color: #ff8c38;
+    text-decoration: underline;
 }
 
 .actions {

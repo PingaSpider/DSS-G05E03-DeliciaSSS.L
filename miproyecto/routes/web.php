@@ -174,11 +174,6 @@ Route::prefix('reservas')->group(function () {
     
     // Rutas de utilidad
     Route::get('/verificar-codigo', [ReservaController::class, 'verificarCodigo'])->name('reservas.verificar-codigo');
-    // Las siguientes rutas no son necesarias ya que no existen en tu ReservaController
-    // Route::post('/search', [ReservaController::class, 'search'])->name('reservas.search');
-    // Route::post('/create_post', [ReservaController::class, 'create_post'])->name('reservas.create_post');
-    // Route::post('/show_post', [ReservaController::class, 'show_post'])->name('reservas.show_post');
-    // Route::get('/{cod}/delete', [ReservaController::class, 'delete'])->name('reservas.delete');
 });
 
 //ENTREGA 3 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -317,7 +312,7 @@ Route::prefix('reservaciones')->middleware('auth')->group(function () {
 
 // Redireccionamiento para mantener compatibilidad con URLs actuales
 Route::get('/reserva', function() {
-    return redirect()->route('reservaciones.index');
+    return redirect()->route('reservaciones.index'); 
 });
 
 Route::post('/reserva', function() {

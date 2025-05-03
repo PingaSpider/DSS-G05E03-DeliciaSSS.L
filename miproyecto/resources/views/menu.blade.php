@@ -24,9 +24,11 @@
             </div>
             <nav class="main-nav">
                 <ul>
+                    |
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="{{ route('reserva') }}">Reservas</a></li>
-                    <li><a href="{{ route('producto') }}">Producto</a></li>
+                    |
+                    <li><a href="{{ route('reservaciones.index') }}">Reservar</a></li>
+                    |
                 </ul>
             </nav>
             <div class="actions">
