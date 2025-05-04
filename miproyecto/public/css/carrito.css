@@ -465,3 +465,31 @@ span.material-symbols-outlined {
 
     border: #e67d2e;
 }
+
+.item-actions {
+    margin-left: 15px;
+}
+
+.btn-remove {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 8px;
+    transition: color 0.3s ease;
+}
+
+.btn-remove:hover {
+    color: #c82333;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.empty-cart p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}

@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito de Compra - Delicias de la Vida</title>
-    <link rel="stylesheet" href="{{ asset('css/cssFuturo/carrito.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/carrito.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/7b1fbf0d4d.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/carrito.js') }}"></script>
+
     
 </head>
 <body>
@@ -25,9 +26,8 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="{{ route('reserva') }}">Reservas</a></li>
+                    <li><a href="{{ route('reservaciones.index') }}">Reservas</a></li>
                     <li><a href="{{ route('menu') }}">Menu</a></li>
-                    <li><a href="{{ route('contacto') }}">Contacto</a></li>
                 </ul>
             </nav>
             <div class="actions">
@@ -61,77 +61,51 @@
                 <div class="cart-content">
                     <div class="cart-items">
                         <h2>Carrito de Compra</h2>
-                        
-                        @forelse($cartItems ?? [] as $item)
-                            <div class="cart-item">
+                        @forelse($carrito->lineasPedido as $item)
+                            <div class="cart-item" data-linea-id="{{ $item->linea }}">
                                 <div class="item-image">
-                                    <img src="{{ asset($item['image']) }}" alt="{{ $item['name'] }}">
+                                    <img src="{{ $item->producto->imagen_url }}" alt="{{ $item->producto->nombre }}">
                                 </div>
                                 <div class="item-details">
-                                    <h3>{{ $item['name'] }}</h3>
-                                    <p>{{ $item['description'] }}</p>
-                                    <span class="item-price">${{ $item['price'] }}</span>
+                                    <h3>{{ $item->producto->nombre }}</h3>
+                                    @if($item->producto->comida)
+                                        <p>{{ $item->producto->comida->descripcion }}</p>
+                                    @elseif($item->producto->bebida)
+                                        <p>{{ $item->producto->bebida->tipoBebida }} - {{ $item->producto->bebida->tamanyo }}</p>
+                                    @else
+                                        <p>{{ $item->producto->nombre }}</p>
+                                    @endif
+                                    <span class="item-price">${{ number_format($item->precio, 2) }}</span>
                                 </div>
                                 <div class="item-quantity">
                                     <div class="quantity-selector">
-                                        <input type="number" value="{{ $item['quantity'] }}" min="1" max="10" 
-                                               data-id="{{ $item['id'] }}" class="item-quantity-input">
+                                        <input type="number" value="{{ $item->cantidad }}" min="1" max="10" 
+                                            data-linea="{{ $item->linea }}" class="item-quantity-input">
                                         <div class="quantity-buttons">
-                                            <button class="quantity-up">+</button>
-                                            <button class="quantity-down">-</button>
+                                            <button class="quantity-up" onclick="updateQuantity('{{ $item->linea }}', 1)">+</button>
+                                            <button class="quantity-down" onclick="updateQuantity('{{ $item->linea }}', -1)">-</button>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-remove" onclick="removeItem('{{ $item->linea }}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                             </div>
                         @empty
-                            <!-- Datos por defecto si no hay items en el carrito -->
-                            <div class="cart-item">
-                                <div class="item-image">
-                                    <img src="{{ asset('assets/repo/comida/cheseburguer.png') }}" alt="Hamburguesa de Cheddar">
-                                </div>
-                                <div class="item-details">
-                                    <h3>HAMBURGUESA DE CHEDDAR</h3>
-                                    <p>Hamburguesa con queso</p>
-                                    <span class="item-price">$7.50</span>
-                                </div>
-                                <div class="item-quantity">
-                                    <div class="quantity-selector">
-                                        <input type="number" value="1" min="1" max="10" data-id="1" class="item-quantity-input">
-                                        <div class="quantity-buttons">
-                                            <button class="quantity-up">+</button>
-                                            <button class="quantity-down">-</button>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="empty-cart">
+                                <p>Tu carrito está vacío</p>
+                                <a href="{{ route('producto.show') }}" class="btn-primary">Ver productos</a>
                             </div>
-                            
-                            <div class="cart-item">
-                                <div class="item-image">
-                                    <img src="{{ asset('assets/repo/comida/cocacola_zero.png') }}" alt="Coca Cola Zero">
-                                </div>
-                                <div class="item-details">
-                                    <h3>COCA COLA ZERO</h3>
-                                    <p>Tamaño Mediano</p>
-                                    <span class="item-price">$3.50</span>
-                                </div>
-                                <div class="item-quantity">
-                                    <div class="quantity-selector">
-                                        <input type="number" value="1" min="1" max="10" data-id="2" class="item-quantity-input">
-                                        <div class="quantity-buttons">
-                                            <button class="quantity-up">+</button>
-                                            <button class="quantity-down">-</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforelse
+                        @endforelse            
                     </div>
                     
                     <div class="cart-summary">
                         <h2>Resumen de Compra</h2>
                         <div class="summary-total">
                             <span class="total-label">TOTAL</span>
-                            <span class="total-amount">${{ $total ?? '11.00' }}</span>
+                            <span class="total-amount" id="cart-total">${{ number_format($carrito->total, 2) }}</span>
                         </div>
                     </div>
                 </div>
@@ -194,7 +168,7 @@
             <!-- Payment Options Step -->
             <div class="step-content" id="payment-step">
                 <h2>Opciones de Pago</h2>
-                <form class="payment-form"  method="POST">
+                <form class="payment-form"  method="POST" action="{{ route('carrito.checkout') }}">
                     @csrf
                     <div class="payment-methods">
                         <div class="payment-method">
@@ -233,15 +207,15 @@
                         <h3>Resumen de Compra</h3>
                         <div class="summary-row">
                             <span>Subtotal</span>
-                            <span>${{ $subtotal ?? '11.00' }}</span>
+                            <span>${{ number_format($carrito->total, 2) }}</span>
                         </div>
                         <div class="summary-row">
                             <span>Envío</span>
-                            <span>${{ $envio ?? '0.00' }}</span>
+                            <span>$0.00</span>
                         </div>
                         <div class="summary-row total">
                             <span>TOTAL</span>
-                            <span>${{ $total ?? '11.00' }}</span>
+                            <span>${{ number_format($carrito->total, 2) }}</span>
                         </div>
                     </div>
                     

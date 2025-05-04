@@ -76,7 +76,7 @@
                     @endif
                     
                     <div class="product-actions">
-                        <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form">
+                        <form action="{{ route('carrito.add') }}" method="POST" class="add-to-cart-form">
                             @csrf
                             <input type="hidden" name="producto_id" value="{{ $producto->cod }}">
                             <button type="submit" class="btn-primary add-to-cart">Add To Cart</button>
@@ -208,7 +208,7 @@
         document.querySelector('.add-to-cart-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            fetch('{{ route("cart.add") }}', {
+            fetch('{{ route("carrito.add") }}', {
                 method: 'POST',
                 body: new FormData(this),
                 headers: {

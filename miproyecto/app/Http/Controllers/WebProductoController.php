@@ -129,34 +129,6 @@ class WebProductoController extends Controller
     }
 
     /**
-     * Añadir un producto al carrito
-     * 
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function addToCart(Request $request)
-    {
-        $producto = Producto::findOrFail($request->input('producto_id'));
-        
-        // Lógica para añadir al carrito
-        $cart = $request->session()->get('cart', []);
-        
-        $cart[] = [
-            'id' => $producto->cod,
-            'nombre' => $producto->nombre,
-            'precio' => $producto->pvp
-        ];
-        
-        $request->session()->put('cart', $cart);
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Producto añadido al carrito',
-            'cart' => $cart
-        ]);
-    }
-
-    /**
      * Añadir/quitar de favoritos
      * 
      * @param Request $request

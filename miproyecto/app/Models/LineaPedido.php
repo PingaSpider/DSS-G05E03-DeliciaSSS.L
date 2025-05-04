@@ -94,4 +94,22 @@ class LineaPedido extends Model
     {
         return $this->producto && isset($this->producto->imagen) ? $this->producto->imagen : null;
     }
+
+    // Añadir este método al modelo LineaPedido existente
+    public static function generarSiguienteCodigo()
+    {
+        $ultimaLinea = self::orderBy('linea', 'desc')->first();
+        
+        if ($ultimaLinea) {
+            // Extraer el número de la línea (formato Lxxxx)
+            $numeroActual = intval(substr($ultimaLinea->linea, 1));
+            // Incrementa el número y formatea con 4 dígitos
+            $siguienteLinea = 'L' . str_pad($numeroActual + 1, 4, '0', STR_PAD_LEFT);
+        } else {
+            // Si no hay líneas anteriores, comenzar con L0001
+            $siguienteLinea = 'L0001';
+        }
+        
+        return $siguienteLinea;
+    }
 }
