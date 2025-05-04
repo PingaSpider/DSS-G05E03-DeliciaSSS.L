@@ -70,11 +70,32 @@ function removeItem(lineaId) {
     }
 }
 
-// Función para actualizar el total del carrito
+// Función para actualizar el total del carrito con animación
 function updateCartTotal(total) {
     const totalElement = document.getElementById('cart-total');
     if (totalElement) {
-        totalElement.textContent = '$' + parseFloat(total).toFixed(2);
+        // Obtener el valor anterior
+        const oldValue = totalElement.textContent;
+        const newValue = '$' + parseFloat(total).toFixed(2);
+        
+        // Si el valor cambió, aplicar la animación
+        if (oldValue !== newValue) {
+            totalElement.textContent = newValue;
+            
+            // Remover la clase si ya existe
+            totalElement.classList.remove('price-change');
+            
+            // Forzar un reflow para que la animación se reinicie
+            void totalElement.offsetWidth;
+            
+            // Agregar la clase para iniciar la animación
+            totalElement.classList.add('price-change');
+            
+            // Remover la clase después de que termine la animación
+            setTimeout(() => {
+                totalElement.classList.remove('price-change');
+            }, 500);
+        }
     }
     
     // Actualizar también el resumen de pago si existe
@@ -149,14 +170,12 @@ function handleStepNavigation() {
         }
     }
     
-    // Función para validar el paso actual
     function validateCurrentStep() {
         const activeContent = document.querySelector('.step-content.active');
         const activeId = activeContent ? activeContent.id : '';
         
         switch(activeId) {
             case 'cart-step':
-                // Validar que hay items en el carrito
                 const cartItems = document.querySelectorAll('.cart-item');
                 if (cartItems.length === 0) {
                     alert('Tu carrito está vacío');
@@ -165,16 +184,16 @@ function handleStepNavigation() {
                 return true;
                 
             case 'details-step':
-                // Validar formulario de envío
                 const form = document.querySelector('.shipping-form');
                 if (!form.checkValidity()) {
                     form.reportValidity();
                     return false;
                 }
+                // Guardar los datos de envío al validar
+                saveShippingDetails();
                 return true;
                 
             case 'payment-step':
-                // La validación de pago se hace en el submit
                 return true;
                 
             default:
@@ -211,6 +230,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+function saveShippingDetails() {
+    const form = document.querySelector('.shipping-form');
+    const formData = new FormData(form);
+    
+    fetch('/user/update-shipping', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'application/json',
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Datos de envío actualizados');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
 
 // Función para validar el formulario de pago
 function validatePaymentForm() {

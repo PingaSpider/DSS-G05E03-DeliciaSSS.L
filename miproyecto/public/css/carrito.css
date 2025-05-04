@@ -34,6 +34,7 @@ a {
     border-radius: 4px;
     cursor: pointer;
     font-weight: 500;
+    font-family: 'Raleway', sans-serif;
 }
 
 .btn-primary:hover {
@@ -48,6 +49,7 @@ a {
     border-radius: 4px;
     cursor: pointer;
     font-weight: 500;
+    font-family: 'Raleway', sans-serif;
 }
 
 .btn-secondary:hover {
@@ -256,6 +258,10 @@ h2 {
     font-size: 10px;
 }
 
+.quantity-up:active, .quantity-down:active {
+    background-color: #ff8c38;
+    color: white;
+}
 .quantity-down {
     border-top: 1px solid #ddd;
 }
@@ -492,4 +498,43 @@ span.material-symbols-outlined {
 .empty-cart p {
     font-size: 1.2rem;
     margin-bottom: 20px;
+}
+
+
+/* Ocultar las flechas por defecto de los input number */
+.item-quantity-input {
+    -moz-appearance: textfield; /* Firefox */
+    appearance: textfield;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.item-quantity-input::-webkit-outer-spin-button,
+.item-quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Internet Explorer */
+.item-quantity-input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Clase para la animación de cambio de precio */
+.price-change {
+    animation: priceFlash 0.5s ease-out;
+}
+
+@keyframes priceFlash {
+    0% {
+        color: inherit;
+    }
+    50% {
+        color: #ff6b35; /* Color naranja */
+        transform: scale(1.05);
+    }
+    100% {
+        color: inherit;
+        transform: scale(1);
+    }
 }

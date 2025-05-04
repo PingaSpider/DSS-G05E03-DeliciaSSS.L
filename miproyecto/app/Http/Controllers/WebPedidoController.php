@@ -31,11 +31,19 @@ class WebPedidoController extends Controller
                 $carrito->usuario_id = $usuario->id;
                 $carrito->save();
             }
+
+            //Prepara los datos del cliente
+            $cliente = (object)[
+                'nombre' => $usuario->nombre,
+                'email' => $usuario->email,
+                'telefono' => $usuario->telefono
+            ];
             
             // Datos del footer
             $footer = $this->getFooterData();
             
-            return view('carrito', compact('carrito', 'footer'));
+            return view('carrito', compact('carrito', 'footer','cliente'))
+                ->with('success', 'Carrito cargado con éxito');
             
         } catch (Exception $e) {
             return redirect()->route('producto.show')

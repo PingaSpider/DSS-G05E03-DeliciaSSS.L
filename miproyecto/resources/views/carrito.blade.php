@@ -121,43 +121,22 @@
             <div class="step-content" id="details-step">
                 <h2>Detalles de Envío</h2>
                 <form class="shipping-form" >
-                    @csrf
+                @csrf
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombre" name="nombre" required value="{{ $cliente->nombre ?? '' }}">
+                </div>
+                
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="nombre">Nombre Completo</label>
-                        <input type="text" id="nombre" name="nombre" required value="{{ $cliente->nombre ?? '' }}">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required value="{{ $cliente->email ?? '' }}">
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required value="{{ $cliente->email ?? '' }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="telefono">Teléfono</label>
-                            <input type="tel" id="telefono" name="telefono" required value="{{ $cliente->telefono ?? '' }}">
-                        </div>
-                    </div>
-                    
                     <div class="form-group">
-                        <label for="direccion">Dirección</label>
-                        <input type="text" id="direccion" name="direccion" required value="{{ $cliente->direccion ?? '' }}">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" required value="{{ $cliente->telefono ?? '' }}">
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="ciudad">Ciudad</label>
-                            <input type="text" id="ciudad" name="ciudad" required value="{{ $cliente->ciudad ?? '' }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="cp">Código Postal</label>
-                            <input type="text" id="cp" name="cp" required value="{{ $cliente->cp ?? '' }}">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="instrucciones">Instrucciones de entrega (opcional)</label>
-                        <textarea id="instrucciones" name="instrucciones" rows="3">{{ $cliente->instrucciones ?? '' }}</textarea>
-                    </div>
+                </div>
                 </form>
                 
                 <div class="cart-actions">
