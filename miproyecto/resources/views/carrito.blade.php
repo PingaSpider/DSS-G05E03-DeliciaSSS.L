@@ -18,7 +18,7 @@
         <header class="header">
             <div class="logo">
                 <a href="{{ route('home') }}">
-                    <img src="{{ asset('assets/repo/0NqEprKrYi/delicias-logo.png') }}" alt="Delicias de la Vida">
+                    <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Delicias de la Vida">
                 </a>
             </div>
             <div class="search-bar">
@@ -27,14 +27,16 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="{{ route('home') }}">Home</a></li>
+                    |
                     <li><a href="{{ route('reservaciones.index') }}">Reservas</a></li>
+                    |
                     <li><a href="{{ route('menu') }}">Menu</a></li>
                 </ul>
             </nav>
             <div class="actions">
                 <button class="btn-primary">Pedir Online</button>
                 <a href="#" class="user-icon">
-                    <img src="{{ asset('assets/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Usuario" class="icon">
+                    <img src="{{ asset('/assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Usuario" class="icon">
                 </a>
             </div>
         </header>
@@ -174,7 +176,9 @@
                         
                         <div class="payment-method">
                             <input type="radio" id="paypal" name="payment_method" value="paypal">
-                            <label for="paypal">PayPal</label>
+                            <label for="paypal">
+                                <img src="{{ asset('assets/images/repo/0NqEprKfVi/39JSjYDc0n.png') }}" alt="PayPal" class="paypal-logo">
+                            </label>
                         </div>
                         
                         <div class="payment-method">
@@ -210,7 +214,7 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-logo">
-                <img src="{{ asset('assets/repo/0NqEprKrYi/delicias-logo.png') }}" alt="Delicias de la Vida">
+                <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo-naranja.png') }}" alt="Delicias de la Vida">
             </div>
             <div class="footer-info">
                 <div class="footer-section">

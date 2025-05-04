@@ -1,11 +1,10 @@
-/* Estilos generales */
-* {
+*{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-body {
+/* Estilos base */
+html, body {
     font-family: 'Raleway', sans-serif;
     font-size: 16px;
     color: #060300;
@@ -13,13 +12,23 @@ body {
     box-sizing: border-box;
 }
 
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+
+/* Contenedor principal  que abarque el 90% del ancho y todo el vertical*/
 .container {
-    max-width: 1200px;
+    width: 90%;
     margin: 0 auto;
-    min-height: 100vh;
+    padding: 0 15px;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
+    background-color: #FEFCE0;
+
 }
+
 
 a {
     text-decoration: none;
@@ -27,7 +36,7 @@ a {
 }
 
 .btn-primary {
-    background-color: #ff8c38;
+    background-color: #F39221;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -83,7 +92,7 @@ a {
 }
 
 .main-nav a:hover {
-    color: #ff8c38;
+    color: #F39221;
 }
 
 .actions {
@@ -259,7 +268,7 @@ h2 {
 }
 
 .quantity-up:active, .quantity-down:active {
-    background-color: #ff8c38;
+    background-color: #F39221;
     color: white;
 }
 .quantity-down {
@@ -331,12 +340,95 @@ textarea {
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Radio button personalizado más fiel al nativo */
+.payment-method input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #8e8e8e; /* Borde gris más claro */
+    border-radius: 50%;
+    background-color: white;
+    margin: 0;
+    margin-right: 10px;
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+    vertical-align: middle;
+}
+
+/* Cuando está seleccionado */
+.payment-method input[type="radio"]:checked {
+    border-color: #F39221; /* Tu color naranja */
+}
+
+/* El punto interior con más espacio alrededor */
+.payment-method input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    width: 12px; /* Más proporcionado con el contenedor */
+    height: 12px;
+    background-color: #F39221; /* Tu color naranja */
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.payment-method:has(input[type="radio"]:checked) {
+    border-color: #F39221; /* Cambia el borde del contenedor */
+}
+
+.payment-method input[type="radio"]:checked::after 
+
+/* Ajuste fino para que se vea más como el nativo */
+.payment-method input[type="radio"] {
+    border: 1.5px solid #757575;
+}
+
+.payment-method input[type="radio"]:checked {
+    border-color: #F39221;
+    border-width: 1px; /* Un poco más grueso cuando está seleccionado */
+}
+
+/* El punto interior */
+.payment-method input[type="radio"]:checked::after {
+    width: 8px;
+    height: 8px;
 }
 
 .payment-method label {
-    display: inline-block;
-    margin-left: 10px;
     font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* Logo de PayPal */
+.paypal-logo {
+    height: 30px; /* Ajusta este valor según necesites */
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Oculta los detalles de pago cuando no está seleccionado */
+.payment-details {
+    display: none;
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* Muestra los detalles cuando el método está seleccionado */
+.payment-method input[type="radio"]:checked ~ .payment-details {
+    display: block;
 }
 
 .payment-details {
@@ -347,6 +439,27 @@ textarea {
 
 .payment-summary {
     margin-bottom: 30px;
+}
+
+/* Ajustes adicionales para mejor alineación */
+.payment-method {
+    display: flex;
+    align-items: flex-start; /* Alinea los elementos al inicio */
+    flex-wrap: wrap;
+}
+
+.payment-method input[type="radio"] {
+    flex-shrink: 0; /* Evita que el radio button se encoja */
+    margin-top: 3px; /* Ajuste fino para alineación visual */
+}
+
+.payment-method label {
+    flex: 1; /* Permite que el label ocupe el espacio disponible */
+}
+
+/* Si quieres que el logo de PayPal esté centrado verticalmente con el radio button */
+.payment-method label img.paypal-logo {
+    margin-left: 5px;
 }
 
 .summary-row {
@@ -365,14 +478,13 @@ textarea {
 
 /* Footer */
 .footer {
-    background-color: #ff8c38;
+    background-color: #F39221;
     color: white;
     padding: 30px 20px;
     margin-top: auto;
 }
 
 .footer-logo {
-    border: 1px solid #fff;
     display: inline-block;
     padding: 10px;
     margin-bottom: 20px;
@@ -530,7 +642,7 @@ span.material-symbols-outlined {
         color: inherit;
     }
     50% {
-        color: #ff6b35; /* Color naranja */
+        color: #F39221; /* Color naranja */
         transform: scale(1.05);
     }
     100% {

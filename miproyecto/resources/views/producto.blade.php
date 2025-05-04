@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $producto->nombre ?? 'Detalle de Producto' }} - Delicias de la Vida</title>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/7b1fbf0d4d.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/producto.css') }}">
     <script src="{{ asset('js/producto.js') }}"></script>
 </head>
@@ -25,14 +25,16 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="{{ route('home') }}">Home</a></li>
+                    |
                     <li><a href="{{ route('menu') }}">Menu</a></li>
+                    |
                     <li><a href="{{ route('reservaciones.index') }}">Reservas</a></li>
                 </ul>
             </nav>
             <div class="actions">
                 <button class="btn-primary">Pedir Online</button>
                 <a class="user-icon">
-                    <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Usuario" class="icon">
+                    <i  alt="Usuario" class="icon">
                 </a>
             </div>
         </header>
@@ -76,13 +78,20 @@
                     @endif
                     
                     <div class="product-actions">
-                        <form action="{{ route('carrito.add') }}" method="POST" class="add-to-cart-form">
-                            @csrf
-                            <input type="hidden" name="producto_id" value="{{ $producto->cod }}">
-                            <button type="submit" class="btn-primary add-to-cart">Add To Cart</button>
-                        </form>
+                        <div class="quantity-selector">
+                            <button class="quantity-btn minus" data-product="{{ $producto->cod }}">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" class="quantity-input" value="1" min="1" max="10" data-product="{{ $producto->cod }}">
+                            <button class="quantity-btn plus" data-product="{{ $producto->cod }}">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <button class="add-to-cart-btn" data-product="{{ $producto->cod }}">
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
                         <button class="btn-wishlist" onclick="toggleWishlist('{{ $producto->cod }}')">
-                            <i class="heart-icon">♡</i>
+                            <i class="fas fa-heart"></i>
                         </button>
                     </div>
 
@@ -104,25 +113,7 @@
                 
                 <div class="product-grid">
                     @forelse($similarProducts as $similar)
-                        <div class="product-card" data-product-id="{{ $similar->cod }}">
-                            <a href="{{ route('producto.show', $similar->cod) }}" class="product-link">
-                                <div class="product-image">
-                                    <img src="{{ $similar->imagen_url }}" alt="{{ $similar->nombre }}" class="product-thumbnail">
-                                </div>
-                                <div class="product-card-info">
-                                    <div class="product-name">{{ $similar->nombre }}</div>
-                                    <div class="product-card-rating">
-                                        @for($i = 0; $i < $similar->rating; $i++)
-                                            <i class="fas fa-star"></i>
-                                        @endfor
-                                        @for($i = $similar->rating; $i < 5; $i++)
-                                            <i class="far fa-star"></i>
-                                        @endfor
-                                    </div>
-                                    <div class="product-card-price">${{ number_format($similar->pvp, 2) }}</div>
-                                </div>
-                            </a>
-                        </div>
+                        @include('partials.product-card', ['producto' => $similar])
                     @empty
                         <p>No hay productos similares disponibles.</p>
                     @endforelse
@@ -183,51 +174,5 @@
             </div>
         </footer>
     </div>
-
-    <script>
-        function toggleWishlist(productId) {
-            fetch(`/wishlist/toggle/${productId}`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const heartIcon = document.querySelector('.heart-icon');
-                    heartIcon.textContent = data.inWishlist ? '♥' : '♡';
-                    heartIcon.style.color = data.inWishlist ? 'red' : 'inherit';
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        // Manejo del formulario de añadir al carrito
-        document.querySelector('.add-to-cart-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            fetch('{{ route("carrito.add") }}', {
-                method: 'POST',
-                body: new FormData(this),
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Producto añadido al carrito');
-                    // Actualizar contador del carrito si existe
-                    const cartCount = document.querySelector('.cart-count');
-                    if (cartCount) {
-                        cartCount.textContent = data.cart.length;
-                    }
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    </script>
 </body>
 </html>

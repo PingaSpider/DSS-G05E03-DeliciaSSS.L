@@ -14,6 +14,16 @@
                 @endfor
             </div>
             <div class="product-price">${{ number_format($producto->pvp, 2) }}</div>
+            <div class="product-actions">
+                <div class="quantity-selector">
+                    <button class="quantity-btn minus" data-product="{{ $producto->cod }}">-</button>
+                    <input type="number" class="quantity-input" value="1" min="1" max="10" data-product="{{ $producto->cod }}">
+                    <button class="quantity-btn plus" data-product="{{ $producto->cod }}">+</button>
+                </div>
+                <button class="add-to-cart-btn" data-product="{{ $producto->cod }}">
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+            </div>
             @if($producto->stock < 10 && $producto->stock > 0)
                 <div class="stock-warning">¡Últimas unidades!</div>
             @elseif($producto->stock == 0)
