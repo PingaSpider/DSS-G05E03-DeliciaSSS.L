@@ -71,7 +71,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/carrito/add', [WebLineaPedidoController::class, 'addToCart'])->name('carrito.add');
     Route::post('/carrito/update', [WebLineaPedidoController::class, 'updateQuantity'])->name('carrito.update');
     Route::delete('/carrito/remove/{lineaId}', [WebLineaPedidoController::class, 'removeFromCart'])->name('carrito.remove');
+
 });
+
+Route::get('/api/productos/buscar', [WebProductoController::class, 'buscar'])->name('api.productos.buscar');
 
 // Perfil de usuario
 Route::prefix('mi-perfil')->middleware('auth')->group(function () {

@@ -45,6 +45,21 @@ function showNotification(message) {
     }, 2000);
 }
 
+// Función para manejar el toggle del carrito
+document.addEventListener('DOMContentLoaded', function() {
+    const cartButton = document.getElementById('cart');
+    if (cartButton) {
+        cartButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'carrito';
+        });
+    }
+});
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
     // Manejar el formulario de añadir al carrito via AJAX (para la página de detalle)
     const addToCartForm = document.querySelector('.add-to-cart-form');
@@ -234,5 +249,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
         }
+    });
+
+       // Manejo de categorías
+       document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remover clase active de todos los tabs
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.category-section').forEach(s => s.classList.remove('active'));
+            
+            // Añadir clase active al tab seleccionado
+            this.classList.add('active');
+            const categoryId = this.dataset.category;
+            document.getElementById(categoryId).classList.add('active');
+        });
+    });
+
+    // Búsqueda en tiempo real
+    document.getElementById('product-search').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        document.querySelectorAll('.product-card').forEach(card => {
+            const productName = card.querySelector('.product-name').textContent.toLowerCase();
+            if (productName.includes(searchTerm)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+
+    // Quick add to cart
+    document.querySelectorAll('.quick-add-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const productId = this.dataset.productId;
+            // Implementar lógica de añadir al carrito
+            console.log('Añadiendo producto:', productId);
+        });
     });
 });

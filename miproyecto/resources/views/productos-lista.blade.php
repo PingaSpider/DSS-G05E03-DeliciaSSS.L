@@ -13,29 +13,38 @@
 <body>
     <div class="container">
         <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <a href="{{ route('home') }}">
-                    <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Delicias de la Vida">
-                </a>
-            </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search...">
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="{{ route('home') }}">Home</a></li>
+        <header>
+            <div class="navigation-container">
+                <!-- Logo (a la izquierda) -->
+                <div class="logo-container">
+                    <a href="{{ route('home') }}">
+                        <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Delicias de la Vida" class="logo-1">
+                    </a>
+                </div>
+                
+                <!-- Navegación (al centro) -->
+                <div class="link-bar-1">
+                    <a href="{{ route('home') }}" class="link-bar-name">Home</a>
                     |
-                    <li><a href="{{ route('menu') }}">Menu</a></li>
+                    <a href="{{ route('menu') }}" class="link-bar-name">Menu</a>
                     |
-                    <li><a href="{{ route('reservaciones.index') }}">Reservas</a></li>
-                </ul>
-            </nav>
-            <div class="actions">
-                <button class="btn-primary">Pedir Online</button>
-                <a class="user-icon">
-                    <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Usuario" class="icon">
-                </a>
+                    <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Reservas</a>
+                </div>
+                
+                <!-- Acciones (a la derecha) -->
+                <div class="actions">
+                    <!-- Botón de carrito -->
+                    <a href="{{ route('carrito.view') }}" class="to-cart-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+                    
+                    <!-- Avatar de usuario -->
+                    <div class="avatar-1">
+                        <a href="{{ route('user.profile') }}">
+                            <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Avatar" id="avatar">
+                        </a>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -191,46 +200,5 @@
             </div>
         </footer>
     </div>
-
-    <script>
-        // Manejo de categorías
-        document.querySelectorAll('.category-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                // Remover clase active de todos los tabs
-                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.category-section').forEach(s => s.classList.remove('active'));
-                
-                // Añadir clase active al tab seleccionado
-                this.classList.add('active');
-                const categoryId = this.dataset.category;
-                document.getElementById(categoryId).classList.add('active');
-            });
-        });
-
-        // Búsqueda en tiempo real
-        document.getElementById('product-search').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            document.querySelectorAll('.product-card').forEach(card => {
-                const productName = card.querySelector('.product-name').textContent.toLowerCase();
-                if (productName.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-
-        // Quick add to cart
-        document.querySelectorAll('.quick-add-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const productId = this.dataset.productId;
-                // Implementar lógica de añadir al carrito
-                console.log('Añadiendo producto:', productId);
-            });
-        });
-    </script>
 </body>
 </html>

@@ -30,8 +30,14 @@ function updateQuantity(lineaId, change) {
     .catch(error => console.error('Error:', error));
 }
 
-// Función para eliminar item
+// Función para eliminar item - ESTA ES LA FUNCIÓN QUE NECESITA SER LLAMADA
+// Agregamos alias para que ambos nombres de función funcionen
 function removeItem(lineaId) {
+    removeFromCart(lineaId);
+}
+
+// Función para eliminar item del carrito - ESTA ES LA FUNCIÓN LLAMADA EN EL HTML
+function removeFromCart(lineaId) {
     if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
         fetch(`/carrito/remove/${lineaId}`, {
             method: 'DELETE',

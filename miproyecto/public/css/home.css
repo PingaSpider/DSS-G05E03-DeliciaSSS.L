@@ -61,29 +61,6 @@ header {
     height: auto;
 }
 
-/* Búsqueda */
-.search-input-1 {
-    width: 100%;
-    max-width: 316px;
-    height: 36px;
-    background: transparent;
-    color: #C0C0C0;
-    border-color: #060300;
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 2px;
-    font-family: "Source Sans 3";
-    font-weight: 400;
-    font-size: 15px;
-    text-align: left;
-    padding: 0 10px;
-}
-
-.search-input-1:focus {
-    outline: none;
-    border-color: #F39221;
-    box-shadow: 0 0 3px #000000;
-}
 /* Enlaces de navegación */
 .link-bar-1 {
     width: 100%;
@@ -188,41 +165,53 @@ header {
 }
 
 /* Sección de descripción */
+/* Modificaciones para la sección de descripción */
 .descripcion-section {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row; /* Asegura que los elementos estén en fila */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+    justify-content: space-between; /* Distribuye el espacio entre los elementos */
+    align-items: center; /* Alinea verticalmente los elementos */
+    margin-bottom: 50px;
     gap: 30px;
-    bottom: solid 1px #000000;
 }
 
 .descripcion-container {
-    flex: 1 1 400px;
+    flex: 1; /* Toma el espacio disponible */
+    min-width: 300px; /* Ancho mínimo para evitar que sea demasiado estrecho */
+    max-width: 50%; /* Limita el ancho máximo */
+    order: 1; /* Asegura que aparezca primero */
 }
 
+.imagen-secundaria {
+    flex: 1; /* Toma el espacio disponible */
+    min-width: 300px; /* Ancho mínimo para evitar que sea demasiado estrecho */
+    max-width: 50%; /* Limita el ancho máximo */
+    order: 2; /* Asegura que aparezca segundo */
+}
 
 .algo-delicioso-hecho-con-amor {
-    position: relative;
+    position: static; /* Cambia de relative a static */
     color: #232323;
     font-weight: 400;
     font-size: 24px;
     text-align: left;
-    top: 30%;
+    margin-bottom: 20px; /* Añade espacio después del título */
 }
 
 .cada-plato-es-una-muestra-de-nuestra-pasi-n-por-la {
-    position: relative;
-    width: 80%;
+    position: static; /* Cambia de relative a static */
+    width: 100%; /* Ocupa todo el ancho disponible */
     color: #060300;
     font-weight: 400;
     font-size: 14px;
     line-height: 1.3;
     text-align: left;
     margin-bottom: 20px;
-    top: 30%;
 }
 
 .rectangle-1 {
-    position: relative;
+    position: static; /* Cambia de relative a static */
     background-color: #F39221;
     width: 172px;
     height: 45px;
@@ -231,7 +220,23 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    top: 30%;
+    margin-top: 20px; /* Añade espacio antes del botón */
+}
+
+/* Media queries para pantallas pequeñas */
+@media (max-width: 768px) {
+    .descripcion-container,
+    .imagen-secundaria {
+        max-width: 100%; /* En pantallas pequeñas, ocupan todo el ancho */
+    }
+    
+    .descripcion-container {
+        order: 1; /* Asegura que el texto aparezca primero en móviles */
+    }
+    
+    .imagen-secundaria {
+        order: 2; /* La imagen aparece después en móviles */
+    }
 }
 
 

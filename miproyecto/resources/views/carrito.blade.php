@@ -7,10 +7,9 @@
     <title>Carrito de Compra - Delicias de la Vida</title>
     <link rel="stylesheet" href="{{ asset('css/carrito.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/7b1fbf0d4d.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="{{ asset('js/carrito.js') }}"></script>
-
-    
+    <script src="{{ asset('js/search-products.js') }}"></script>
 </head>
 <body>
     <div class="container">
@@ -21,20 +20,19 @@
                     <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Delicias de la Vida">
                 </a>
             </div>
-            <div class="search-bar">
+            <div class="search-bar" id="product-search">
                 <input type="text" placeholder="Search...">
             </div>
             <nav class="main-nav">
                 <ul>
                     <li><a href="{{ route('home') }}">Home</a></li>
                     |
-                    <li><a href="{{ route('reservaciones.index') }}">Reservas</a></li>
-                    |
                     <li><a href="{{ route('menu') }}">Menu</a></li>
+                    |
+                    <li><a href="{{ route('reservaciones.index') }}">Reservas</a></li>
                 </ul>
             </nav>
             <div class="actions">
-                <button class="btn-primary">Pedir Online</button>
                 <a href="#" class="user-icon">
                     <img src="{{ asset('/assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Usuario" class="icon">
                 </a>
@@ -91,9 +89,9 @@
                                     </div>
                                 </div>
                                 <div class="item-actions">
-                                    <button class="btn-remove" onclick="removeItem('{{ $item->linea }}')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                <button class="btn-remove" onclick="removeFromCart('{{ $item->linea }}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                                 </div>
                             </div>
                         @empty

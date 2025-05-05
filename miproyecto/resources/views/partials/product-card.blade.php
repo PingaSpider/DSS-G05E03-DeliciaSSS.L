@@ -21,7 +21,7 @@
                     <button class="quantity-btn plus" data-product="{{ $producto->cod }}">+</button>
                 </div>
                 <button class="add-to-cart-btn" data-product="{{ $producto->cod }}">
-                    <i class="fas fa-shopping-cart"></i>
+                    <i class="fas fa-cart-plus"></i>
                 </button>
             </div>
             @if($producto->stock < 10 && $producto->stock > 0)

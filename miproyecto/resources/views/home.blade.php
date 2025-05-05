@@ -18,16 +18,8 @@
                 <div class="logo-container">
                     <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Deliciass" class="logo-1">
                 </div>
-                
-                <!-- Barra de búsqueda -->
-                <div class="search-container">
-                    <input type="text" placeholder="Buscar..." class="search-input-1">
-                </div>
-                
                 <!-- Enlaces de navegación -->
                 <div class="link-bar-1">
-                    <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Nosotros</a>
-                    |
                     <a href="{{ route('menu') }}" class="link-bar-name">Menu</a>
                     |
                     <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Reservar</a>

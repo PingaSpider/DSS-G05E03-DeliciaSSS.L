@@ -183,4 +183,63 @@ class WebProductoController extends Controller
             ]
         ];
     }
+
+    public function buscar(Request $request)
+    {
+        try {
+            // Validar la solicitud
+            $request->validate([
+                'q' => 'required|string|min:2'
+            ]);
+            
+            $query = $request->input('q');
+            
+            // Buscar productos que coincidan con la consulta
+            $productos = Producto::where('nombre', 'like', "%{$query}%")
+                ->where('disponible', true)
+                ->with(['comida', 'bebida']) // Cargar relaciones
+                ->get(); // Obtener todos los campos
+            
+            // Transformar los productos para incluir descripción
+            $productos = $productos->map(function ($producto) {
+                // Crear un nuevo objeto con solo los campos necesarios
+                return [
+                    'cod' => $producto->cod,
+                    'nombre' => $producto->nombre,
+                    'precio' => $producto->pvp,
+                    'imagen_url' => $producto->imagen_url,
+                    'descripcion' => $this->obtenerDescripcion($producto)
+                ];
+            });
+            
+            // Devolver JSON
+            return response()->json($productos, 200, [
+                'Content-Type' => 'application/json; charset=utf-8',
+            ]);
+        } catch (\Exception $e) {
+            // Registrar el error
+            \Log::error('Error en búsqueda de productos: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            // Devolver respuesta de error
+            return response()->json([
+                'error' => true,
+                'message' => 'Error al buscar productos: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Obtener la descripción del producto según su tipo
+     */
+    private function obtenerDescripcion($producto)
+    {
+        if ($producto->comida) {
+            return $producto->comida->descripcion ?? '';
+        } elseif ($producto->bebida) {
+            return ($producto->bebida->tipoBebida ?? '') . ' - ' . ($producto->bebida->tamanyo ?? '');
+        }
+        
+        return '';
+    }
 }

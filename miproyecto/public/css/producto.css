@@ -1,11 +1,11 @@
 /* Estilos generales */
-* {
+*{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-body {
+/* Estilos base */
+html, body {
     font-family: 'Raleway', sans-serif;
     font-size: 16px;
     color: #060300;
@@ -13,8 +13,12 @@ body {
     box-sizing: border-box;
 }
 
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
 .container {
-    max-width: 1200px;
+    width: 90%;
     margin: 0 auto;
     min-height: 100vh;
     display: flex;
@@ -42,16 +46,30 @@ a {
 }
 
 /* Header */
-.header {
-    position: relative;
-    z-index: 20;
+header {
+    padding: 20px 0;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 0;
-    border-bottom: 1px solid #e5e5e5;
-    background-color: #FEFCE0;
 }
+
+.navigation-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+/* Logo */
+.logo-container {
+    max-width: 100px;
+    max-height: 100px;
+    flex: 0 0 auto;
+}
+
 
 .logo img {
     height: 45px;
@@ -767,6 +785,24 @@ a {
     font-size: 16px;
 }
 
+.to-cart-btn {
+    background-color: #ff8c38;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+.to-cart-btn:hover {
+    background-color: #ff6f00;
+}
+
 .add-to-cart-btn:hover {
     background-color: #e67d2e;
 }
@@ -802,4 +838,169 @@ a {
 .product-rating i {
     color: #ffa500;
     font-size: 14px;
+}
+
+/* Header y navegación */
+header {
+    padding: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navigation-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+
+/* Logo */
+.logo-container {
+    max-width: 100px;
+    max-height: 100px;
+    flex: 0 0 auto;
+}
+
+.logo img {
+    height: 5%;
+    max-width: 5%;
+}
+
+/* Enlaces de navegación */
+/* Enlaces de navegación */
+.link-bar-1 {
+    width: 100%;
+    max-width: 542px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #000000;
+    font-family: "Raleway";
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+}
+
+.link-bar-1 a, .main-nav a {
+    text-decoration: none;
+    color: inherit;
+    margin: 0 10px;
+}
+
+.link-bar-1 a:hover, .main-nav a:hover {
+    color: #F39221;
+    text-decoration: underline;
+}
+
+
+/* Avatar */
+.avatar-1, .user-icon {
+    width: 35px;
+    height: 35px;
+    background: #FEFCE0;
+    border-width: 1px;
+}
+
+.avatar-1 img, .user-icon img {
+    width: 100%;
+    height: 100%;
+}
+
+#avatar:hover, .user-icon img:hover {
+    cursor: pointer;
+    padding: 2px;
+}
+
+/*Navegador de enlaces centrados*/
+.main-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Añade o modifica este CSS en tu archivo producto.css o home.css */
+.main-nav, .link-bar-1 {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Esto centra los elementos horizontalmente */
+    align-items: center;
+    margin: 0 auto; /* Esto ayuda a centrar el contenedor */
+}
+
+.main-nav ul, .link-bar-1 {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+    justify-content: center; /* Esto centra los elementos dentro del contenedor */
+}
+
+/* Ajusta el diseño del header para dar más espacio al centro */
+.navigation-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* Divide en 3 secciones, dando más espacio al centro */
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-container {
+    grid-column: 1; /* Primera columna */
+    justify-self: start; /* Alinea a la izquierda */
+}
+
+.link-bar-1, .main-nav {
+    grid-column: 2; /* Segunda columna (la del centro) */
+    justify-self: center; /* Centra en su columna */
+}
+
+.actions, .order-button-container, .avatar-container {
+    grid-column: 3; /* Tercera columna */
+    justify-self: end; /* Alinea a la derecha */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Ajusta el diseño responsivo */
+@media (max-width: 768px) {
+    .navigation-container {
+        grid-template-columns: 1fr; /* En móviles, una sola columna */
+        grid-template-rows: auto auto auto; /* Tres filas */
+    }
+    
+    .logo-container {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: center;
+    }
+    
+    .link-bar-1, .main-nav {
+        grid-column: 1;
+        grid-row: 2;
+    }
+    
+    .actions, .order-button-container, .avatar-container {
+        grid-column: 1;
+        grid-row: 3;
+        justify-self: center;
+    }
+}
+
+/* Ajusta el tamaño del logo */
+.logo-container {
+    max-width: 80px; /* Reduce el tamaño máximo */
+    max-height: 80px; /* Reduce el tamaño máximo */
+    flex: 0 0 auto;
+}
+
+.logo-container img {
+    width: 100%; /* Asegura que la imagen se ajuste al contenedor */
+    height: auto; /* Mantiene la proporción */
+    max-width: 80px; /* Limita el ancho máximo */
 }
