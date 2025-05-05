@@ -45,7 +45,7 @@ class Producto extends Model
             $extensiones = ['png', 'jpg', 'jpeg', 'webp'];
             
             foreach ($extensiones as $ext) {
-                $path = "assets/images/comida/{$categoria}/{$value}";
+                $path = "assets/images/comida/{$categoria}/{$value}.{$ext}";
                 if (file_exists(public_path($path))) {
                     return asset($path);
                 }

@@ -22,7 +22,7 @@ class ProductoSeeder extends Seeder
             'stock' => 50,
             'disponible'=> true,
             'precioCompra'=> '0.70',
-            'imagen_url' => 'bb01.png'
+            'imagen_url' => 'bb01'
         ]);
 
         Bebida::create([
@@ -39,7 +39,7 @@ class ProductoSeeder extends Seeder
             'stock' => 50,
             'disponible'=> true,
             'precioCompra'=> '0.70',
-            'imagen_url' => 'bb02.png'        
+            'imagen_url' => 'bb02'        
         ]);
 
         Bebida::create([
@@ -56,7 +56,7 @@ class ProductoSeeder extends Seeder
             'stock' => 50,
             'disponible'=> true,
             'precioCompra'=> '0.70',
-            'imagen_url' => 'bb03.png'
+            'imagen_url' => 'bb03'
         ]);
 
         Bebida::create([
@@ -73,7 +73,7 @@ class ProductoSeeder extends Seeder
             'stock' => 50,
             'disponible'=> true,
             'precioCompra'=> '0.70',
-            'imagen_url' => 'bb04.png'
+            'imagen_url' => 'bb04'
         ]);
 
         Bebida::create([
@@ -90,7 +90,7 @@ class ProductoSeeder extends Seeder
             'stock' => 30,
             'disponible'=> true,
             'precioCompra'=> '1.20',
-            'imagen_url' => 'bb05.png'
+            'imagen_url' => 'bb05'
         ]);
 
         Bebida::create([
@@ -107,7 +107,7 @@ class ProductoSeeder extends Seeder
             'stock' => 30,
             'disponible'=> true,
             'precioCompra'=> '1.20',
-            'imagen_url' => 'bb06.png'
+            'imagen_url' => 'bb06'
         ]);
 
         Bebida::create([
@@ -124,7 +124,7 @@ class ProductoSeeder extends Seeder
             'stock' => 30,
             'disponible'=> true,
             'precioCompra'=> '1.20',
-            'imagen_url' => 'bb07.png'
+            'imagen_url' => 'bb07'
         ]);
 
         Bebida::create([
@@ -141,7 +141,7 @@ class ProductoSeeder extends Seeder
             'stock' => 60,
             'disponible'=> true,
             'precioCompra'=> '0.50',
-            'imagen_url' => 'bb08.png'
+            'imagen_url' => 'bb08'
         ]);
 
         Bebida::create([
@@ -158,7 +158,7 @@ class ProductoSeeder extends Seeder
             'stock' => 50,
             'disponible'=> true,
             'precioCompra'=> '0.80',
-            'imagen_url' => 'bb09.png'
+            'imagen_url' => 'bb09'
         ]);
 
         Bebida::create([
@@ -175,7 +175,7 @@ class ProductoSeeder extends Seeder
             'stock' => 20,
             'disponible'=> true,
             'precioCompra'=> '5.00',
-            'imagen_url' => 'bb10.png'
+            'imagen_url' => 'bb10'
         ]);
 
         Bebida::create([
@@ -192,7 +192,7 @@ class ProductoSeeder extends Seeder
             'stock' => 15,
             'disponible'=> true,
             'precioCompra'=> '4.50',
-            'imagen_url' => 'bb11.png'
+            'imagen_url' => 'bb11'
         ]);
 
         Bebida::create([
@@ -209,7 +209,7 @@ class ProductoSeeder extends Seeder
             'stock' => 100,
             'disponible'=> true,
             'precioCompra'=> '0.30',
-            'imagen_url' => 'bb12.png'
+            'imagen_url' => 'bb12'
         ]);
 
         Bebida::create([
@@ -226,7 +226,7 @@ class ProductoSeeder extends Seeder
             'stock' => 100,
             'disponible'=> true,
             'precioCompra'=> '0.50',
-            'imagen_url' => 'bb13.png'
+            'imagen_url' => 'bb13'
         ]);
 
         Bebida::create([
@@ -245,7 +245,7 @@ class ProductoSeeder extends Seeder
             'stock' => 25,
             'disponible'=> true,
             'precioCompra'=> '3.00',
-            'imagen_url' => 'de01.png'
+            'imagen_url' => 'de01'
         ]);
 
         Comida::create([
@@ -261,7 +261,7 @@ class ProductoSeeder extends Seeder
             'stock' => 20,
             'disponible'=> true,
             'precioCompra'=> '4.50',
-            'imagen_url' => 'de02.png'
+            'imagen_url' => 'de02'
         ]);
 
         Comida::create([
@@ -277,7 +277,7 @@ class ProductoSeeder extends Seeder
             'stock' => 15,
             'disponible'=> true,
             'precioCompra'=> '3.80',
-            'imagen_url' => 'de03.png'
+            'imagen_url' => 'de03'
         ]);
 
         Comida::create([
@@ -293,7 +293,7 @@ class ProductoSeeder extends Seeder
             'stock' => 30,
             'disponible'=> true,
             'precioCompra'=> '2.00',
-            'imagen_url' => 'de04.png'
+            'imagen_url' => 'de04'
         ]);
 
         Comida::create([
@@ -309,7 +309,7 @@ class ProductoSeeder extends Seeder
             'stock' => 15,
             'disponible'=> true,
             'precioCompra'=> '4.00',
-            'imagen_url' => 'de05.png'
+            'imagen_url' => 'de05'
         ]);
 
         Comida::create([
@@ -327,7 +327,7 @@ class ProductoSeeder extends Seeder
             'stock' => 25,
             'disponible'=> true,
             'precioCompra'=> '5.00',
-            'imagen_url' => 'hb01.png'
+            'imagen_url' => 'hb01'
         ]);
 
         Comida::create([
@@ -343,7 +343,7 @@ class ProductoSeeder extends Seeder
             'stock' => 30,
             'disponible'=> true,
             'precioCompra'=> '5.50',
-            'imagen_url' => 'hb02.png'
+            'imagen_url' => 'hb02'
         ]);
 
         Comida::create([
@@ -359,7 +359,7 @@ class ProductoSeeder extends Seeder
             'stock' => 20,
             'disponible'=> true,
             'precioCompra'=> '7.00',
-            'imagen_url' => 'hb03.png'
+            'imagen_url' => 'hb03'
         ]);
 
         Comida::create([
@@ -375,7 +375,7 @@ class ProductoSeeder extends Seeder
             'stock' => 15,
             'disponible'=> true,
             'precioCompra'=> '4.50',
-            'imagen_url' => 'hb04.png'
+            'imagen_url' => 'hb04'
         ]);
 
         Comida::create([
@@ -391,7 +391,7 @@ class ProductoSeeder extends Seeder
             'stock' => 25,
             'disponible'=> true,
             'precioCompra'=> '6.00',
-            'imagen_url' => 'hb05.png'
+            'imagen_url' => 'hb05'
         ]);
 
         Comida::create([
@@ -407,7 +407,7 @@ class ProductoSeeder extends Seeder
             'stock' => 15,
             'disponible'=> true,
             'precioCompra'=> '8.00',
-            'imagen_url' => 'hb06.png'
+            'imagen_url' => 'hb06'
         ]);
 
         Comida::create([
@@ -423,7 +423,7 @@ class ProductoSeeder extends Seeder
             'stock' => 20,
             'disponible'=> true,
             'precioCompra'=> '6.50',
-            'imagen_url' => 'hb07.png'
+            'imagen_url' => 'hb07'
         ]);
 
         Comida::create([
@@ -439,7 +439,7 @@ class ProductoSeeder extends Seeder
             'stock' => 50,
             'disponible'=> true,
             'precioCompra'=> '1.00',
-            'imagen_url' => 'hb08.png'
+            'imagen_url' => 'hb08'
         ]);
 
         Comida::create([
@@ -457,7 +457,7 @@ class ProductoSeeder extends Seeder
             'stock' => 15,
             'disponible'=> true,
             'precioCompra'=> '6.00',
-            'imagen_url' => 'pz01.png'
+            'imagen_url' => 'pz01'
         ]);
 
         Comida::create([
@@ -473,7 +473,7 @@ class ProductoSeeder extends Seeder
             'stock' => 15,
             'disponible'=> true,
             'precioCompra'=> '5.50',
-            'imagen_url' => 'pz02.png'
+            'imagen_url' => 'pz02'
         ]);
 
         Comida::create([
@@ -489,7 +489,7 @@ class ProductoSeeder extends Seeder
             'stock' => 20,
             'disponible'=> true,
             'precioCompra'=> '5.00',
-            'imagen_url' => 'pz03.png'
+            'imagen_url' => 'pz03'
         ]);
 
         Comida::create([
@@ -505,7 +505,7 @@ class ProductoSeeder extends Seeder
             'stock' => 15,
             'disponible'=> true,
             'precioCompra'=> '5.50',
-            'imagen_url' => 'pz04.png'
+            'imagen_url' => 'pz04'
         ]);
 
         Comida::create([
@@ -521,7 +521,7 @@ class ProductoSeeder extends Seeder
             'stock' => 20,
             'disponible'=> true,
             'precioCompra'=> '6.50',
-            'imagen_url' => 'pz05.png'
+            'imagen_url' => 'pz05'
         ]);
 
         Comida::create([
@@ -537,7 +537,7 @@ class ProductoSeeder extends Seeder
             'stock' => 15,
             'disponible'=> true,
             'precioCompra'=> '7.00',
-            'imagen_url' => 'pz06.png'
+            'imagen_url' => 'pz06'
         ]);
 
         Comida::create([
@@ -555,7 +555,7 @@ class ProductoSeeder extends Seeder
             'stock' => 20,
             'disponible'=> true,
             'precioCompra'=> '2.50',
-            'imagen_url' => 'po01.png'
+            'imagen_url' => 'po01'
         ]);
 
         Comida::create([
@@ -571,7 +571,7 @@ class ProductoSeeder extends Seeder
             'stock' => 15,
             'disponible'=> true,
             'precioCompra'=> '3.00',
-            'imagen_url' => 'po02.png'
+            'imagen_url' => 'po02'
         ]);
 
         Comida::create([
@@ -587,7 +587,7 @@ class ProductoSeeder extends Seeder
             'stock' => 25,
             'disponible'=> true,
             'precioCompra'=> '2.00',
-            'imagen_url' => 'po03.png'
+            'imagen_url' => 'po03'
         ]);
 
         Comida::create([
@@ -603,7 +603,7 @@ class ProductoSeeder extends Seeder
             'stock' => 20,
             'disponible'=> true,
             'precioCompra'=> '2.50',
-            'imagen_url' => 'po04.png'
+            'imagen_url' => 'po04'
         ]);
 
         Comida::create([
