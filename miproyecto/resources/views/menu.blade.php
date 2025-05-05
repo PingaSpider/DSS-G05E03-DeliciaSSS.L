@@ -87,7 +87,7 @@
                                 @foreach($curso['platos'] as $plato)
                                 <div class="menu-item">
                                     <div class="item-image">
-                                        <img src="{{ asset('assets/menu/' . $plato['imagen']) }}" alt="{{ $plato['descripcion'] }}">
+                                        <img src="{{ asset('assets/images/comida/' . $plato['imagen']) }}" alt="{{ $plato['descripcion'] }}">
                                     </div>
                                     <div class="item-description">{{ $plato['descripcion'] }}</div>
                                 </div>
@@ -111,12 +111,12 @@
                             ] as $producto)
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/productos/' . $producto['imagen']) }}" alt="{{ $producto['nombre'] }}">
+                                    <img src="{{ asset('assets/images/comida/' . $producto['imagen']) }}" alt="test">
                                 </div>
                                 <div class="product-info">
-                                    <div class="product-name">{{ $producto['nombre'] }}</div>
-                                    <div class="product-rating">{{ str_repeat('★', $producto['rating']) }}</div>
-                                    <div class="product-price">{{ $producto['precio'] }}</div>
+                                <div class="product-name">{{ $producto['nombre'] }}</div>
+                                <div class="product-rating">{{ str_repeat('★', $producto['rating']) }}</div>
+                                <div class="product-price">{{ $producto['precio'] }}</div>
                                 </div>
                             </div>
                             @endforeach
@@ -153,7 +153,7 @@
                         @foreach($seccion['items'] as $item)
                         <div class="category-item">
                             <div class="item-image">
-                                <img src="{{ asset('assets/menu/' . $item['imagen']) }}" alt="{{ $item['nombre'] }}">
+                                <img src="{{ asset('assets/images/comida' . $item['imagen']) }}" alt="{{ $item['nombre'] }}">
                             </div>
                             <div class="item-details">
                                 <h3>{{ $item['nombre'] }}</h3>
