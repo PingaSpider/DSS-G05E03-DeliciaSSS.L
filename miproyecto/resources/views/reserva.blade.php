@@ -7,97 +7,34 @@
   <title>Delicia'SS - Reserva tu Mesa</title>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
   <link href="{{ asset('css/reserva.css') }}" rel="stylesheet">
-  <style>
-    .modal-hidden {
-      display: none !important;
-    }
-    .alert {
-      padding: 15px;
-      margin-bottom: 20px;
-      border: 1px solid transparent;
-      border-radius: 4px;
-    }
-    .alert-success {
-      color: #3c763d;
-      background-color: #dff0d8;
-      border-color: #d6e9c6;
-    }
-    .alert-error {
-      color: #a94442;
-      background-color: #f2dede;
-      border-color: #ebccd1;
-    }
-    .selected {
-      background-color: #4CAF50;
-      color: white;
-    }
-    .user-info {
-      margin-bottom: 20px;
-      text-align: right;
-      font-style: italic;
-      color: #666;
-    }
-    .user-info strong {
-      color: #333;
-    }
-    .mesa-selector {
-      margin-top: 20px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      background-color: #f9f9f9;
-    }
-    .mesa-selector select {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background-color: white;
-      font-family: 'Raleway', sans-serif;
-    }
-    .mesa-selector p {
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-    .mesa-option-disabled {
-      color: #999;
-    }
-    .mesa-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: #333;
-    }
-  </style>
 </head>
 <body style="background-color: #FEFCE0; margin: 0; padding: 20px; font-family: 'Raleway', sans-serif;">
-  <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
-    <div>
-      <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Delicia'SS Logo" style="height: 50px;">
+  <!-- Reemplaza tu header actual con este -->
+  <header class="header">
+    <div class="logo-container">
+      <a href="{{ route('home') }}">
+        <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Delicia'SS Logo">
+      </a>
     </div>
     
-    <div style="display: flex; align-items: center;">
-        <div class="search-input-1" style="position: relative; margin-right: 50px;">
-            <input type="text" placeholder="Search..." style="width: 100%; height: 100%; padding-left: 10px; border: 1px solid #FEFCE0; background-color: transparent;">
-          </div>
-      
-      <div class="link-bar-1" style="display: flex; justify-content: space-between; margin-right: 20px;">
-        <a href="{{ route('reservaciones.index') }}" style="text-decoration: none; color: #000000; margin: 0 20px;">Reservas</a>
-        <span style="color: #000000;">|</span>
-        <a href="{{ route('menu') }}" style="text-decoration: none; color: #000000; margin: 0 20px;">Menu</a>
-        <span style="color: #000000;">|</span>
+    <nav class="main-nav">
+      <div class="nav-links">
+        <a href="{{ route('home') }}">Home</a>
+        |
+        <a href="{{ route('menu') }}">Menus</a>
+        |
+        <a href="{{ route('producto.show') }}">Carta</a>
       </div>
-      
-      <div style="display: flex; align-items: center;">
-        <button class="button-1-copy-1">Pedir Online</button>
-        <div class="avatar-1" style="display: flex; justify-content: center; align-items: center; margin-left: 10px;">
-          <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar" style="width: 20px; height: 20px;">
-        </div>
-      </div>
+    </nav>
+    
+    <div class="user-container">
+      <a href="{{ route('user.profile') }}" class="user-icon">
+        <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
+      </a>
     </div>
   </header>
   
-  <main style="max-width: 800px; margin: 0 auto;">
+  <main class="container">
     <h1 class="reserva-tu-mesa">Reserva tu Mesa</h1>
     
     <!-- Mostrar información del usuario -->
@@ -186,10 +123,10 @@
         </p>
       </div>
       
-      <div style="margin: 30px 0;">
+      <div class="franja-horaria-selector">
         <p class="elige-una-franja-horaria-disponible-">Elige una franja horaria disponible:</p>
         
-        <div style="display: flex; justify-content: space-between; margin-top: 20px; max-width: 650px;">
+        <div class="franja-horaria-buttons">
           @foreach($franjasHorarias ?? ['15:00', '15:15', '15:30', '15:45'] as $key => $franja)
             <button type="button" class="button-{{ $key + 1 }} {{ (old('hora') == $franja || (isset($horaSeleccionada) && $horaSeleccionada == $franja)) ? 'selected' : '' }}" data-hora="{{ $franja }}">{{ $franja }}</button>
           @endforeach
