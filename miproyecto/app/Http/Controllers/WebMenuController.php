@@ -107,7 +107,7 @@ class WebMenuController extends Controller
             $cod = $producto->cod;
             $tipo = substr($cod, 0, 1); // C para comidas, B para bebidas
             $plato = [
-                'imagen' => 'placeholder.jpg',
+                'imagen' => $producto->imagen_url,
                 'descripcion' => $producto->nombre
             ];
 
@@ -187,7 +187,7 @@ class WebMenuController extends Controller
             $recomendados = [];
             foreach ($productos as $producto) {
                 $recomendados[] = [
-                    'imagen' => 'placeholder.jpg',
+                    'imagen' => $producto->imagen_url,
                     'nombre' => $producto->nombre,
                     'rating' => rand(3, 5), // Rating aleatorio para demostración
                     'precio' => $producto->pvp . '€'
@@ -284,7 +284,7 @@ class WebMenuController extends Controller
                     }
 
                     $productos[] = [
-                        'imagen' => 'placeholder.jpg',
+                        'imagen' => 'placeholder.jpg', //$producto->imagen_url
                         'nombre' => $item->nombre,
                         'descripcion' => $descripcion,
                         'precio' => $item->pvp . '€'

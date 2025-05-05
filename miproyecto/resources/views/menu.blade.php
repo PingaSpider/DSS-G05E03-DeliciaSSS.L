@@ -111,7 +111,7 @@
                             ] as $producto)
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/images/comida/' . $producto['imagen']) }}" alt="test">
+                                    <img src="{{ $producto['imagen'] }}" alt="{{ $producto['nombre'] }}">
                                 </div>
                                 <div class="product-info">
                                 <div class="product-name">{{ $producto['nombre'] }}</div>
