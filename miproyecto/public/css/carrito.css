@@ -65,16 +65,17 @@ a {
     background-color: #f5f5f5;
 }
 
-/* Header */
-/* Contenedor del header */
+/* Reorganizamos el header para que los elementos estén mejor distribuidos */
 .header {
     display: flex;
     align-items: center;
     padding: 10px 0;
     border-bottom: 1px solid #e5e5e5;
-    flex-wrap: nowrap; /* Evita que los elementos se envuelvan en el modo desktop */
-    position: relative; /* Para posicionamiento */
+    flex-wrap: nowrap;
+    position: relative;
+    justify-content: space-between; /* Distribuimos los elementos uniformemente */
 }
+
 
 /* Logo ajustado */
 .logo {
@@ -98,12 +99,16 @@ a {
 }
 
 
-/* Navegación principal */
+/* Centrar el menú de navegación */
+/* Centrar el menú de navegación */
 .main-nav {
-    flex: 0 0 auto;
-    margin-left: 10%; /* Empuja la navegación a la derecha */
+    position: absolute; /* Lo posicionamos absolutamente */
+    left: 50%; /* Lo colocamos al 50% del ancho del header */
+    transform: translateX(-50%); /* Lo centramos exactamente */
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: auto;
 }
 
 .main-nav ul {
@@ -112,20 +117,31 @@ a {
     gap: 15px;
 }
 
-/* Barra de búsqueda */
+.main-nav li:hover {
+   color: #F39221;
+   text-decoration: underline;
+}
+
+/* Hacer la barra de búsqueda más grande */
 .search-bar {
     flex: 1;
-    margin: 0 5px;
-    max-width: 300px; /* Tamaño base */
+    margin: 0 10px;
+    max-width: 400px; /* Aumentado de 300px */
+}
+
+/* Ajustamos el contenedor del avatar para que esté correctamente posicionado */
+.avatar-container {
+    margin-left: 15px; /* Reducimos el margen para que no quede tan separado */
+    flex: 0 0 auto;
 }
 
 .search-bar input {
     width: 100%;
-    padding: 10px 12px;
+    padding: 12px 15px; /* Aumentado de 10px 12px */
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 14px;
-    margin-left: 20%;
+    font-size: 16px; /* Aumentado de 14px */
+    margin-left: 0; /* Quitamos el margen izquierdo para centrarla mejor */
 }
 
 /* Acciones (iconos) */
@@ -923,4 +939,8 @@ span.material-symbols-outlined {
 
 .search-product-info h4:hover {
     color: #F39221;
+}
+
+.avatar-container{
+    margin-left: 50%;
 }

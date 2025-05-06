@@ -72,15 +72,13 @@
         </div>
 
         <!-- Productos del pedido -->
-        <div class="order-products">
-            <h2>Productos</h2>
-            
+        <h2>Productos</h2>  
+        <div class="order-products">          
             <div class="product-list">
                 @forelse($pedido->lineasPedido as $linea)
                 <div class="product-item">
                     <div class="product-image">
-                        <img src="{{ $linea->producto->imagen ?? asset('product-placeholder.png') }}" alt="{{ $linea->producto->nombre ?? 'Producto' }}" 
-                            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\' viewBox=\'0 0 80 80\'%3E%3Crect width=\'80\' height=\'80\' fill=\'%23f0f0f0\'/%3E%3Ctext x=\'40\' y=\'40\' font-family=\'Arial\' font-size=\'12\' text-anchor=\'middle\' fill=\'%23999\' %3EProducto%3C/text%3E%3C/svg%3E';">
+                        <img src="{{ $linea->producto->imagen_url ?? asset('assets/images/comida/no-encontrado.png') }}" alt="{{ $linea->producto->nombre ?? 'Producto no disponible' }}" class="product-thumbnail">
                     </div>
                     <div class="product-details">
                         <div class="product-name">{{ $linea->producto->nombre ?? 'Producto no disponible' }}</div>
@@ -99,14 +97,6 @@
             
             <!-- Resumen de costos -->
             <div class="cost-summary">
-                <div class="cost-row">
-                    <span class="cost-label">Subtotal:</span>
-                    <span class="cost-value">{{ number_format($pedido->total, 2, ',', '.') }} €</span>
-                </div>
-                <div class="cost-row">
-                    <span class="cost-label">Gastos de envío:</span>
-                    <span class="cost-value">{{ number_format(0, 2, ',', '.') }} €</span>
-                </div>
                 <div class="cost-row total-row">
                     <span class="cost-label">Total:</span>
                     <span class="cost-value">{{ number_format($pedido->total, 2, ',', '.') }} €</span>
@@ -120,16 +110,21 @@
             <h2>Seguimiento del pedido</h2>
             
             <div class="tracking-steps">
-                <div class="step {{ in_array($pedido->estado, ['Pendiente', 'En Preparación', 'Listo', 'Entregado']) ? 'active' : '' }}">
-                    <div class="step-icon">1</div>
-                    <div class="step-info">
-                        <h4>Pedido recibido</h4>
-                        <p>Tu pedido ha sido registrado.</p>
+                    <div class="step {{ in_array($pedido->estado, ['Pendiente', 'En Preparación', 'Listo', 'Entregado']) ? 'active' : '' }}">
+
+                        <div class="step-icon" style="background-color:#F39221" >1</div>
+                        <div class="step-info">
+                            <h4>En carrito</h4>
+                            <p>Tu pedido ha sido registrado.</p>
+                        </div>
                     </div>
-                </div>
                 <div class="step-connector"></div>
                 <div class="step {{ in_array($pedido->estado, ['En Preparación', 'Listo', 'Entregado']) ? 'active' : '' }}">
-                    <div class="step-icon">2</div>
+                    @if($pedido->estado === 'preparando')
+                        <div class="step-icon" style="background-color:#F39221">2</div>
+                    @else
+                        <div class="step-icon">2</div>
+                    @endif
                     <div class="step-info">
                         <h4>Preparando</h4>
                         <p>Tu pedido está siendo preparado.</p>

@@ -222,7 +222,7 @@ select:focus {
     border-color: #333;
 }
 
-.btn-secondary {
+.btn-secondary-2 {
     background-color:#FEFCE0;
     color: #e46a20;
     border: 1px solid #e46a20;
@@ -234,7 +234,23 @@ select:focus {
 }
 
 .btn-secondary:hover {
-    background-color: #f5f5f5;
+    background-color: #e46a20;
+}
+
+.btn-secondary {
+    background-color: #F39221;
+    color: #333 ;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: inherit;
+    text-decoration: none;
+}
+
+.btn-secondary-2:hover {
+    background-color: #e46a20;
+    color: white;
 }
 
 .btn-text {

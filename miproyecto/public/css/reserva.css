@@ -70,6 +70,11 @@ body {
     border-radius: 50%;
     object-fit: cover;
   }
+
+  .user-icon:hover {
+    cursor: pointer;
+    padding: 2px;
+  }
   
   /* Media queries para responsividad */
   @media (max-width: 768px) {

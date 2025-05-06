@@ -11,13 +11,6 @@
     object-fit: cover;
 }
 
-/*estilo avatar, reducir tamaño cuando es apuntado*/
-.avatar:hover {
-    width: 35px;
-    height: 35px;
-    transition: width 0.1s, height 0.1s;
-}
-
 /* Menú desplegable */
 .dropdown-menu {
     position: absolute;

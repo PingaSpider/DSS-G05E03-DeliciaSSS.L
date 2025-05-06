@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="{{ asset('js/carrito.js') }}"></script>
     <script src="{{ asset('js/search-products.js') }}"></script>
+    <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('css/sesion.css') }}">
 </head>
 <body>
     <div class="container">
@@ -21,7 +23,7 @@
                 </a>
             </div>
             <div class="search-bar" id="product-search">
-                <input type="text" placeholder="Search...">
+                <input type="text" placeholder="Buscar Productos....">
             </div>
             <nav class="main-nav">
                 <ul>
@@ -32,11 +34,26 @@
                     <li><a href="{{ route('reservaciones.index') }}">Reservas</a></li>
                 </ul>
             </nav>
-            <div class="actions">
-                <a href="#" class="user-icon">
-                    <img src="{{ asset('/assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Usuario" class="icon">
-                </a>
-            </div>
+            <!-- Estructura HTML para el avatar con menú desplegable -->
+            <div class="avatar-container">
+                    <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" id="avatar" class="avatar" alt="Avatar">
+                    <div class="dropdown-menu" id="avatarMenu">
+                        @auth
+                            <!-- Usuario autenticado: muestra opciones de perfil y cerrar sesión -->
+                            <a href="{{ route('user.profile') }}">Mi Perfil</a>
+                            
+                            <!-- Formulario de logout estilizado como enlace -->
+                            <form action="{{ route('logout') }}" method="POST" id="logout-form" class="logout-link-form">
+                                @csrf
+                                <button type="submit" class="link-button">Cerrar sesión</button>
+                            </form>
+                        @else
+                            <!-- Usuario no autenticado: muestra opciones de login y registro -->
+                            <a href="{{ route('login.form') }}">Iniciar sesión</a>
+                            <a href="{{ route('registro.form') }}">Registrarse</a>
+                        @endauth
+                    </div>
+                </div>
         </header>
 
         <!-- Checkout Steps -->

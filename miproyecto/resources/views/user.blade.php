@@ -87,7 +87,7 @@
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button type="button" class="btn-secondary" onclick="resetForm()">Descartar</button>
+                        <button type="button" class="btn-secondary-2" onclick="resetForm()">Descartar</button>
                         <button type="submit" class="btn-primary">Actualizar información</button>
                     </div>
                 </form>
@@ -156,9 +156,7 @@
                                                 $firstLine = $pedido->lineasPedido->first();
                                                 $producto = $firstLine->producto ?? null;
                                             @endphp
-                                            <img src="{{ $producto && isset($producto->imagen) ? $producto->imagen : asset('product-placeholder.png') }}" 
-                                                alt="Producto" class="product-thumbnail" 
-                                                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'50\' viewBox=\'0 0 50 50\'%3E%3Crect width=\'50\' height=\'50\' fill=\'%23f0f0f0\'/%3E%3Ctext x=\'25\' y=\'30\' font-family=\'Arial\' font-size=\'10\' text-anchor=\'middle\' fill=\'%23999\' %3EProducto%3C/text%3E%3C/svg%3E';">
+                                            <i class="fa-solid fa-basket-shopping"></i>
                                             <span class="product-count">{{ count($pedido->lineasPedido) }} {{ count($pedido->lineasPedido) == 1 ? 'producto' : 'productos' }}</span>
                                         @else
                                             <img src="{{ asset('product-placeholder.png') }}" alt="Producto" class="product-thumbnail" 
