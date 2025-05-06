@@ -1,0 +1,43 @@
+ /* Estilos para el contenedor del avatar */
+ .avatar-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Estilos para el menú desplegable */
+.dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+    display: none; /* Oculto por defecto */
+}
+
+.dropdown-menu a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background 0.3s;
+}
+
+.dropdown-menu a:hover {
+    background-color: #F39221;
+    color:#333;
+}
+
+/* Clase para mostrar el menú */
+.show {
+    display: block;
+}

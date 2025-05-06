@@ -7,6 +7,9 @@
   <title>Delicia'SS - Reserva tu Mesa</title>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
   <link href="{{ asset('css/reserva.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/sesion.css') }}" rel="stylesheet">
+  <script src="{{ asset('js/reserva.js') }}"></script>
+  <script src="{{ asset('js/sesionHandler.js') }}"></script>
 </head>
 <body style="background-color: #FEFCE0; margin: 0; padding: 20px; font-family: 'Raleway', sans-serif;">
   <!-- Reemplaza tu header actual con este -->
@@ -26,11 +29,14 @@
         <a href="{{ route('producto.show') }}">Carta</a>
       </div>
     </nav>
-    
-    <div class="user-container">
-      <a href="{{ route('user.profile') }}" class="user-icon">
-        <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
-      </a>
+    <div class="avatar-container">
+      <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
+      <div class="dropdown-menu" id=avatarMenu>
+        <a href="{{ route('user.profile') }}" class="dropdown-item">Perfil</a>
+        <a href="{{ route('logout') }}" class="dropdown-item">Cerrar sesión</a>
+        <a href="{{ route('login') }}" class="dropdown-item">Iniciar sesión</a>
+        <a href="{{ route('registro') }}" class="dropdown-item">Registrarse</a>
+      </div>
     </div>
   </header>
   
@@ -172,7 +178,6 @@
     </div>
   </div>
 
-  <script src="{{ asset('js/reserva.js') }}"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Referencias a elementos del DOM

@@ -8,7 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/producto.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sesion.css') }}">
     <script src="{{ asset('js/producto.js') }}"></script>
+    <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
+
 </head>
 <body>
     <div class="container">
@@ -39,10 +42,13 @@
                     </a>
                     
                     <!-- Avatar de usuario -->
-                    <div class="avatar-1">
-                        <a href="{{ route('user.profile') }}">
-                            <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Avatar" id="avatar">
-                        </a>
+                    <div class="avatar-container">
+                    <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
+                    <div class="dropdown-menu" id=avatarMenu>
+                        <a href="{{ route('user.profile') }}" class="dropdown-item">Perfil</a>
+                        <a href="{{ route('logout') }}" class="dropdown-item">Cerrar sesión</a>
+                        <a href="{{ route('login') }}" class="dropdown-item">Iniciar sesión</a>
+                        <a href="{{ route('registro') }}" class="dropdown-item">Registrarse</a>
                     </div>
                 </div>
             </div>

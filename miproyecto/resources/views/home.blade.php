@@ -8,6 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
     <link href="{{ asset('css/home.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sesion.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
+
 </head>
 <body>
     <div class="container">
@@ -32,13 +35,13 @@
                     <button class="button-1-copy">Pedir Online</button>
                 </div>
                 
-                <!-- Avatar de usuario -->
                 <div class="avatar-container">
-                    <div class="avatar-1">
-                        <a href="{{route('user.profile')}}">
-                            <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Avatar" id="avatar">
-                        </a>
-                    </div>
+                <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
+                <div class="dropdown-menu" id=avatarMenu>
+                    <a href="{{ route('user.profile') }}" class="dropdown-item">Perfil</a>
+                    <a href="{{ route('logout') }}" class="dropdown-item">Cerrar sesión</a>
+                    <a href="{{ route('login') }}" class="dropdown-item">Iniciar sesión</a>
+                    <a href="{{ route('registro') }}" class="dropdown-item">Registrarse</a>
                 </div>
             </div>
         </header>
