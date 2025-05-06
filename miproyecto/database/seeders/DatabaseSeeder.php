@@ -8,6 +8,8 @@ use Database\Seeders\MesasSeeder;
 use Database\Seeders\ReservasSeeder;
 use Database\Seeders\ProductosSeeder;
 use Database\Seeders\PedidosSeeder;
+use Database\Seeders\MenusSeeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ReservaSeeder::class);
         $this->call(ProductoSeeder::class);
         $this->call(PedidoSeeder::class);
+        $this->call(MenusSeeder::class);
     }
 }
