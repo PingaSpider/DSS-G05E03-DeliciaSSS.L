@@ -7,6 +7,7 @@
     <title>Productos - Delicias de la Vida</title>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/tailwindcss@1.9.6/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/producto.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sesion.css') }}">
     <script src="{{ asset('js/producto.js') }}"></script>
@@ -43,23 +44,23 @@
                     
                     <!-- Avatar de usuario -->
                     <div class="avatar-container">
-                        <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
-                        <div class="dropdown-menu" id=avatarMenu>
-                            @if(session()->has('user_id'))
-                                <!-- Usuario autenticado -->
-                                <a href="{{ route('user.profile') }}">Perfil</a>
-                                <!-- Formulario de logout -->
-                                <form action="{{ route('logout') }}" method="POST">
+                        <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" id="avatar" class="avatar" alt="Avatar">
+                        <div class="dropdown-menu" id="avatarMenu">
+                            @auth
+                                <!-- Usuario autenticado: muestra opciones de perfil y cerrar sesión -->
+                                <a href="{{ route('user.profile') }}">Mi Perfil</a>
+                                
+                                <!-- Formulario de logout estilizado como enlace -->
+                                <form action="{{ route('logout') }}" method="POST" id="logout-form" class="logout-link-form">
                                     @csrf
                                     <button type="submit" class="link-button">Cerrar sesión</button>
                                 </form>
                             @else
-                                <!-- Usuario no autenticado -->
+                                <!-- Usuario no autenticado: muestra opciones de login y registro -->
                                 <a href="{{ route('login.form') }}">Iniciar sesión</a>
                                 <a href="{{ route('registro.form') }}">Registrarse</a>
-                            @endif
+                            @endauth
                         </div>
-                    
                     </div>
                 </div>
             </div>
@@ -94,29 +95,21 @@
                 <div class="category-tab" data-category="menus">Menús</div>
             </div>
 
-            <!-- Promo Banner -->
-            <div class="promo-banner">
-                <h2>¡Oferta Especial!</h2>
-                <p>20% de descuento en todos los menús este fin de semana</p>
-            </div>
-
             <!-- Category Sections -->
             <!-- Todos los productos -->
             <div class="category-section active" id="todos">
                 <h2 class="category-title">Todos los Productos</h2>
                 <div class="product-grid">
-                    @php
-                        $todosLosProductos = collect()
-                            ->merge($bebidas ?? collect())
-                            ->merge($comidas ?? collect())
-                            ->merge($menus ?? collect());
-                    @endphp
-                    
-                    @forelse($todosLosProductos as $producto)
+                    @forelse($productos as $producto)
                         @include('partials.product-card', ['producto' => $producto])
                     @empty
                         <p>No hay productos disponibles en este momento.</p>
                     @endforelse
+                </div>
+                
+                <!-- Enlaces de paginación -->
+                <div class="mt-4 flex justify-center">
+                    {{ $productos->appends(request()->query())->links() }}
                 </div>
             </div>
 
@@ -124,11 +117,16 @@
             <div class="category-section" id="desayunos">
                 <h2 class="category-title">Desayunos</h2>
                 <div class="product-grid">
-                    @forelse($desayunos ?? [] as $producto)
+                    @forelse($desayunos as $producto)
                         @include('partials.product-card', ['producto' => $producto])
                     @empty
                         <p>No hay desayunos disponibles.</p>
                     @endforelse
+                </div>
+                
+                <!-- Enlaces de paginación -->
+                <div class="mt-4 flex justify-center">
+                    {{ $desayunos->appends(['todos_page' => request('todos_page')])->links() }}
                 </div>
             </div>
 
@@ -136,11 +134,16 @@
             <div class="category-section" id="hamburguesas">
                 <h2 class="category-title">Hamburguesas</h2>
                 <div class="product-grid">
-                    @forelse($hamburguesas ?? [] as $producto)
+                    @forelse($hamburguesas as $producto)
                         @include('partials.product-card', ['producto' => $producto])
                     @empty
                         <p>No hay hamburguesas disponibles.</p>
                     @endforelse
+                </div>
+                
+                <!-- Enlaces de paginación -->
+                <div class="mt-4 flex justify-center">
+                    {{ $hamburguesas->appends(['todos_page' => request('todos_page')])->links() }}
                 </div>
             </div>
 
@@ -148,11 +151,16 @@
             <div class="category-section" id="pizzas">
                 <h2 class="category-title">Pizzas</h2>
                 <div class="product-grid">
-                    @forelse($pizzas ?? [] as $producto)
+                    @forelse($pizzas as $producto)
                         @include('partials.product-card', ['producto' => $producto])
                     @empty
                         <p>No hay pizzas disponibles.</p>
                     @endforelse
+                </div>
+                
+                <!-- Enlaces de paginación -->
+                <div class="mt-4 flex justify-center">
+                    {{ $pizzas->appends(['todos_page' => request('todos_page')])->links() }}
                 </div>
             </div>
 
@@ -160,11 +168,16 @@
             <div class="category-section" id="bebidas">
                 <h2 class="category-title">Bebidas</h2>
                 <div class="product-grid">
-                    @forelse($bebidas ?? [] as $producto)
+                    @forelse($bebidas as $producto)
                         @include('partials.product-card', ['producto' => $producto])
                     @empty
                         <p>No hay bebidas disponibles.</p>
                     @endforelse
+                </div>
+                
+                <!-- Enlaces de paginación -->
+                <div class="mt-4 flex justify-center">
+                    {{ $bebidas->appends(['todos_page' => request('todos_page')])->links()}}
                 </div>
             </div>
 
@@ -172,11 +185,16 @@
             <div class="category-section" id="postres">
                 <h2 class="category-title">Postres</h2>
                 <div class="product-grid">
-                    @forelse($postres ?? [] as $producto)
+                    @forelse($postres as $producto)
                         @include('partials.product-card', ['producto' => $producto])
                     @empty
                         <p>No hay postres disponibles.</p>
                     @endforelse
+                </div>
+                
+                <!-- Enlaces de paginación -->
+                <div class=""mt-4 flex justify-center">
+                    {{ $postres->appends(['todos_page' => request('todos_page')])->links() }}
                 </div>
             </div>
 
@@ -184,11 +202,16 @@
             <div class="category-section" id="menus">
                 <h2 class="category-title">Menús Especiales</h2>
                 <div class="product-grid">
-                    @forelse($menus ?? [] as $producto)
+                    @forelse($menus as $producto)
                         @include('partials.product-card', ['producto' => $producto])
                     @empty
                         <p>No hay menús disponibles.</p>
                     @endforelse
+                </div>
+                
+                <!-- Enlaces de paginación -->
+                <div class="mt-4 flex justify-center">
+                    {{ $menus->appends(['todos_page' => request('todos_page')])->links() }}
                 </div>
             </div>
         </main>

@@ -17,44 +17,49 @@ class WebProductoController extends Controller
     public function show($cod = null)
     {
         if ($cod === null) {
-            // Obtener productos agrupados por categoría
+            // Paginación para todos los productos (14 por página)
+            $todosLosProductos = Producto::where('disponible', true)
+                ->paginate(10, ['*'], 'todos_page');
+            
+            // Paginación para cada categoría (14 por página)
             $bebidas = Producto::where('disponible', true)
                 ->whereHas('bebida')
-                ->get();
-                
+                ->paginate(5, ['*'], 'bebidas_page');
+            
             $comidas = Producto::where('disponible', true)
                 ->whereHas('comida')
-                ->get();
-                
+                ->paginate(5, ['*'], 'comidas_page');
+            
             $menus = Producto::where('disponible', true)
                 ->whereHas('menu')
-                ->get();
+                ->paginate(5, ['*'], 'menus_page');
             
-            // También podríamos clasificar las comidas por subcategorías
+            // Paginación para subcategorías
             $desayunos = Producto::where('disponible', true)
                 ->whereHas('comida')
                 ->where('nombre', 'like', '%Desayuno%')
-                ->get();
-                
+                ->paginate(5, ['*'], 'desayunos_page');
+            
             $hamburguesas = Producto::where('disponible', true)
                 ->whereHas('comida')
                 ->where('nombre', 'like', '%Burger%')
-                ->get();
-                
+                ->paginate(5, ['*'], 'hamburguesas_page');
+            
             $pizzas = Producto::where('disponible', true)
                 ->whereHas('comida')
                 ->where('nombre', 'like', '%Pizza%')
-                ->get();
-                
+                ->paginate(5, ['*'], 'pizzas_page');
+            
             $postres = Producto::where('disponible', true)
                 ->whereHas('comida')
                 ->where(function($query) {
                     $query->where('nombre', 'like', '%Tarta%')
-                          ->orWhere('nombre', 'like', '%Helado%');
+                        ->orWhere('nombre', 'like', '%Helado%');
                 })
-                ->get();
+                ->paginate(5, ['*'], 'postres_page');
             
             return view('productos-lista', [
+                'productos' => $todosLosProductos,
                 'bebidas' => $bebidas,
                 'comidas' => $comidas,
                 'menus' => $menus,

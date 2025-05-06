@@ -30,22 +30,23 @@
       </div>
     </nav>
     <div class="avatar-container">
-      <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
-      <div class="dropdown-menu" id=avatarMenu>
-        @if(session()->has('user_id'))
-            <!-- Usuario autenticado -->
-            <a href="{{ route('user.profile') }}">Perfil</a>
-            <!-- Formulario de logout -->
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="link-button">Cerrar sesión</button>
-            </form>
-        @else
-            <!-- Usuario no autenticado -->
-            <a href="{{ route('login.form') }}">Iniciar sesión</a>
-            <a href="{{ route('registro.form') }}">Registrarse</a>
-        @endif
-      </div>
+        <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" id="avatar" class="avatar" alt="Avatar">
+        <div class="dropdown-menu" id="avatarMenu">
+            @auth
+                <!-- Usuario autenticado: muestra opciones de perfil y cerrar sesión -->
+                <a href="{{ route('user.profile') }}">Mi Perfil</a>
+                
+                <!-- Formulario de logout estilizado como enlace -->
+                <form action="{{ route('logout') }}" method="POST" id="logout-form" class="logout-link-form">
+                    @csrf
+                    <button type="submit" class="link-button">Cerrar sesión</button>
+                </form>
+            @else
+                <!-- Usuario no autenticado: muestra opciones de login y registro -->
+                <a href="{{ route('login.form') }}">Iniciar sesión</a>
+                <a href="{{ route('registro.form') }}">Registrarse</a>
+            @endauth
+        </div>
     </div>
   </header>
   

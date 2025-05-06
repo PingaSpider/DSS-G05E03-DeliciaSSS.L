@@ -44,7 +44,7 @@
 }
 
 /* Estilo para hacer que el botón parezca un enlace */
-.dropdown-logout-btn{
+.link-button{
     background: none;
     border: none;
     color: #333;
@@ -58,7 +58,7 @@
     transition: background 0.3s;
 }
 
-.dropdown-logout-btn:hover {
+.link-button:hover {
     background-color: #F39221;
 }
 

@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{{ asset('css/user.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
     <script src="{{ asset('js/user.js') }}" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
+
 </head>
 <body>
     <div class="profile-container">
@@ -14,12 +17,17 @@
         <header class="user-header">
             <div class="user-info">
                 <div class="user-avatar">
-                    <img src="{{ $user->avatar ?? asset('avatar-placeholder.png') }}" alt="Avatar de usuario" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'50\' viewBox=\'0 0 50 50\'%3E%3Ccircle cx=\'25\' cy=\'25\' r=\'25\' fill=\'%23f5f5f5\'/%3E%3Ccircle cx=\'25\' cy=\'20\' r=\'8\' fill=\'%23c0c0c0\'/%3E%3Cpath d=\'M12,35 a13,10 0 0,0 26,0\' fill=\'%23c0c0c0\'/%3E%3C/svg%3E';">
+                    <i class="fa-solid fa-circle-user"></i>
                 </div>
                 <h2 class="user-name">{{ $user->nombre ?? 'Nombre' }} {{ $user->apellido ?? '' }}</h2>
             </div>
-            <a href="{{ route('home') }}" class="back-to-home">Home</a>
-            <a href="{{ route('logout') }}" class="logout-button">Cerrar sesión</a>
+            <div class="nav-links">
+                <a href="{{ route('home') }}" class="back-to-home">Home</a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="link-button">Cerrar sesión</button>
+                </form>
+            </div>
         </header>
 
         <!-- Mostrar mensajes de éxito o error -->
@@ -183,7 +191,40 @@
             </div>
         </div>
     </div>
-
+    <!-- Footer -->
+    <footer class="footer rectangle-6">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3 class="grupo-footer">Dirección</h3>
+                    <div class="grupo-24">
+                        <p>{{ $direccion->calle ?? 'Calle Los Olivos 34' }}</p>
+                        <p>{{ $direccion->ciudad ?? 'Madrid, España' }}</p>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="grupo-footer-1">Horarios</h3>
+                    <div class="grupo-25">
+                        <p>{{ $horarios->semana ?? 'Lun-Vie: 12:30 - 22:00' }}</p>
+                        <p>{{ $horarios->finde ?? 'Sab-Dom: 13:00 - 23:30' }}</p>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="grupo-footer-2">Contáctanos</h3>
+                    <div class="grupo-26">
+                        <p>Teléfono: {{ $contacto->telefono ?? '+34 555 123 456' }}</p>
+                        <p>E-mail: {{ $contacto->email ?? 'info@deliciass.com' }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-logo">
+                <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo-naranja.png') }}" alt="Deliciass">
+            </div>
+        </div>
+    </footer>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const tabButtons = document.querySelectorAll('.tab-button');
