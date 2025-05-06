@@ -32,10 +32,19 @@
     <div class="avatar-container">
       <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
       <div class="dropdown-menu" id=avatarMenu>
-        <a href="{{ route('user.profile') }}" class="dropdown-item">Perfil</a>
-        <a href="{{ route('logout') }}" class="dropdown-item">Cerrar sesión</a>
-        <a href="{{ route('login') }}" class="dropdown-item">Iniciar sesión</a>
-        <a href="{{ route('registro') }}" class="dropdown-item">Registrarse</a>
+        @if(session()->has('user_id'))
+            <!-- Usuario autenticado -->
+            <a href="{{ route('user.profile') }}">Perfil</a>
+            <!-- Formulario de logout -->
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="link-button">Cerrar sesión</button>
+            </form>
+        @else
+            <!-- Usuario no autenticado -->
+            <a href="{{ route('login.form') }}">Iniciar sesión</a>
+            <a href="{{ route('registro.form') }}">Registrarse</a>
+        @endif
       </div>
     </div>
   </header>

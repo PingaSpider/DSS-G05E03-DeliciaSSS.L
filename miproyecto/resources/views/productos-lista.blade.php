@@ -45,18 +45,19 @@
                     <div class="avatar-container">
                         <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
                         <div class="dropdown-menu" id=avatarMenu>
-                            @guest
-                                <a href="{{ route('login.form') }}">Iniciar Sesión</a>
-                                <a href="{{ route('registro.form') }}">Registrarse</a>
-                            @else
-                                <a href="{{ route('user.profile') }}">Mi Perfil</a>
-                                
-                                <!-- Formulario de logout con método POST -->
-                                <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                            @if(session()->has('user_id'))
+                                <!-- Usuario autenticado -->
+                                <a href="{{ route('user.profile') }}">Perfil</a>
+                                <!-- Formulario de logout -->
+                                <form action="{{ route('logout') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="dropdown-logout-btn">Cerrar Sesión</button>
+                                    <button type="submit" class="link-button">Cerrar sesión</button>
                                 </form>
-                            @endguest
+                            @else
+                                <!-- Usuario no autenticado -->
+                                <a href="{{ route('login.form') }}">Iniciar sesión</a>
+                                <a href="{{ route('registro.form') }}">Registrarse</a>
+                            @endif
                         </div>
                     
                     </div>
