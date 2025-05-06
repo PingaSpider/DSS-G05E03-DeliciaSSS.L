@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('css/sesion.css') }}">
     <script src="{{ asset('js/producto.js') }}"></script>
     <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
+    <script src="{{ asset('js/authNeeded.js')}}"></script>
 
 </head>
 <body>
@@ -32,15 +33,24 @@
                     |
                     <a href="{{ route('menu') }}" class="link-bar-name">Menu</a>
                     |
-                    <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Reservas</a>
+                    @auth
+                        <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Reservar</a>
+                    @else
+                    <a href="javascript:void(0)" 
+                        class="link-bar-name auth-required"
+                        data-message="Es necesario tener una cuenta para reservar"
+                        data-login-url="{{ route('login.form') }}">Reservar</a>
+                    @endauth
                 </div>
                 
                 <!-- Acciones (a la derecha) -->
                 <div class="actions">
                     <!-- Botón de carrito -->
-                    <a href="{{ route('carrito.view') }}" class="to-cart-btn">
-                        <i class="fas fa-shopping-cart"></i>
-                    </a>
+                    @auth
+                        <a href="{{ route('carrito.view') }}" class="to-cart-btn">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                    @endauth
                     
                     <!-- Avatar de usuario -->
                     <div class="avatar-container">

@@ -2,9 +2,6 @@
     <a href="{{ route('producto.show', $producto->cod) }}" class="product-link">
         <div class="product-image">
             <img src="{{ $producto->imagen_url }}" alt="{{ $producto->nombre }}" class="product-thumbnail">
-            <button class="quick-add-btn" data-product-id="{{ $producto->cod }}">
-                <i class="fas fa-plus"></i>
-            </button>
         </div>
         <div class="product-info">
             <div class="product-name">{{ $producto->nombre }}</div>
@@ -14,16 +11,18 @@
                 @endfor
             </div>
             <div class="product-price">${{ number_format($producto->pvp, 2) }}</div>
-            <div class="product-actions">
-                <div class="quantity-selector">
-                    <button class="quantity-btn minus" data-product="{{ $producto->cod }}">-</button>
-                    <input type="number" class="quantity-input" value="1" min="1" max="10" data-product="{{ $producto->cod }}">
-                    <button class="quantity-btn plus" data-product="{{ $producto->cod }}">+</button>
+            @auth
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button class="quantity-btn minus" data-product="{{ $producto->cod }}">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="10" data-product="{{ $producto->cod }}">
+                        <button class="quantity-btn plus" data-product="{{ $producto->cod }}">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" data-product="{{ $producto->cod }}">
+                        <i class="fas fa-cart-plus"></i>
+                    </button>
                 </div>
-                <button class="add-to-cart-btn" data-product="{{ $producto->cod }}">
-                    <i class="fas fa-cart-plus"></i>
-                </button>
-            </div>
+            @endauth
             @if($producto->stock < 10 && $producto->stock > 0)
                 <div class="stock-warning">¡Últimas unidades!</div>
             @elseif($producto->stock == 0)

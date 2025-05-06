@@ -10,6 +10,7 @@
     <link href="{{ asset('css/home.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sesion.css') }}" rel="stylesheet">
     <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
+    <script src="{{ asset('js/authNeeded.js')}}"></script>
 
 </head>
 <body>
@@ -25,9 +26,16 @@
                 <div class="link-bar-1">
                     <a href="{{ route('menu') }}" class="link-bar-name">Menu</a>
                     |
-                    <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Reservar</a>
-                    |
                     <a href="{{ route('producto.show') }}" class="link-bar-name">Carta</a>
+                    |
+                    @auth
+                        <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Reservar</a>
+                    @else
+                    <a href="javascript:void(0)" 
+                        class="link-bar-name auth-required"
+                        data-message="Es necesario tener una cuenta para reservar"
+                        data-login-url="{{ route('login.form') }}">Reservar</a>
+                    @endauth
                 </div>                
                 <!-- Estructura HTML para el avatar con menú desplegable -->
                 <div class="avatar-container">
