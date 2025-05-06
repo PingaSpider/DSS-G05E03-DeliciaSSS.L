@@ -18,7 +18,8 @@
                 </div>
                 <h2 class="user-name">{{ $user->nombre ?? 'Nombre' }} {{ $user->apellido ?? '' }}</h2>
             </div>
-            <a href="{{ route('home') }}" class="back-to-home">Volver al inicio</a>
+            <a href="{{ route('home') }}" class="back-to-home">Home</a>
+            <a href="{{ route('logout') }}" class="logout-button">Cerrar sesión</a>
         </header>
 
         <!-- Mostrar mensajes de éxito o error -->
