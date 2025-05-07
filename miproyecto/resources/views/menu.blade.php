@@ -66,19 +66,19 @@
                     <div class="menu-courses">
                         @foreach($menuDelDia->cursos ?? [
                             ['titulo' => 'Primero a Elegir', 'platos' => [
-                                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto']
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto']
                             ]],
                             ['titulo' => 'Segundo a Elegir', 'platos' => [
-                                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto']
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto']
                             ]],
                             ['titulo' => 'Postre', 'platos' => [
-                                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto']
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto']
                             ]]
                         ] as $curso)
                         <div class="menu-course">
@@ -87,7 +87,7 @@
                                 @foreach($curso['platos'] as $plato)
                                 <div class="menu-item">
                                     <div class="item-image">
-                                        <img src="{{ asset('assets/images/comida/' . $plato['imagen']) }}" alt="{{ $plato['descripcion'] }}">
+                                        <img src="{{ $plato['imagen'] }}" alt="{{ $plato['descripcion'] }}">
                                     </div>
                                     <div class="item-description">{{ $plato['descripcion'] }}</div>
                                 </div>
@@ -104,10 +104,10 @@
                         
                         <div class="product-grid">
                             @foreach($recomendados->productos ?? [
-                                ['imagen' => 'placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€'],
-                                ['imagen' => 'placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€'],
-                                ['imagen' => 'placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€'],
-                                ['imagen' => 'placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€']
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€'],
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€'],
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€'],
+                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€']
                             ] as $producto)
                             <div class="product-card">
                                 <div class="product-image">
@@ -127,24 +127,24 @@
                 <!-- Category Sections (Hidden initially) -->
                 @foreach($categoriasSecciones ?? [
                     ['id' => 'desayunos', 'titulo' => 'Desayunos', 'items' => [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Tostada con Tomate', 'descripcion' => 'Pan artesanal con tomate rallado y aceite de oliva', 'precio' => '3.50€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Croissant con Jamón y Queso', 'descripcion' => 'Croissant recién horneado con jamón serrano y queso', 'precio' => '4.25€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Café con Bollería', 'descripcion' => 'Café a elegir con bollería del día', 'precio' => '3.75€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Tostada con Tomate', 'descripcion' => 'Pan artesanal con tomate rallado y aceite de oliva', 'precio' => '3.50€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Croissant con Jamón y Queso', 'descripcion' => 'Croissant recién horneado con jamón serrano y queso', 'precio' => '4.25€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Café con Bollería', 'descripcion' => 'Café a elegir con bollería del día', 'precio' => '3.75€']
                     ]],
                     ['id' => 'combinados', 'titulo' => 'Combinados', 'items' => [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Combo Especial', 'descripcion' => 'Hamburguesa, patatas y bebida a elegir', 'precio' => '9.95€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Combo Especial', 'descripcion' => 'Hamburguesa, patatas y bebida a elegir', 'precio' => '9.95€']
                     ]],
                     ['id' => 'bebidas', 'titulo' => 'Bebidas', 'items' => [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Coca Cola', 'descripcion' => 'Refresco de cola 330ml', 'precio' => '2.50€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Coca Cola', 'descripcion' => 'Refresco de cola 330ml', 'precio' => '2.50€']
                     ]],
                     ['id' => 'hamburguesas', 'titulo' => 'Hamburguesas', 'items' => [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Hamburguesa Clásica', 'descripcion' => 'Carne de ternera, lechuga, tomate y queso', 'precio' => '7.50€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Hamburguesa Clásica', 'descripcion' => 'Carne de ternera, lechuga, tomate y queso', 'precio' => '7.50€']
                     ]],
                     ['id' => 'pizzas', 'titulo' => 'Pizzas', 'items' => [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Pizza Margarita', 'descripcion' => 'Tomate, mozzarella y albahaca', 'precio' => '8.95€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Pizza Margarita', 'descripcion' => 'Tomate, mozzarella y albahaca', 'precio' => '8.95€']
                     ]],
                     ['id' => 'postres', 'titulo' => 'Postres', 'items' => [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Tarta de Chocolate', 'descripcion' => 'Tarta casera con chocolate belga', 'precio' => '4.50€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Tarta de Chocolate', 'descripcion' => 'Tarta casera con chocolate belga', 'precio' => '4.50€']
                     ]]
                 ] as $seccion)
                 <section class="menu-section" id="{{ $seccion['id'] }}">

@@ -76,19 +76,19 @@ class WebMenuController extends Controller
             // Devolver datos por defecto
             return [
                 ['titulo' => 'Primero a Elegir', 'platos' => [
-                    ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                    ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                    ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto']
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto']
                 ]],
                 ['titulo' => 'Segundo a Elegir', 'platos' => [
-                    ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                    ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                    ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto']
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto']
                 ]],
                 ['titulo' => 'Postre', 'platos' => [
-                    ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                    ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                    ['imagen' => 'placeholder.jpg', 'descripcion' => 'Descripción del Producto']
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto']
                 ]]
             ];
         }
@@ -104,15 +104,28 @@ class WebMenuController extends Controller
         $postres = [];
 
         foreach ($productos as $producto) {
+            //dd($producto);
             $cod = $producto->cod;
-            $tipo = substr($cod, 0, 1); // C para comidas, B para bebidas
+            //dd($cod);
+            $tipo = substr($cod, 0, 1); // C para comidas, B para bebida
+            $productoDetalles = \App\Models\Producto::where('cod', $cod)->first(); // Obtener el producto completo por cod
+
+            if ($productoDetalles) {
+                $imagen = $productoDetalles->imagen_url;
+            } else {
+                $imagen = 'assets/images/comida/placeholder.jpg'; 
+            }
             $plato = [
-                'imagen' => $producto->imagen_url,
+                'imagen' => $imagen,
                 'descripcion' => $producto->nombre
             ];
+            //dd($plato);
+            //dd($producto); 
+            //dd(vars: $tipo);
 
             // Determinar la categoría del plato basándose en el código o descripción
             if ($tipo === 'C') {
+
                 $comida = Comida::find($cod);
                 if ($comida) {
                     $plato['descripcion'] .= ' - ' . $comida->descripcion;
@@ -123,7 +136,7 @@ class WebMenuController extends Controller
                     strpos(strtolower($producto->nombre), 'tarta') !== false ||
                     strpos(strtolower($producto->nombre), 'helado') !== false) {
                     $postres[] = $plato;
-                } elseif ($producto->pvp < 8) {
+                } elseif ($producto->pvp > 10) {
                     $primeros[] = $plato;
                 } else {
                     $segundos[] = $plato;
@@ -134,7 +147,15 @@ class WebMenuController extends Controller
                     $plato['descripcion'] .= ' - ' . $bebida->tipoBebida;
                 }
                 // Las bebidas pueden ir en una categoría aparte o con los primeros
-                $primeros[] = $plato;
+                $segundos[] = $plato;
+            } elseif ($tipo === 'P'){
+                //dd(vars: $tipo);
+                $comida = Comida::find($cod);
+                if ($comida) {
+                    $plato['descripcion'] .= ' - ' . $comida->descripcion;
+                }
+                $postres[] = $plato;
+                //dd($plato);
             } else {
                 // Si no es ni comida ni bebida, lo ponemos en segundos por defecto
                 $segundos[] = $plato;
@@ -144,20 +165,20 @@ class WebMenuController extends Controller
         // Asegurar que haya al menos un elemento en cada categoría
         if (empty($primeros)) {
             $primeros = [
-                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Ensalada mixta'],
-                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Sopa del día']
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Ensalada mixta'],
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Sopa del día']
             ];
         }
         if (empty($segundos)) {
             $segundos = [
-                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Filete de ternera'],
-                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Paella valenciana']
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Filete de ternera'],
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Paella valenciana']
             ];
         }
         if (empty($postres)) {
             $postres = [
-                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Tarta de chocolate'],
-                ['imagen' => 'placeholder.jpg', 'descripcion' => 'Helado variado']
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Tarta de chocolate'],
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Helado variado']
             ];
         }
 
@@ -201,10 +222,10 @@ class WebMenuController extends Controller
         if (empty($recomendados)) {
             // Datos por defecto si no hay productos
             $recomendados = [
-                ['imagen' => 'placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€'],
-                ['imagen' => 'placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 4, 'precio' => '9.50€'],
-                ['imagen' => 'placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 5, 'precio' => '7.95€'],
-                ['imagen' => 'placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '12.50€']
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€'],
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 4, 'precio' => '9.50€'],
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 5, 'precio' => '7.95€'],
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '12.50€']
             ];
         }
 
@@ -284,7 +305,7 @@ class WebMenuController extends Controller
                     }
 
                     $productos[] = [
-                        'imagen' => 'placeholder.jpg', //$producto->imagen_url
+                        'imagen' => 'assets/images/comida/placeholder.jpg', //$producto->imagen_url
                         'nombre' => $item->nombre,
                         'descripcion' => $descripcion,
                         'precio' => $item->pvp . '€'
@@ -301,45 +322,45 @@ class WebMenuController extends Controller
             switch ($categoria) {
                 case 'desayunos':
                     return [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Tostada con Tomate', 'descripcion' => 'Pan artesanal con tomate rallado y aceite de oliva', 'precio' => '3.50€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Croissant con Jamón y Queso', 'descripcion' => 'Croissant recién horneado con jamón serrano y queso', 'precio' => '4.25€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Café con Bollería', 'descripcion' => 'Café a elegir con bollería del día', 'precio' => '3.75€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Tostada con Tomate', 'descripcion' => 'Pan artesanal con tomate rallado y aceite de oliva', 'precio' => '3.50€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Croissant con Jamón y Queso', 'descripcion' => 'Croissant recién horneado con jamón serrano y queso', 'precio' => '4.25€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Café con Bollería', 'descripcion' => 'Café a elegir con bollería del día', 'precio' => '3.75€']
                     ];
                 case 'bebidas':
                     return [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Coca Cola', 'descripcion' => 'Refresco de cola 330ml', 'precio' => '2.50€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Agua Mineral', 'descripcion' => 'Agua mineral 500ml', 'precio' => '1.50€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Cerveza', 'descripcion' => 'Cerveza de barril 330ml', 'precio' => '3.00€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Coca Cola', 'descripcion' => 'Refresco de cola 330ml', 'precio' => '2.50€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Agua Mineral', 'descripcion' => 'Agua mineral 500ml', 'precio' => '1.50€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Cerveza', 'descripcion' => 'Cerveza de barril 330ml', 'precio' => '3.00€']
                     ];
                 case 'hamburguesas':
                     return [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Hamburguesa Clásica', 'descripcion' => 'Carne de ternera, lechuga, tomate y queso', 'precio' => '7.50€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Hamburguesa Especial', 'descripcion' => 'Doble carne, bacon, queso, huevo y salsa especial', 'precio' => '9.50€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Hamburguesa Vegana', 'descripcion' => 'Burger plant-based con aguacate y salsa de yogur', 'precio' => '8.50€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Hamburguesa Clásica', 'descripcion' => 'Carne de ternera, lechuga, tomate y queso', 'precio' => '7.50€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Hamburguesa Especial', 'descripcion' => 'Doble carne, bacon, queso, huevo y salsa especial', 'precio' => '9.50€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Hamburguesa Vegana', 'descripcion' => 'Burger plant-based con aguacate y salsa de yogur', 'precio' => '8.50€']
                     ];
                 case 'pizzas':
                     return [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Pizza Margarita', 'descripcion' => 'Tomate, mozzarella y albahaca', 'precio' => '8.95€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Pizza Cuatro Quesos', 'descripcion' => 'Mozzarella, gorgonzola, parmesano y fontina', 'precio' => '10.95€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Pizza Pepperoni', 'descripcion' => 'Tomate, mozzarella y pepperoni', 'precio' => '9.95€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Pizza Margarita', 'descripcion' => 'Tomate, mozzarella y albahaca', 'precio' => '8.95€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Pizza Cuatro Quesos', 'descripcion' => 'Mozzarella, gorgonzola, parmesano y fontina', 'precio' => '10.95€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Pizza Pepperoni', 'descripcion' => 'Tomate, mozzarella y pepperoni', 'precio' => '9.95€']
                     ];
                 case 'combinados':
                     return [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Combo Especial', 'descripcion' => 'Hamburguesa, patatas y bebida a elegir', 'precio' => '9.95€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Combo Familiar', 'descripcion' => '2 hamburguesas, patatas grandes, 4 nuggets y 2 bebidas', 'precio' => '19.95€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Combo Pizza', 'descripcion' => 'Pizza mediana, patatas y bebida', 'precio' => '12.95€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Combo Especial', 'descripcion' => 'Hamburguesa, patatas y bebida a elegir', 'precio' => '9.95€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Combo Familiar', 'descripcion' => '2 hamburguesas, patatas grandes, 4 nuggets y 2 bebidas', 'precio' => '19.95€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Combo Pizza', 'descripcion' => 'Pizza mediana, patatas y bebida', 'precio' => '12.95€']
                     ];
                 case 'postres':
                     return [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Tarta de Chocolate', 'descripcion' => 'Tarta casera con chocolate belga', 'precio' => '4.50€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Helado Variado', 'descripcion' => 'Tres bolas de helado a elegir', 'precio' => '3.95€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Flan de Huevo', 'descripcion' => 'Flan casero con caramelo', 'precio' => '3.50€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Tarta de Chocolate', 'descripcion' => 'Tarta casera con chocolate belga', 'precio' => '4.50€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Helado Variado', 'descripcion' => 'Tres bolas de helado a elegir', 'precio' => '3.95€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Flan de Huevo', 'descripcion' => 'Flan casero con caramelo', 'precio' => '3.50€']
                     ];
                 default:
                     return [
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Producto 1', 'descripcion' => 'Descripción del producto', 'precio' => '5.95€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Producto 2', 'descripcion' => 'Descripción del producto', 'precio' => '6.95€'],
-                        ['imagen' => 'placeholder.jpg', 'nombre' => 'Producto 3', 'descripcion' => 'Descripción del producto', 'precio' => '7.95€']
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Producto 1', 'descripcion' => 'Descripción del producto', 'precio' => '5.95€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Producto 2', 'descripcion' => 'Descripción del producto', 'precio' => '6.95€'],
+                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Producto 3', 'descripcion' => 'Descripción del producto', 'precio' => '7.95€']
                     ];
             }
         }

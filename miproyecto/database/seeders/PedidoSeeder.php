@@ -47,7 +47,7 @@ class PedidoSeeder extends Seeder
         \DB::table('linea_pedidos')->insert([
             ['linea' => 'L0006', 'cantidad' => 1, 'precio' => 12.95, 'estado' => 'Entregado', 'pedido_id' => 'P0003', 'producto_id' => 'C0038'], // Pizza Pepperoni
             ['linea' => 'L0007', 'cantidad' => 2, 'precio' => 7.00, 'estado' => 'Entregado', 'pedido_id' => 'P0003', 'producto_id' => 'B0015'],  // San Miguel x2
-            ['linea' => 'L0008', 'cantidad' => 1, 'precio' => 5.50, 'estado' => 'Entregado', 'pedido_id' => 'P0003', 'producto_id' => 'C0040']   // Tarta de Chocolate
+            ['linea' => 'L0008', 'cantidad' => 1, 'precio' => 5.50, 'estado' => 'Entregado', 'pedido_id' => 'P0003', 'producto_id' => 'P0001']   // Tarta de Chocolate
         ]);
 
         // Pedido 4 - Vegetariano
@@ -75,7 +75,7 @@ class PedidoSeeder extends Seeder
             ['linea' => 'L0011', 'cantidad' => 1, 'precio' => 11.95, 'estado' => 'Pendiente', 'pedido_id' => 'P0005', 'producto_id' => 'C0028'], // Double Burger
             ['linea' => 'L0012', 'cantidad' => 1, 'precio' => 3.50, 'estado' => 'Pendiente', 'pedido_id' => 'P0005', 'producto_id' => 'C0033'],  // Patatas Fritas
             ['linea' => 'L0013', 'cantidad' => 1, 'precio' => 2.50, 'estado' => 'Pendiente', 'pedido_id' => 'P0005', 'producto_id' => 'B0013'],  // Sprite
-            ['linea' => 'L0014', 'cantidad' => 1, 'precio' => 4.50, 'estado' => 'Pendiente', 'pedido_id' => 'P0005', 'producto_id' => 'C0042']   // Helado Stracciatella
+            ['linea' => 'L0014', 'cantidad' => 1, 'precio' => 4.50, 'estado' => 'Pendiente', 'pedido_id' => 'P0005', 'producto_id' => 'P0003']   // Helado Stracciatella
         ]);
 
         // Pedido 6 - Desayuno para dos
@@ -104,7 +104,7 @@ class PedidoSeeder extends Seeder
             ['linea' => 'L0018', 'cantidad' => 1, 'precio' => 12.50, 'estado' => 'Entregado', 'pedido_id' => 'P0007', 'producto_id' => 'C0034'], // Pizza Carbonara
             ['linea' => 'L0019', 'cantidad' => 1, 'precio' => 13.50, 'estado' => 'Entregado', 'pedido_id' => 'P0007', 'producto_id' => 'C0039'], // Pizza Campesina
             ['linea' => 'L0020', 'cantidad' => 4, 'precio' => 10.00, 'estado' => 'Entregado', 'pedido_id' => 'P0007', 'producto_id' => 'B0001'], // Coca-Cola x4
-            ['linea' => 'L0021', 'cantidad' => 2, 'precio' => 11.90, 'estado' => 'Entregado', 'pedido_id' => 'P0007', 'producto_id' => 'C0041']  // Cheesecake x2
+            ['linea' => 'L0021', 'cantidad' => 2, 'precio' => 11.90, 'estado' => 'Entregado', 'pedido_id' => 'P0007', 'producto_id' => 'P0002']  // Cheesecake x2
         ]);
 
         // Pedido 8 - Cena romántica
@@ -118,7 +118,7 @@ class PedidoSeeder extends Seeder
         \DB::table('linea_pedidos')->insert([
             ['linea' => 'L0022', 'cantidad' => 1, 'precio' => 10.50, 'estado' => 'Pendiente', 'pedido_id' => 'P0008', 'producto_id' => 'C0036'], // Pizza Margherita
             ['linea' => 'L0023', 'cantidad' => 1, 'precio' => 8.50, 'estado' => 'Pendiente', 'pedido_id' => 'P0008', 'producto_id' => 'B0020'],  // Vino Tinto
-            ['linea' => 'L0024', 'cantidad' => 2, 'precio' => 9.90, 'estado' => 'Pendiente', 'pedido_id' => 'P0008', 'producto_id' => 'C0043']   // Helado de Chocolate x2
+            ['linea' => 'L0024', 'cantidad' => 2, 'precio' => 9.90, 'estado' => 'Pendiente', 'pedido_id' => 'P0008', 'producto_id' => 'P0004']   // Helado de Chocolate x2
         ]);
     }
 }

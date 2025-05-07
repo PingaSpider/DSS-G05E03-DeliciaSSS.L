@@ -549,7 +549,7 @@ class ProductoSeeder extends Seeder
         
         // Tarta de Chocolate - po01
         Producto::create([
-            'cod' => 'C0040',
+            'cod' => 'P0001',
             'pvp' => 5.50,
             'nombre' => 'Tarta de Chocolate',
             'stock' => 20,
@@ -559,13 +559,13 @@ class ProductoSeeder extends Seeder
         ]);
 
         Comida::create([
-            'cod' => 'C0040',
+            'cod' => 'P0001',
             'descripcion' => 'Tarta de chocolate con tres capas y cobertura de chocolate negro'
         ]);
 
         // Cheesecake de Frutos Rojos - po02
         Producto::create([
-            'cod' => 'C0041',
+            'cod' => 'P0002',
             'pvp' => 5.95,
             'nombre' => 'Tarta Cheesecake de Frutos Rojos',
             'stock' => 15,
@@ -575,13 +575,13 @@ class ProductoSeeder extends Seeder
         ]);
 
         Comida::create([
-            'cod' => 'C0041',
+            'cod' => 'P0002',
             'descripcion' => 'Tarta de queso con base de galleta y cobertura de frutos rojos'
         ]);
 
         // Helado de Stracciatella - po03
         Producto::create([
-            'cod' => 'C0042',
+            'cod' => 'P0003',
             'pvp' => 4.50,
             'nombre' => 'Helado Stracciatella',
             'stock' => 25,
@@ -591,13 +591,13 @@ class ProductoSeeder extends Seeder
         ]);
 
         Comida::create([
-            'cod' => 'C0042',
+            'cod' => 'P0003',
             'descripcion' => 'Helado artesanal de vainilla con trocitos de chocolate negro'
         ]);
 
         // Helado de Chocolate con Avellanas - po04
         Producto::create([
-            'cod' => 'C0043',
+            'cod' => 'P0004',
             'pvp' => 4.95,
             'nombre' => 'Helado de Chocolate y Avellanas',
             'stock' => 20,
@@ -607,7 +607,7 @@ class ProductoSeeder extends Seeder
         ]);
 
         Comida::create([
-            'cod' => 'C0043',
+            'cod' => 'P0004',
             'descripcion' => 'Helado de chocolate con sirope de chocolate y avellanas caramelizadas'
         ]);
     }
