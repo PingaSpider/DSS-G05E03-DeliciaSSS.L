@@ -108,7 +108,7 @@ class WebMenuController extends Controller
             $cod = $producto->cod;
             //dd($cod);
             $tipo = substr($cod, 0, 1); // C para comidas, B para bebida
-            $productoDetalles = \App\Models\Producto::where('cod', $cod)->first(); // Obtener el producto completo por cod
+            $productoDetalles = Producto::where('cod', $cod)->first(); // Obtener el producto completo por cod
 
             if ($productoDetalles) {
                 $imagen = $productoDetalles->imagen_url;
