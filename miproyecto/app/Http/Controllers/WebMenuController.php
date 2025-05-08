@@ -136,7 +136,7 @@ class WebMenuController extends Controller
                     strpos(strtolower($producto->nombre), 'tarta') !== false ||
                     strpos(strtolower($producto->nombre), 'helado') !== false) {
                     $postres[] = $plato;
-                } elseif ($producto->pvp > 10) {
+                } elseif ($producto->pvp > 8) {
                     $primeros[] = $plato;
                 } else {
                     $segundos[] = $plato;
