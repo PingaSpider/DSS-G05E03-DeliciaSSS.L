@@ -83,7 +83,8 @@
                         @if (substr($producto->cod, 0, 1) === 'C')
                             <div class="producto-item" data-cod="{{ $producto->cod }}">
                                 <div>
-                                    <input type="checkbox" class="producto-checkbox" data-cod="{{ $producto->cod }}" data-nombre="{{ $producto->nombre }}" data-precio="{{ $producto->pvp }}">
+                                    <input type="checkbox" class="producto-checkbox" data-cod="{{ $producto->cod }}" data-nombre="{{ $producto->nombre }}" data-precio="{{ $producto->pvp }}"
+                                        data-precio-compra="{{ $producto->precioCompra }}">
                                     <strong>{{ $producto->nombre }}</strong> - {{ number_format($producto->pvp, 2) }}€
                                 </div>
                             </div>
@@ -99,7 +100,8 @@
                         @if (substr($producto->cod, 0, 1) === 'B')
                             <div class="producto-item" data-cod="{{ $producto->cod }}">
                                 <div>
-                                    <input type="checkbox" class="producto-checkbox" data-cod="{{ $producto->cod }}" data-nombre="{{ $producto->nombre }}" data-precio="{{ $producto->pvp }}">
+                                    <input type="checkbox" class="producto-checkbox" data-cod="{{ $producto->cod }}" data-nombre="{{ $producto->nombre }}" data-precio="{{ $producto->pvp }}"
+                                        data-precio-compra="{{ $producto->precioCompra }}">
                                     <strong>{{ $producto->nombre }}</strong> - {{ number_format($producto->pvp, 2) }}€
                                 </div>
                             </div>
@@ -129,6 +131,20 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
+            // Deshabilitar los campos de precio para que no se puedan editar
+            const pvpInput = document.getElementById('pvp');
+            const precioCompraInput = document.getElementById('precioCompra');
+            
+            if (pvpInput) {
+                pvpInput.readOnly = true;
+                pvpInput.value = '0.00';
+            }
+            
+            if (precioCompraInput) {
+                precioCompraInput.readOnly = true;
+                precioCompraInput.value = '0.00';
+            }
             // Configurar CSRF token para solicitudes AJAX
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             
@@ -164,10 +180,11 @@
                     const cod = this.getAttribute('data-cod');
                     const nombre = this.getAttribute('data-nombre');
                     const precio = this.getAttribute('data-precio');
+                    const precioCompra = this.getAttribute('data-precio-compra');
                     
                     if (this.checked) {
                         // Agregar producto a la lista de seleccionados
-                        agregarProducto(cod, nombre, precio);
+                        agregarProducto(cod, nombre, precio, precioCompra);
                         
                         // Marcar visualmente como seleccionado
                         this.closest('.producto-item').classList.add('producto-seleccionado');
@@ -182,7 +199,7 @@
             });
             
             // Función para agregar un producto a la lista de seleccionados
-            function agregarProducto(cod, nombre, precio) {
+            function agregarProducto(cod, nombre, precio, precioCompra) {
                 // Comprobar si ya está seleccionado
                 if (productosSeleccionados.find(p => p.cod === cod)) {
                     return;
@@ -193,6 +210,7 @@
                     cod: cod,
                     nombre: nombre,
                     precio: precio,
+                    precioCompra: precioCompra,
                     cantidad: 1
                 });
                 
@@ -214,6 +232,24 @@
                     checkbox.checked = false;
                     checkbox.closest('.producto-item').classList.remove('producto-seleccionado');
                 }
+            }
+
+            // Agregar esta función en el script existente
+            function calcularPrecioTotal() {
+                let precioVentaTotal = 0;
+                let precioCompraTotal = 0;
+                
+                productosSeleccionados.forEach(producto => {
+                    const cantidad = parseInt(producto.cantidad);
+                    precioVentaTotal += parseFloat(producto.precio) * cantidad;
+                    precioCompraTotal += parseFloat(producto.precioCompra) * cantidad;
+                });
+                
+                // Actualizar los campos de precio
+                document.getElementById('pvp').value = precioVentaTotal.toFixed(2);
+                document.getElementById('precioCompra').value = precioCompraTotal.toFixed(2);
+                
+                return { precioVentaTotal, precioCompraTotal };
             }
             
             // Función para actualizar la vista de productos seleccionados
@@ -277,9 +313,11 @@
                 });
                 
                 seleccionadosContainer.innerHTML = html;
+                
+                // Actualizar precio total
+                calcularPrecioTotal();
             }
             
-            // Función para actualizar la cantidad de un producto
             window.actualizarCantidad = function(cod, cantidad) {
                 const producto = productosSeleccionados.find(p => p.cod === cod);
                 if (producto) {
@@ -290,6 +328,9 @@
                     if (hiddenInput) {
                         hiddenInput.value = cantidad;
                     }
+                    
+                    // Recalcular precio total
+                    calcularPrecioTotal();
                 }
             };
             

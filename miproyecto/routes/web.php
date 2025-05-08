@@ -114,6 +114,7 @@ Route::prefix('reservaciones')->middleware('auth')->group(function () {
     
     Route::get('/mis-reservaciones', [WebReservaController::class, 'misReservas'])
         ->name('reservaciones.mis-reservaciones');
+
 });
 
 // ====================================
@@ -229,3 +230,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::delete('/{codReserva}', [ReservaController::class, 'destroy'])->name('reservas.destroy');
     });
 });
+
+// Para cargar imágenes por categoría
+Route::get('/api/comida/images/{category}', [ComidaController::class, 'getImagesByCategory'])
+    ->name('api.comida.images');

@@ -82,6 +82,7 @@ class ComidaController extends ProductoController
                 'stock' => 'required|numeric',
                 'precioCompra' => 'required|numeric',
                 'descripcion' => 'required',
+                'imagen_url' => 'required|string|max:255',
             ]);
 
             // Generar código automático para comida (C)
@@ -94,6 +95,7 @@ class ComidaController extends ProductoController
             $producto->nombre = $request->nombre;
             $producto->stock = $request->stock;
             $producto->precioCompra = $request->precioCompra;
+            $producto->imagen_url = $request->imagen_url; // Asignar la URL de la imagen
             $producto->save();
 
             // Crear la comida
@@ -254,6 +256,41 @@ class ComidaController extends ProductoController
         }
         
         return $nuevoCodigo;
+    }
+
+    public function getImagesByCategory($category)
+    {
+        // Validar categoría
+        $validCategories = ['hamburguesa', 'pizza', 'desayuno', 'postre', 'comida'];
+        if (!in_array($category, $validCategories)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Categoría no válida'
+            ], 400);
+        }
+        
+        $images = [];
+        $imagePath = public_path("assets/images/comida/{$category}");
+        
+        if (file_exists($imagePath)) {
+            $files = scandir($imagePath);
+            foreach($files as $file) {
+                $ext = pathinfo($file, PATHINFO_EXTENSION);
+                if (in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'webp']) && $file != '.' && $file != '..') {
+                    $imageName = pathinfo($file, PATHINFO_FILENAME);
+                    $images[] = [
+                        'name' => $imageName,
+                        'url' => asset("assets/images/comida/{$category}/{$file}")
+                    ];
+                }
+            }
+        }
+        
+        return response()->json([
+            'success' => true,
+            'category' => $category,
+            'images' => $images
+        ]);
     }
 }
 

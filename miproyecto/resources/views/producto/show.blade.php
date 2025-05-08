@@ -166,11 +166,12 @@
     </form>
 
     <script>
-        // Función para eliminar producto
         function deleteProducto(cod) {
             if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
                 const form = document.getElementById('deleteProductoForm');
-                form.action = `/productos/${cod}`;
+                form.action = `/admin/productos/${cod}`;
+                form.method = 'POST';
+                
                 form.submit();
             }
         }

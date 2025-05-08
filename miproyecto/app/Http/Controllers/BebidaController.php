@@ -39,6 +39,7 @@ class BebidaController extends ProductoController
                 'precioCompra' => 'required|numeric',
                 'tamanio' => 'required',
                 'tipo' => 'required|in:agua,refresco,vino,cerveza',
+                'imagen_url' => 'required|string|max:255',
             ]);
             
             // Generar código automático para bebida (B)
@@ -54,6 +55,7 @@ class BebidaController extends ProductoController
             $producto->nombre = $request->nombre;
             $producto->stock = $request->stock;
             $producto->precioCompra = $request->precioCompra;
+            $producto->imagen_url = $request->imagen_url;
             $producto->save();
             
             // Luego creamos la bebida que hereda del producto

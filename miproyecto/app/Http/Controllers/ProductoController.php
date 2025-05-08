@@ -38,7 +38,12 @@ class ProductoController
         $producto->nombre = $request->nombre;
         $producto->stock = $request->stock;
         $producto->precioCompra = $request->precioCompra;
-        $producto->imagen_url = $request->imagen_url;
+        // Asignar imagen_url según el tipo de producto
+        if ($request->tipo == 'M') {
+            $producto->imagen_url = null; // O asigna directamente 'menu-por-defecto'
+        } else {
+            $producto->imagen_url = $request->imagen_url;
+        }
         $producto->save();
 
         // Crear el producto específico según su tipo
@@ -171,7 +176,12 @@ class ProductoController
                 $producto->nombre = $request->nombre;
                 $producto->stock = $request->stock;
                 $producto->precioCompra = $request->precioCompra;
-                $producto->imagen_url = $request->imagen_url;
+                // Asignar imagen_url según el tipo de producto
+                if ($request->tipo == 'M') {
+                    $producto->imagen_url = null; // O asigna directamente 'menu-por-defecto'
+                } else {
+                    $producto->imagen_url = $request->imagen_url;
+                }
                 $producto->save();
                 
                 // Crear el producto específico según su tipo
@@ -543,6 +553,8 @@ class ProductoController
             ], 500);
         }
     }
+
+    
 }
 
 //Entrega2

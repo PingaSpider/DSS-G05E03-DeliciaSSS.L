@@ -36,7 +36,11 @@ class Producto extends Model
      * Accessor para obtener la URL de la imagen
      */
     public function getImagenUrlAttribute($value)
-    {
+    {   
+        // Si es un menú, usar imagen predeterminada para menús
+        if (substr($this->cod, 0, 1) === 'M') {
+            return asset('assets/images/comida/menus/menu-por-defecto.png');
+        }
         // Si hay un valor, lo usamos para construir la ruta completa
         if ($value) {
             $categoria = $this->determinarCategoria();
@@ -63,7 +67,7 @@ class Producto extends Model
     {
         $codigo = strtolower($this->cod);
         $nombre = strtolower($this->nombre);
-
+        
         // Basado en el código
         if (str_starts_with($codigo, 'b')) {
             return 'bebida';
@@ -72,12 +76,11 @@ class Producto extends Model
             return 'menus';
         }
 
-        // Para comidas, determinar la subcategoría
-        // Importante: buscar palabras clave en el nombre para determinar la categoría correcta
+        // Si no podemos determinar por el código, usar el nombre
         if (str_contains($nombre, 'pizza')) {
             return 'pizza';
         }
-        if (str_contains($nombre, 'burger') || str_contains($nombre, 'patatas')) {
+        if (str_contains($nombre, 'burger') || str_contains($nombre, 'patatas') || str_contains($nombre, 'hamburguesa')) {
             return 'hamburguesa';
         }
         if (str_contains($nombre, 'desayuno') || str_contains($nombre, 'croissant') || str_contains($nombre, 'pancakes')) {
@@ -90,6 +93,7 @@ class Producto extends Model
             return 'combinado';
         }
 
+        // Por defecto, retornar comida
         return 'comida';
     }
 

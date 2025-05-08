@@ -94,7 +94,7 @@
           <div style="display: flex; margin-top: 10px;">
             <select id="people" name="personas" class="select-1">
               @foreach($cantidadPersonas ?? [2, 4, 6, 8] as $cantidad)
-                <option value="{{ $cantidad }}" {{ old('personas') == $cantidad ? 'selected' : '' }}>{{ $cantidad }}</option>
+                <option id=cantidadPersona value="{{ $cantidad }}" {{ old('personas') == $cantidad ? 'selected' : '' }}>{{ $cantidad }}</option>
               @endforeach
             </select>
           </div>
@@ -126,13 +126,33 @@
         <p class="mesa-title">Selecciona una mesa:</p>
         <select id="mesa_id" name="mesa_id" required>
           <option value="">Seleccione una mesa</option>
-          @foreach($mesas ?? [] as $mesa)
-            <option value="{{ $mesa->codMesa }}" 
-                    {{ old('mesa_id') == $mesa->codMesa ? 'selected' : '' }}
-                    data-capacidad="{{ $mesa->cantidadMesa }}">
-              Mesa {{ $mesa->codMesa }} ({{ $mesa->cantidadMesa }} personas)
-            </option>
-          @endforeach
+          @php
+            // Obtener la cantidad de personas seleccionada
+            $personasSeleccionadas = old('personas') ?? (isset($cantidadPersonas) && is_array($cantidadPersonas) ? reset($cantidadPersonas) : (isset($cantidadPersonas) ? $cantidadPersonas : 2));
+            $mesasFiltradas = [];
+            
+            // Filtrar las mesas que tienen capacidad suficiente
+            if(isset($mesas) && count($mesas) > 0) {
+              foreach($mesas as $mesa) {
+                if($mesa->cantidadMesa >= $personasSeleccionadas) {
+                  $mesasFiltradas[] = $mesa;
+                }
+              }
+            }
+          @endphp
+          
+          @if(count($mesasFiltradas) > 0)
+            $personasSeleccionadas = old('personas') ?? (isset($cantidadPersonas) && is_array($cantidadPersonas) ? reset($cantidadPersonas) : (isset($cantidadPersonas) ? $cantidadPersonas : 2)); 
+            @foreach($mesasFiltradas as $mesa) 
+              <option value="{{ $mesa->codMesa }}" 
+                      {{ old('mesa_id') == $mesa->codMesa ? 'selected' : '' }}
+                      data-capacidad="{{ $mesa->cantidadMesa }}">
+                Mesa {{ $mesa->codMesa }} ({{ $mesa->cantidadMesa }} personas)
+              </option>
+            @endforeach
+          @else
+            <option value="" disabled>No hay mesas disponibles para {{ $personasSeleccionadas }} personas</option>
+          @endif
         </select>
         <p style="font-size: 12px; margin-top: 8px; color: #666; font-style: italic;">
           Solo se muestran mesas con capacidad suficiente para el número de personas seleccionado.
