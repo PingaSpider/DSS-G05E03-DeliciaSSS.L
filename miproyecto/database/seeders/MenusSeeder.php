@@ -14,11 +14,11 @@ class MenusSeeder extends Seeder
         // Menu 1
         Producto::create([
             'cod' => 'M0001',
-            'pvp' => 28,
+            'pvp' => 32.98,
             'nombre' => 'Menu 1',
             'stock' => 50,
             'disponible'=> true,
-            'precioCompra'=> '20',
+            'precioCompra'=> '25.98',
             'imagen_url' => 'bb01'
         ]);
 
@@ -72,7 +72,7 @@ class MenusSeeder extends Seeder
         // Menu 2
         Producto::create([
             'cod' => 'M0002',
-            'pvp' => 25,
+            'pvp' => 25.98,
             'nombre' => 'Menu 2',
             'stock' => 50,
             'disponible'=> true,
@@ -130,7 +130,7 @@ class MenusSeeder extends Seeder
         // Menu 3
         Producto::create([
             'cod' => 'M0003',
-            'pvp' => 31,
+            'pvp' => 35.99,
             'nombre' => 'Menu 3',
             'stock' => 50,
             'disponible'=> true,
@@ -188,7 +188,7 @@ class MenusSeeder extends Seeder
         // Menu 4
         Producto::create([
             'cod' => 'M0004',
-            'pvp' => 35,
+            'pvp' => 39.99,
             'nombre' => 'Menu 4',
             'stock' => 50,
             'disponible'=> true,
