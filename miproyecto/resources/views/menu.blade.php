@@ -67,7 +67,7 @@
                 <!-- Menu del Día (Default View) -->
                 <section class="menu-section active" id="menuDelDia">
                     <h2 class="section-title">Menu del Día</h2>
-                    <div class="menu-price">{{ $menuDelDia->precio ?? '12.99€' }}</div>
+                    <div class="menu-price">{{ $menuDelDia->precio . '€' ?? '12.99€' }}</div>
                     <div class="menu-note">{{ $menuDelDia->nota ?? 'Se puede elegir 2 platos' }}</div>
                     
                     <div class="menu-courses">
