@@ -8,6 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
     <link href="{{ asset('css/home.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sesion.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
+    <script src="{{ asset('js/authNeeded.js')}}"></script>
+
 </head>
 <body>
     <div class="container">
@@ -18,33 +22,39 @@
                 <div class="logo-container">
                     <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Deliciass" class="logo-1">
                 </div>
-                
-                <!-- Barra de búsqueda -->
-                <div class="search-container">
-                    <input type="text" placeholder="Buscar..." class="search-input-1">
-                </div>
-                
                 <!-- Enlaces de navegación -->
                 <div class="link-bar-1">
-                    <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Nosotros</a>
-                    |
                     <a href="{{ route('menu') }}" class="link-bar-name">Menu</a>
                     |
-                    <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Reservar</a>
+                    <a href="{{ route('producto.show') }}" class="link-bar-name">Carta</a>
                     |
-                </div>
-                
-                <!-- Botón de pedido -->
-                <div class="order-button-container">
-                    <button class="button-1-copy">Pedir Online</button>
-                </div>
-                
-                <!-- Avatar de usuario -->
+                    @auth
+                        <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Reservar</a>
+                    @else
+                    <a href="javascript:void(0)" 
+                        class="link-bar-name auth-required"
+                        data-message="Es necesario tener una cuenta para reservar"
+                        data-login-url="{{ route('login.form') }}">Reservar</a>
+                    @endauth
+                </div>                
+                <!-- Estructura HTML para el avatar con menú desplegable -->
                 <div class="avatar-container">
-                    <div class="avatar-1">
-                        <a href="{{route('user.profile')}}">
-                            <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Avatar" id="avatar">
-                        </a>
+                    <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" id="avatar" class="avatar" alt="Avatar">
+                    <div class="dropdown-menu" id="avatarMenu">
+                        @auth
+                            <!-- Usuario autenticado: muestra opciones de perfil y cerrar sesión -->
+                            <a href="{{ route('user.profile') }}">Mi Perfil</a>
+                            
+                            <!-- Formulario de logout estilizado como enlace -->
+                            <form action="{{ route('logout') }}" method="POST" id="logout-form" class="logout-link-form">
+                                @csrf
+                                <button type="submit" class="link-button">Cerrar sesión</button>
+                            </form>
+                        @else
+                            <!-- Usuario no autenticado: muestra opciones de login y registro -->
+                            <a href="{{ route('login.form') }}">Iniciar sesión</a>
+                            <a href="{{ route('registro.form') }}">Registrarse</a>
+                        @endauth
                     </div>
                 </div>
             </div>

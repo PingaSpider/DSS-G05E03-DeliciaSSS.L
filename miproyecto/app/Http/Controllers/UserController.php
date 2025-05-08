@@ -324,7 +324,7 @@ class UserController extends Controller
     public function logout(Request $request)
     {
         // En una aplicación real:
-        // Auth::logout();
+        Auth::logout();
         // $request->session()->invalidate();
         // $request->session()->regenerateToken();
         

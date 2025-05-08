@@ -75,7 +75,16 @@ class MenuController extends ProductoController
                     $menuProducto->save();
                 }
             }
+
         }
+
+        // Actualizar el precio del producto base (menú) con el precio total calculado
+        $producto->pvp = $precioTotal;
+        $producto->save();
+        window()->flash('success', 'Menú creado exitosamente con código: ' . $cod);
+        //PRecio total del menu
+        window()->flash('precioTotal', $precioTotal);
+
 
         // Obtener los productos relacionados para mostrar en la vista
         $menuProductos = MenuProducto::where('menu_cod', $cod)
@@ -159,13 +168,28 @@ class MenuController extends ProductoController
                 // Generar código automático para menú (M)
                 $cod = $this->generarCodigoAutomatico('M');
                 
-                // Crear el producto base
+                // Calcular precio total basado en los productos seleccionados
+                $precioTotal = 0;
+                $productoIds = $request->producto_ids;
+                $cantidades = $request->cantidades;
+                
+                foreach ($productoIds as $index => $productoId) {
+                    if (isset($cantidades[$index]) && $cantidades[$index] > 0) {
+                        $productoItem = Producto::find($productoId);
+                        if ($productoItem) {
+                            $precioTotal += $productoItem->pvp * $cantidades[$index];
+                        }
+                    }
+                }
+                
+                // Crear el producto base con el precio calculado
                 $producto = new Producto();
                 $producto->cod = $cod;
-                $producto->pvp = $request->pvp;
+                $producto->pvp = $precioTotal; // Asignar el precio total calculado
                 $producto->nombre = $request->nombre;
                 $producto->stock = $request->stock;
                 $producto->precioCompra = $request->precioCompra;
+                $producto->imagen_url = $request->imagen_url ?? null;
                 $producto->save();
 
                 // Crear el menú
@@ -175,20 +199,16 @@ class MenuController extends ProductoController
                 $menu->save();
 
                 // Asociar productos al menú
-                if ($request->has('producto_ids') && $request->has('cantidades')) {
-                    $productoIds = $request->producto_ids;
-                    $cantidades = $request->cantidades;
-                    $descripciones = $request->descripciones ?? [];
+                $descripciones = $request->descripciones ?? [];
 
-                    foreach ($productoIds as $index => $productoId) {
-                        if (isset($cantidades[$index]) && $cantidades[$index] > 0) {
-                            $menuProducto = new MenuProducto();
-                            $menuProducto->menu_cod = $cod;
-                            $menuProducto->producto_cod = $productoId;
-                            $menuProducto->cantidad = $cantidades[$index];
-                            $menuProducto->descripcion = isset($descripciones[$index]) ? $descripciones[$index] : '';
-                            $menuProducto->save();
-                        }
+                foreach ($productoIds as $index => $productoId) {
+                    if (isset($cantidades[$index]) && $cantidades[$index] > 0) {
+                        $menuProducto = new MenuProducto();
+                        $menuProducto->menu_cod = $cod;
+                        $menuProducto->producto_cod = $productoId;
+                        $menuProducto->cantidad = $cantidades[$index];
+                        $menuProducto->descripcion = isset($descripciones[$index]) ? $descripciones[$index] : '';
+                        $menuProducto->save();
                     }
                 }
                 
@@ -196,7 +216,7 @@ class MenuController extends ProductoController
                 DB::commit();
 
                 return redirect()->route('productos.paginate')
-                    ->with('success', 'Menú creado exitosamente con código: ' . $cod);
+                    ->with('success', 'Menú creado exitosamente con código: ' . $cod . ' y precio total: ' . number_format($precioTotal, 2) . ' €');
                 
             } catch (Exception $e) {
                 // Revertir la transacción en caso de error
@@ -303,11 +323,26 @@ class MenuController extends ProductoController
             DB::beginTransaction();
             
             try {
-                // Actualizar producto base
-                $producto->pvp = $request->pvp;
+                // Calcular precio total basado en los productos seleccionados
+                $precioTotal = 0;
+                $productoIds = $request->producto_ids;
+                $cantidades = $request->cantidades;
+                
+                foreach ($productoIds as $index => $productoId) {
+                    if (isset($cantidades[$index]) && $cantidades[$index] > 0) {
+                        $productoItem = Producto::find($productoId);
+                        if ($productoItem) {
+                            $precioTotal += $productoItem->pvp * $cantidades[$index];
+                        }
+                    }
+                }
+                
+                // Actualizar producto base con el precio calculado
+                $producto->pvp = $precioTotal;
                 $producto->nombre = $request->nombre;
                 $producto->stock = $request->stock;
                 $producto->precioCompra = $request->precioCompra;
+                $producto->imagen_url = $request->imagen_url ?? $producto->imagen_url;
                 $producto->save();
                 
                 // Actualizar menú
@@ -318,20 +353,16 @@ class MenuController extends ProductoController
                 MenuProducto::where('menu_cod', $cod)->delete();
                 
                 // Recrear las relaciones con los productos
-                if ($request->has('producto_ids') && $request->has('cantidades')) {
-                    $productoIds = $request->producto_ids;
-                    $cantidades = $request->cantidades;
-                    $descripciones = $request->descripciones ?? [];
+                $descripciones = $request->descripciones ?? [];
 
-                    foreach ($productoIds as $index => $productoId) {
-                        if (isset($cantidades[$index]) && $cantidades[$index] > 0) {
-                            $menuProducto = new MenuProducto();
-                            $menuProducto->menu_cod = $cod;
-                            $menuProducto->producto_cod = $productoId;
-                            $menuProducto->cantidad = $cantidades[$index];
-                            $menuProducto->descripcion = isset($descripciones[$index]) ? $descripciones[$index] : '';
-                            $menuProducto->save();
-                        }
+                foreach ($productoIds as $index => $productoId) {
+                    if (isset($cantidades[$index]) && $cantidades[$index] > 0) {
+                        $menuProducto = new MenuProducto();
+                        $menuProducto->menu_cod = $cod;
+                        $menuProducto->producto_cod = $productoId;
+                        $menuProducto->cantidad = $cantidades[$index];
+                        $menuProducto->descripcion = isset($descripciones[$index]) ? $descripciones[$index] : '';
+                        $menuProducto->save();
                     }
                 }
                 
@@ -339,7 +370,7 @@ class MenuController extends ProductoController
                 DB::commit();
 
                 return redirect()->route('productos.paginate')
-                    ->with('success', 'Menú actualizado exitosamente');
+                    ->with('success', 'Menú actualizado exitosamente con precio total: ' . number_format($precioTotal, 2) . ' €');
                 
             } catch (Exception $e) {
                 // Revertir la transacción en caso de error

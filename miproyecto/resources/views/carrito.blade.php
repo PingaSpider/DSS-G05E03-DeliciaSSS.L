@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Carrito de Compra - Delicias de la Vida</title>
-    <link rel="stylesheet" href="{{ asset('css/cssFuturo/carrito.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/carrito.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/7b1fbf0d4d.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="{{ asset('js/carrito.js') }}"></script>
-    
+    <script src="{{ asset('js/search-products.js') }}"></script>
+    <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('css/sesion.css') }}">
 </head>
 <body>
     <div class="container">
@@ -16,26 +19,41 @@
         <header class="header">
             <div class="logo">
                 <a href="{{ route('home') }}">
-                    <img src="{{ asset('assets/repo/0NqEprKrYi/delicias-logo.png') }}" alt="Delicias de la Vida">
+                    <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Delicias de la Vida">
                 </a>
             </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search...">
+            <div class="search-bar" id="product-search">
+                <input type="text" placeholder="Buscar Productos....">
             </div>
             <nav class="main-nav">
                 <ul>
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="{{ route('reserva') }}">Reservas</a></li>
+                    |
                     <li><a href="{{ route('menu') }}">Menu</a></li>
-                    <li><a href="{{ route('contacto') }}">Contacto</a></li>
+                    |
+                    <li><a href="{{ route('reservaciones.index') }}">Reservas</a></li>
                 </ul>
             </nav>
-            <div class="actions">
-                <button class="btn-primary">Pedir Online</button>
-                <a href="#" class="user-icon">
-                    <img src="{{ asset('assets/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Usuario" class="icon">
-                </a>
-            </div>
+            <!-- Estructura HTML para el avatar con menú desplegable -->
+            <div class="avatar-container">
+                    <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" id="avatar" class="avatar" alt="Avatar">
+                    <div class="dropdown-menu" id="avatarMenu">
+                        @auth
+                            <!-- Usuario autenticado: muestra opciones de perfil y cerrar sesión -->
+                            <a href="{{ route('user.profile') }}">Mi Perfil</a>
+                            
+                            <!-- Formulario de logout estilizado como enlace -->
+                            <form action="{{ route('logout') }}" method="POST" id="logout-form" class="logout-link-form">
+                                @csrf
+                                <button type="submit" class="link-button">Cerrar sesión</button>
+                            </form>
+                        @else
+                            <!-- Usuario no autenticado: muestra opciones de login y registro -->
+                            <a href="{{ route('login.form') }}">Iniciar sesión</a>
+                            <a href="{{ route('registro.form') }}">Registrarse</a>
+                        @endauth
+                    </div>
+                </div>
         </header>
 
         <!-- Checkout Steps -->
@@ -61,77 +79,51 @@
                 <div class="cart-content">
                     <div class="cart-items">
                         <h2>Carrito de Compra</h2>
-                        
-                        @forelse($cartItems ?? [] as $item)
-                            <div class="cart-item">
+                        @forelse($carrito->lineasPedido as $item)
+                            <div class="cart-item" data-linea-id="{{ $item->linea }}">
                                 <div class="item-image">
-                                    <img src="{{ asset($item['image']) }}" alt="{{ $item['name'] }}">
+                                    <img src="{{ $item->producto->imagen_url }}" alt="{{ $item->producto->nombre }}">
                                 </div>
                                 <div class="item-details">
-                                    <h3>{{ $item['name'] }}</h3>
-                                    <p>{{ $item['description'] }}</p>
-                                    <span class="item-price">${{ $item['price'] }}</span>
+                                    <h3>{{ $item->producto->nombre }}</h3>
+                                    @if($item->producto->comida)
+                                        <p>{{ $item->producto->comida->descripcion }}</p>
+                                    @elseif($item->producto->bebida)
+                                        <p>{{ $item->producto->bebida->tipoBebida }} - {{ $item->producto->bebida->tamanyo }}</p>
+                                    @else
+                                        <p>{{ $item->producto->nombre }}</p>
+                                    @endif
+                                    <span class="item-price">${{ number_format($item->precio, 2) }}</span>
                                 </div>
                                 <div class="item-quantity">
                                     <div class="quantity-selector">
-                                        <input type="number" value="{{ $item['quantity'] }}" min="1" max="10" 
-                                               data-id="{{ $item['id'] }}" class="item-quantity-input">
+                                        <input type="number" value="{{ $item->cantidad }}" min="1" max="10" 
+                                            data-linea="{{ $item->linea }}" class="item-quantity-input">
                                         <div class="quantity-buttons">
-                                            <button class="quantity-up">+</button>
-                                            <button class="quantity-down">-</button>
+                                            <button class="quantity-up" onclick="updateQuantity('{{ $item->linea }}', 1)">+</button>
+                                            <button class="quantity-down" onclick="updateQuantity('{{ $item->linea }}', -1)">-</button>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="item-actions">
+                                <button class="btn-remove" onclick="removeFromCart('{{ $item->linea }}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                                 </div>
                             </div>
                         @empty
-                            <!-- Datos por defecto si no hay items en el carrito -->
-                            <div class="cart-item">
-                                <div class="item-image">
-                                    <img src="{{ asset('assets/repo/comida/cheseburguer.png') }}" alt="Hamburguesa de Cheddar">
-                                </div>
-                                <div class="item-details">
-                                    <h3>HAMBURGUESA DE CHEDDAR</h3>
-                                    <p>Hamburguesa con queso</p>
-                                    <span class="item-price">$7.50</span>
-                                </div>
-                                <div class="item-quantity">
-                                    <div class="quantity-selector">
-                                        <input type="number" value="1" min="1" max="10" data-id="1" class="item-quantity-input">
-                                        <div class="quantity-buttons">
-                                            <button class="quantity-up">+</button>
-                                            <button class="quantity-down">-</button>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="empty-cart">
+                                <p>Tu carrito está vacío</p>
+                                <a href="{{ route('producto.show') }}" class="btn-primary">Ver productos</a>
                             </div>
-                            
-                            <div class="cart-item">
-                                <div class="item-image">
-                                    <img src="{{ asset('assets/repo/comida/cocacola_zero.png') }}" alt="Coca Cola Zero">
-                                </div>
-                                <div class="item-details">
-                                    <h3>COCA COLA ZERO</h3>
-                                    <p>Tamaño Mediano</p>
-                                    <span class="item-price">$3.50</span>
-                                </div>
-                                <div class="item-quantity">
-                                    <div class="quantity-selector">
-                                        <input type="number" value="1" min="1" max="10" data-id="2" class="item-quantity-input">
-                                        <div class="quantity-buttons">
-                                            <button class="quantity-up">+</button>
-                                            <button class="quantity-down">-</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforelse
+                        @endforelse            
                     </div>
                     
                     <div class="cart-summary">
                         <h2>Resumen de Compra</h2>
                         <div class="summary-total">
                             <span class="total-label">TOTAL</span>
-                            <span class="total-amount">${{ $total ?? '11.00' }}</span>
+                            <span class="total-amount" id="cart-total">${{ number_format($carrito->total, 2) }}</span>
                         </div>
                     </div>
                 </div>
@@ -146,43 +138,22 @@
             <div class="step-content" id="details-step">
                 <h2>Detalles de Envío</h2>
                 <form class="shipping-form" >
-                    @csrf
+                @csrf
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombre" name="nombre" required value="{{ $cliente->nombre ?? '' }}">
+                </div>
+                
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="nombre">Nombre Completo</label>
-                        <input type="text" id="nombre" name="nombre" required value="{{ $cliente->nombre ?? '' }}">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required value="{{ $cliente->email ?? '' }}">
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required value="{{ $cliente->email ?? '' }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="telefono">Teléfono</label>
-                            <input type="tel" id="telefono" name="telefono" required value="{{ $cliente->telefono ?? '' }}">
-                        </div>
-                    </div>
-                    
                     <div class="form-group">
-                        <label for="direccion">Dirección</label>
-                        <input type="text" id="direccion" name="direccion" required value="{{ $cliente->direccion ?? '' }}">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" required value="{{ $cliente->telefono ?? '' }}">
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="ciudad">Ciudad</label>
-                            <input type="text" id="ciudad" name="ciudad" required value="{{ $cliente->ciudad ?? '' }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="cp">Código Postal</label>
-                            <input type="text" id="cp" name="cp" required value="{{ $cliente->cp ?? '' }}">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="instrucciones">Instrucciones de entrega (opcional)</label>
-                        <textarea id="instrucciones" name="instrucciones" rows="3">{{ $cliente->instrucciones ?? '' }}</textarea>
-                    </div>
+                </div>
                 </form>
                 
                 <div class="cart-actions">
@@ -194,7 +165,7 @@
             <!-- Payment Options Step -->
             <div class="step-content" id="payment-step">
                 <h2>Opciones de Pago</h2>
-                <form class="payment-form"  method="POST">
+                <form class="payment-form"  method="POST" action="{{ route('carrito.checkout') }}">
                     @csrf
                     <div class="payment-methods">
                         <div class="payment-method">
@@ -220,7 +191,9 @@
                         
                         <div class="payment-method">
                             <input type="radio" id="paypal" name="payment_method" value="paypal">
-                            <label for="paypal">PayPal</label>
+                            <label for="paypal">
+                                <img src="{{ asset('assets/images/repo/0NqEprKfVi/39JSjYDc0n.png') }}" alt="PayPal" class="paypal-logo">
+                            </label>
                         </div>
                         
                         <div class="payment-method">
@@ -233,15 +206,15 @@
                         <h3>Resumen de Compra</h3>
                         <div class="summary-row">
                             <span>Subtotal</span>
-                            <span>${{ $subtotal ?? '11.00' }}</span>
+                            <span>${{ number_format($carrito->total, 2) }}</span>
                         </div>
                         <div class="summary-row">
                             <span>Envío</span>
-                            <span>${{ $envio ?? '0.00' }}</span>
+                            <span>$0.00</span>
                         </div>
                         <div class="summary-row total">
                             <span>TOTAL</span>
-                            <span>${{ $total ?? '11.00' }}</span>
+                            <span>${{ number_format($carrito->total, 2) }}</span>
                         </div>
                     </div>
                     
@@ -256,7 +229,7 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-logo">
-                <img src="{{ asset('assets/repo/0NqEprKrYi/delicias-logo.png') }}" alt="Delicias de la Vida">
+                <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo-naranja.png') }}" alt="Delicias de la Vida">
             </div>
             <div class="footer-info">
                 <div class="footer-section">

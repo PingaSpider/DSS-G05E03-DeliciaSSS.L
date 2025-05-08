@@ -24,7 +24,7 @@ class MesaSeeder extends Seeder
         Mesa::create([
             'cantidadMesa' => 6,
             'codMesa' => 'M003',
-            'ocupada' => true
+            'ocupada' => false
         ]);
 
         Mesa::create([
@@ -36,7 +36,7 @@ class MesaSeeder extends Seeder
         Mesa::create([
             'cantidadMesa' => 4,
             'codMesa' => 'M005',
-            'ocupada' => true
+            'ocupada' => false
         ]);
 
         Mesa::create([
@@ -48,7 +48,7 @@ class MesaSeeder extends Seeder
         Mesa::create([
             'cantidadMesa' => 8,
             'codMesa' => 'M007',
-            'ocupada' => true
+            'ocupada' => false
         ]);
 
         Mesa::create([
@@ -60,7 +60,7 @@ class MesaSeeder extends Seeder
         Mesa::create([
             'cantidadMesa' => 2,
             'codMesa' => 'M009',
-            'ocupada' => true
+            'ocupada' => false
         ]);
 
         Mesa::create([
@@ -78,7 +78,7 @@ class MesaSeeder extends Seeder
         Mesa::create([
             'cantidadMesa' => 8,
             'codMesa' => 'M012',
-            'ocupada' => true
+            'ocupada' => false
         ]);
 
         Mesa::create([
@@ -96,7 +96,7 @@ class MesaSeeder extends Seeder
         Mesa::create([
             'cantidadMesa' => 4,
             'codMesa' => 'M015',
-            'ocupada' => true
+            'ocupada' => false
         ]);
 
         Mesa::create([
@@ -114,7 +114,7 @@ class MesaSeeder extends Seeder
         Mesa::create([
             'cantidadMesa' => 10,
             'codMesa' => 'M018',
-            'ocupada' => true
+            'ocupada' => false
         ]);
 
         Mesa::create([
@@ -126,7 +126,7 @@ class MesaSeeder extends Seeder
         Mesa::create([
             'cantidadMesa' => 4,
             'codMesa' => 'M020',
-            'ocupada' => true
+            'ocupada' => false
         ]);
 
     }

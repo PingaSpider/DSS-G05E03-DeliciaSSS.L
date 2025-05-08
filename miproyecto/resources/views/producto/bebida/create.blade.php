@@ -88,6 +88,38 @@
                 @enderror
             </div>
 
+             <!-- Elegir imagen -->
+             <div class="form-group">
+                <label for="imagen_url"><b>Imagen del Producto</b></label>
+                <select name="imagen_url" id="imagen_url" class="select-image">
+                    <option value="">Seleccionar imagen predeterminada</option>
+                    @php
+                        $imagePath = public_path('assets/images/comida/bebida');
+                        $images = [];
+                        if (file_exists($imagePath)) {
+                            $files = scandir($imagePath);
+                            foreach($files as $file) {
+                                $ext = pathinfo($file, PATHINFO_EXTENSION);
+                                if (in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'webp']) && $file != '.' && $file != '..') {
+                                    $imageName = pathinfo($file, PATHINFO_FILENAME);
+                                    $images[$imageName] = asset('assets/images/comida/bebida/' . $file);
+                                }
+                            }
+                        }
+                    @endphp
+                    
+                    @foreach($images as $name => $url)
+                        <option value="{{ $name }}" data-img-src="{{ $url }}">{{ $name }}</option>
+                    @endforeach
+                </select>
+                <div id="image-preview" class="mt-2" style="display: none;">
+                    <img src="" alt="Vista previa" style="max-width: 150px; max-height: 150px;">
+                </div>
+                @error('imagen_url')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
+            </div>
+
             <button type="submit" class="submit-btn">Crear Bebida</button>
             
             <div class="action-links">
@@ -105,6 +137,7 @@
                 const precioCompraInput = document.getElementById('precioCompra');
                 const tamanioInput = document.getElementById('tamanio');
                 const tipoInput = document.getElementById('tipo');
+                const imagenInput = document.getElementById('imagen_url');
                 let hasErrors = false;
                 
                 // Validar nombre
@@ -141,9 +174,34 @@
                     tipoInput.classList.add('error-input');
                     hasErrors = true;
                 }
+
+                // Validar imagen
+                if (imagenInput.value === '') {
+                    imagenInput.nextElementSibling.textContent = 'Debe seleccionar una imagen';
+                    imagenInput.classList.add('error-input');
+                    hasErrors = true;
+                }
                 
                 if (hasErrors) {
                     e.preventDefault();
+                }
+            });
+        });
+
+        // Al cargar el documento, inicializa la vista previa de imagen
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageSelect = document.getElementById('imagen_url');
+            const imagePreview = document.getElementById('image-preview');
+            const previewImg = imagePreview.querySelector('img');
+
+            // Mostrar vista previa cuando se selecciona una imagen
+            imageSelect.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                if (selectedOption && selectedOption.hasAttribute('data-img-src')) {
+                    previewImg.src = selectedOption.getAttribute('data-img-src');
+                    imagePreview.style.display = 'block';
+                } else {
+                    imagePreview.style.display = 'none';
                 }
             });
         });

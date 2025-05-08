@@ -164,18 +164,18 @@ class WebReservaController extends Controller
                 'email' => $usuario->email
             ]);
             
-            // Verificar que la mesa seleccionada tenga capacidad suficiente
+            // Verificar que la mesa seleccionada tenga capacidad EXACTA (cambio principal)
             $mesa = Mesa::findOrFail($request->mesa_id);
             
-            if ($mesa->cantidadMesa < $request->personas) {
-                Log::warning('Mesa sin capacidad suficiente', [
+            if ($mesa->cantidadMesa != $request->personas) {
+                Log::warning('Mesa sin capacidad exacta', [
                     'mesa_id' => $mesa->codMesa,
                     'capacidad_mesa' => $mesa->cantidadMesa,
                     'personas_solicitadas' => $request->personas
                 ]);
                 
                 return redirect()->route('reservaciones.index')
-                    ->with('error', 'La mesa seleccionada no tiene capacidad suficiente para el número de personas indicado')
+                    ->with('error', 'La mesa seleccionada debe tener capacidad exacta para el número de personas indicado')
                     ->withInput();
             }
             

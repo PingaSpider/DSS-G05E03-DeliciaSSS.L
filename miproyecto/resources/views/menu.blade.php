@@ -9,6 +9,8 @@
     <link href="{{ asset('css/cssFuturo/menu.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <script src="{{ asset('js/menu.js') }}" defer></script>
+    <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('css/sesion.css') }}">
 </head>
 <body>
     <div class="container">
@@ -33,9 +35,14 @@
             </nav>
             <div class="actions">
                 <button class="btn-primary">Pedir Online</button>
-                <a href="#" class="user-icon">
-                    <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Usuario" class="icon">
-                </a>
+                <div class="avatar-container">
+                <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
+                <div class="dropdown-menu" id=avatarMenu>
+                    <a href="{{ route('user.profile') }}" class="dropdown-item">Perfil</a>
+                    <a href="{{ route('logout') }}" class="dropdown-item">Cerrar sesión</a>
+                    <a href="{{ route('login') }}" class="dropdown-item">Iniciar sesión</a>
+                    <a href="{{ route('registro') }}" class="dropdown-item">Registrarse</a>
+                </div>
             </div>
         </header>
 

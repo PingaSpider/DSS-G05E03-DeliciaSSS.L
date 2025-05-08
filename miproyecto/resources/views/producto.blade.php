@@ -6,9 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $producto->nombre ?? 'Detalle de Producto' }} - Delicias de la Vida</title>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/7b1fbf0d4d.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{{ asset('css/cssFuturo/producto.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/producto.css') }}">
     <script src="{{ asset('js/producto.js') }}"></script>
+    <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('css/sesion.css') }}">
 </head>
 <body>
     <div class="container">
@@ -19,21 +21,33 @@
                     <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Delicias de la Vida">
                 </a>
             </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search...">
-            </div>
             <nav class="main-nav">
                 <ul>
                     <li><a href="{{ route('home') }}">Home</a></li>
+                    |
                     <li><a href="{{ route('menu') }}">Menu</a></li>
+                    |
                     <li><a href="{{ route('reservaciones.index') }}">Reservas</a></li>
                 </ul>
             </nav>
             <div class="actions">
                 <button class="btn-primary">Pedir Online</button>
-                <a class="user-icon">
-                    <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Usuario" class="icon">
-                </a>
+                <div class="avatar-container">
+                <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
+                <div class="dropdown-menu" id=avatarMenu>
+                    @guest
+                        <a href="{{ route('login.form') }}">Iniciar Sesión</a>
+                        <a href="{{ route('registro.form') }}">Registrarse</a>
+                    @else
+                        <a href="{{ route('user.profile') }}">Mi Perfil</a>
+                        
+                        <!-- Formulario de logout con método POST -->
+                        <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                            @csrf
+                            <button type="submit" class="dropdown-logout-btn">Cerrar Sesión</button>
+                        </form>
+                    @endguest
+                </div>
             </div>
         </header>
 
@@ -44,37 +58,64 @@
             <!-- Product Detail Section -->
             <div class="product-detail">
                 <div class="product-image-container">
-                    <img src="{{ $producto->imagen ?? asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/especialburguer.png') }}" alt="{{ $producto->nombre ?? 'Hamburguesa especial' }}" class="product-main-image">
+                    <img src="{{ $producto->imagen_url }}" alt="{{ $producto->nombre }}" class="product-main-image">
                 </div>
                 
                 <div class="product-info">
-                    <h2 class="product-title" id="product-title">{{ $producto->nombre ?? 'Hamburguesa especial' }}</h2>
+                    <h2 class="product-title" id="product-title">{{ $producto->nombre }}</h2>
                     
                     <div class="product-rating">
                         <div class="stars">
-                            @for($i = 0; $i < ($producto->rating ?? 5); $i++)
+                            @for($i = 0; $i < $producto->rating; $i++)
                                 <span class="star">★</span>
                             @endfor
                         </div>
-                        <span class="reviews-count">{{ $producto->reviews_count ?? 4 }} reviews</span>
+                        <span class="reviews-count">{{ $producto->reviews_count }} reviews</span>
                     </div>
                     
-                    <div class="product-price" id="product-price">$ {{ $producto->precio ?? '18' }}</div>
+                    <div class="product-price" id="product-price">${{ number_format($producto->pvp, 2) }}</div>
                     
+                    @if($producto->comida)
                     <div class="product-description" id="product-description">
-                        <p>{{ $producto->descripcion ?? 'Carne de vacuno con tomate, lechuga, queso y salsa de bacon' }}</p>
+                        <p>{{ $producto->comida->descripcion }}</p>
                     </div>
+                    @elseif($producto->bebida)
+                    <div class="product-description" id="product-description">
+                        <p>{{ $producto->bebida->tipoBebida }} - {{ $producto->bebida->tamanyo }}</p>
+                    </div>
+                    @else
+                    <div class="product-description" id="product-description">
+                        <p>Delicioso {{ strtolower($producto->nombre) }} preparado con los mejores ingredientes.</p>
+                    </div>
+                    @endif
                     
                     <div class="product-actions">
-                        <form>
-                            @csrf
-                            <input type="hidden" name="producto_id" value="{{ $producto->id ?? 1 }}">
-                            <button type="submit" class="btn-primary add-to-cart">Add To Cart</button>
-                        </form>
-                        <button class="btn-wishlist" onclick="toggleWishlist({{ $producto->id ?? 1 }})">
-                            <i class="heart-icon">♡</i>
+                        <div class="quantity-selector">
+                            <button class="quantity-btn minus" data-product="{{ $producto->cod }}">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" class="quantity-input" value="1" min="1" max="10" data-product="{{ $producto->cod }}">
+                            <button class="quantity-btn plus" data-product="{{ $producto->cod }}">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <button class="add-to-cart-btn" data-product="{{ $producto->cod }}">
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
+                        <button class="btn-wishlist" onclick="toggleWishlist('{{ $producto->cod }}')">
+                            <i class="fas fa-heart"></i>
                         </button>
                     </div>
+
+                    @if($producto->stock < 10 && $producto->stock > 0)
+                    <div class="stock-warning">
+                        <p>¡Solo quedan {{ $producto->stock }} unidades!</p>
+                    </div>
+                    @elseif($producto->stock == 0)
+                    <div class="stock-warning out-of-stock">
+                        <p>Producto agotado</p>
+                    </div>
+                    @endif
                 </div>
             </div>
             
@@ -83,73 +124,10 @@
                 <h2>Similar Products</h2>
                 
                 <div class="product-grid">
-                    @forelse($similarProducts ?? [] as $similar)
-                        <div class="product-card" data-product-id="{{ $similar->id }}">
-                            <div class="product-image">
-                                <img src="{{ $similar->imagen }}" alt="{{ $similar->nombre }}" class="product-thumbnail">
-                            </div>
-                            <div class="product-card-info">
-                                <div class="product-name">{{ $similar->nombre }}</div>
-                                <div class="product-card-rating">{{ str_repeat('★ ', $similar->rating) }}</div>
-                                <div class="product-card-price">${{ number_format($similar->precio, 2) }}</div>
-                            </div>
-                        </div>
+                    @forelse($similarProducts as $similar)
+                        @include('partials.product-card', ['producto' => $similar])
                     @empty
-                        <!-- Productos similares por defecto -->
-                        <div class="product-card" data-product-id="1">
-                            <div class="product-image">
-                                <img src="{{ asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/cheseburguer.png') }}" alt="Hamburguesa Clásica" class="product-thumbnail">
-                            </div>
-                            <div class="product-card-info">
-                                <div class="product-name">PRODUCT NAME</div>
-                                <div class="product-card-rating">★ ★ ★</div>
-                                <div class="product-card-price">$7.00</div>
-                            </div>
-                        </div>
-                        
-                        <div class="product-card" data-product-id="2">
-                            <div class="product-image">
-                                <img src="{{ asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/cheseburguer.png') }}" alt="Hamburguesa Deluxe" class="product-thumbnail">
-                            </div>
-                            <div class="product-card-info">
-                                <div class="product-name">PRODUCT NAME</div>
-                                <div class="product-card-rating">★ ★ ★</div>
-                                <div class="product-card-price">$9.00</div>
-                            </div>
-                        </div>
-                        
-                        <div class="product-card" data-product-id="3">
-                            <div class="product-image">
-                                <img src="{{ asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/cheseburguer.png') }}" alt="Hamburguesa Vegetariana" class="product-thumbnail">
-                            </div>
-                            <div class="product-card-info">
-                                <div class="product-name">PRODUCT NAME</div>
-                                <div class="product-card-rating">★ ★ ★</div>
-                                <div class="product-card-price">$8.00</div>
-                            </div>
-                        </div>
-                        
-                        <div class="product-card" data-product-id="4">
-                            <div class="product-image">
-                                <img src="{{ asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/cheseburguer.png') }}" alt="Hamburguesa de Pollo" class="product-thumbnail">
-                            </div>
-                            <div class="product-card-info">
-                                <div class="product-name">PRODUCT NAME</div>
-                                <div class="product-card-rating">★ ★ ★</div>
-                                <div class="product-card-price">$7.50</div>
-                            </div>
-                        </div>
-                        
-                        <div class="product-card" data-product-id="5">
-                            <div class="product-image">
-                                <img src="{{ asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/cheseburguer.png') }}" alt="Hamburguesa Vegie" class="product-thumbnail">
-                            </div>
-                            <div class="product-card-info">
-                                <div class="product-name">PRODUCT NAME</div>
-                                <div class="product-card-rating">★ ★ ★</div>
-                                <div class="product-card-price">$9.00</div>
-                            </div>
-                        </div>
+                        <p>No hay productos similares disponibles.</p>
                     @endforelse
                 </div>
             </section>
@@ -158,55 +136,28 @@
             <section class="reviews">
                 <h2>Reviews</h2>
                 
-                @forelse($reviews ?? [] as $review)
+                @forelse($reviews as $review)
                     <div class="review">
                         <div class="review-avatar">
-                            <img src="{{ $review->usuario->avatar ?? asset('user-avatar.jpg') }}" alt="{{ $review->usuario->nombre }}">
+                            <img src="{{ $review->usuario->avatar }}" alt="{{ $review->usuario->nombre }}" onerror="this.src='{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}'" id="review-avatar">
                         </div>
                         <div class="review-content">
                             <div class="review-header">
                                 <div class="reviewer-name">{{ $review->usuario->nombre }}</div>
-                                <div class="review-date">{{ \Carbon\Carbon::parse($review->fecha)->format('F d, Y') }}</div>
+                                <div class="review-date">{{ \Carbon\Carbon::parse($review->fecha)->format('d/m/Y') }}</div>
                             </div>
-                            <div class="review-rating">{{ str_repeat('★ ', $review->rating) }}</div>
+                            <div class="review-rating">
+                                @for($i = 0; $i < $review->rating; $i++)
+                                    ★
+                                @endfor
+                            </div>
                             <div class="review-text">
                                 <p>{{ $review->comentario }}</p>
                             </div>
                         </div>
                     </div>
                 @empty
-                    <!-- Reviews por defecto -->
-                    <div class="review">
-                        <div class="review-avatar">
-                            <img src="{{ asset('user-avatar.jpg') }}" alt="John Doe">
-                        </div>
-                        <div class="review-content">
-                            <div class="review-header">
-                                <div class="reviewer-name">John Doe</div>
-                                <div class="review-date">August 14, 2024</div>
-                            </div>
-                            <div class="review-rating">★ ★ ★ ★ ★</div>
-                            <div class="review-text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="review">
-                        <div class="review-avatar">
-                            <img src="{{ asset('user-avatar.jpg') }}" alt="John Doe">
-                        </div>
-                        <div class="review-content">
-                            <div class="review-header">
-                                <div class="reviewer-name">John Doe</div>
-                                <div class="review-date">August 14, 2024</div>
-                            </div>
-                            <div class="review-rating">★ ★ ★</div>
-                            <div class="review-text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <p>No hay reseñas para este producto aún.</p>
                 @endforelse
             </section>
         </main>
