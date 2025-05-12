@@ -104,23 +104,29 @@
                         </div>
                     </div>
                     
-                    <!-- Productos Recomendados -->
+                   <!-- Productos Recomendados -->
                     <div class="recommended-products">
                         <h2>{{ $recomendados->titulo ?? 'Productos recomendados' }}</h2>
                         <p>{{ $recomendados->descripcion ?? 'Nuestras delicias más populares seleccionadas especialmente para ti.' }}</p>
                         
                         <div class="product-grid">
                             @foreach($recomendados->productos ?? [] as $producto)
-                            <div class="product-card" >
-                                <div class="product-image">
-                                    <img src="{{ $producto['imagen'] }}" alt="{{ $producto['nombre'] }}">
+                            <a href="{{ route('producto.show', $producto['cod']) }}" class="product-card-link">
+                                <div class="product-card" data-product-id="{{ $producto['cod'] }}">
+                                    <div class="product-image">
+                                        <img src="{{ $producto['imagen'] }}" alt="{{ $producto['nombre'] }}" class="product-thumbnail">
+                                    </div>
+                                    <div class="product-card-info">
+                                        <div class="product-name">{{ $producto['nombre'] }}</div>
+                                        <div class="product-card-rating">
+                                            @for($i = 0; $i < intval($producto['rating']); $i++)
+                                                <i class="fas fa-star"></i>
+                                            @endfor
+                                        </div>
+                                        <div class="product-card-price">{{ $producto['precio'] }}</div>
+                                    </div>
                                 </div>
-                                <div class="product-info¡">
-                                    <div class="product-name">{{ $producto['nombre'] }}</div>
-                                    <div class="product-rating">{{ str_repeat('★', $producto['rating']) }}</div>
-                                    <div class="product-price">{{ $producto['precio'] }}</div>
-                                </div>
-                            </div>
+                            </a>
                             @endforeach
                         </div>
                     </div>

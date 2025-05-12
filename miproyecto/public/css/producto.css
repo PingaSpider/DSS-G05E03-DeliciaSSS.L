@@ -65,14 +65,14 @@ header {
 
 /* Logo */
 .logo-container {
-    max-width: 100px;
-    max-height: 100px;
+    max-width: 200px;
+    max-height: 200px;
     flex: 0 0 auto;
 }
 
-
 .logo img {
-    height: 45px;
+    height: 75%;
+    max-width: 75%;
 }
 
 .search-bar input {
@@ -1110,3 +1110,4 @@ header {
 .btn-cancel:hover {
     background-color: #e9ecef;
 }
+

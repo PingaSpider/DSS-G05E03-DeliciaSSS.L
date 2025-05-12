@@ -14,39 +14,61 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <a href="{{ route('home') }}">
-                    <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Delicias de la Vida">
-                </a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="{{ route('home') }}">Home</a></li>
+         <!-- Header -->
+         <header>
+            <div class="navigation-container">
+                <!-- Logo (a la izquierda) -->
+                <div class="logo-container">
+                    <a href="{{ route('home') }}">
+                        <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Delicias de la Vida" class="logo-1">
+                    </a>
+                </div>
+                
+                <!-- Navegación (al centro) -->
+                <div class="link-bar-1">
+                    <a href="{{ route('home') }}" class="link-bar-name">Home</a>
                     |
-                    <li><a href="{{ route('menu') }}">Menu</a></li>
+                    <a href="{{ route('menu') }}" class="link-bar-name">Menu</a>
                     |
-                    <li><a href="{{ route('reservaciones.index') }}">Reservas</a></li>
-                </ul>
-            </nav>
-            <div class="actions">
-                <button class="btn-primary">Pedir Online</button>
-                <div class="avatar-container">
-                <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
-                <div class="dropdown-menu" id=avatarMenu>
-                    @guest
-                        <a href="{{ route('login.form') }}">Iniciar Sesión</a>
-                        <a href="{{ route('registro.form') }}">Registrarse</a>
+                    @auth
+                        <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Reservar</a>
                     @else
-                        <a href="{{ route('user.profile') }}">Mi Perfil</a>
-                        
-                        <!-- Formulario de logout con método POST -->
-                        <form action="{{ route('logout') }}" method="POST" id="logout-form">
-                            @csrf
-                            <button type="submit" class="dropdown-logout-btn">Cerrar Sesión</button>
-                        </form>
-                    @endguest
+                    <a href="javascript:void(0)" 
+                        class="link-bar-name auth-required"
+                        data-message="Es necesario tener una cuenta para reservar"
+                        data-login-url="{{ route('login.form') }}">Reservar</a>
+                    @endauth
+                </div>
+                
+                <!-- Acciones (a la derecha) -->
+                <div class="actions">
+                    <!-- Botón de carrito -->
+                    @auth
+                        <a href="{{ route('carrito.view') }}" class="to-cart-btn">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                    @endauth
+                    
+                    <!-- Avatar de usuario -->
+                    <div class="avatar-container">
+                        <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" id="avatar" class="avatar" alt="Avatar">
+                        <div class="dropdown-menu" id="avatarMenu">
+                            @auth
+                                <!-- Usuario autenticado: muestra opciones de perfil y cerrar sesión -->
+                                <a href="{{ route('user.profile') }}">Mi Perfil</a>
+                                
+                                <!-- Formulario de logout estilizado como enlace -->
+                                <form action="{{ route('logout') }}" method="POST" id="logout-form" class="logout-link-form">
+                                    @csrf
+                                    <button type="submit" class="link-button">Cerrar sesión</button>
+                                </form>
+                            @else
+                                <!-- Usuario no autenticado: muestra opciones de login y registro -->
+                                <a href="{{ route('login.form') }}">Iniciar sesión</a>
+                                <a href="{{ route('registro.form') }}">Registrarse</a>
+                            @endauth
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -101,9 +123,6 @@
                         </div>
                         <button class="add-to-cart-btn" data-product="{{ $producto->cod }}">
                             <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <button class="btn-wishlist" onclick="toggleWishlist('{{ $producto->cod }}')">
-                            <i class="fas fa-heart"></i>
                         </button>
                     </div>
 

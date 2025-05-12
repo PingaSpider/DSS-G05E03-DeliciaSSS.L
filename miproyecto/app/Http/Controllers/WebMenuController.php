@@ -257,7 +257,8 @@ class WebMenuController extends Controller
                     'imagen' => $producto->imagen_url,
                     'nombre' => $producto->nombre,
                     'rating' => rand(3, 5),
-                    'precio' => $producto->pvp . '€'
+                    'precio' => $producto->pvp . '€',
+                    'cod' => $producto->cod
                 ];
             }
         } catch (\Exception $e) {

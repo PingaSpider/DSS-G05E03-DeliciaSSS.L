@@ -947,3 +947,102 @@ span.material-symbols-outlined {
 .avatar-container{
     margin-left: 50%;
 }
+
+/* Modificaciones para hacer la barra de búsqueda más grande */
+.search-bar {
+    flex: 1 1 500px;  /* Aumentamos el tamaño base de 300px a 500px */
+    max-width: 500px;  /* Aumentamos el tamaño máximo de 400px a 600px */
+    margin: 0 30px;    /* Aumentamos los márgenes laterales */
+}
+
+.search-bar input {
+    width: 80%;
+    padding: 12px 18px;  /* Aumentamos el padding para hacer la barra más alta */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;     /* Aumentamos el tamaño de la fuente */
+    transition: border-color 0.3s;
+}
+
+/* Modificaciones para centrar la navegación */
+.main-nav {
+    flex: 1 1 auto;      /* Permitimos que la navegación crezca */
+    margin: 0;
+    display: flex;       /* La hacemos flex para centrar el contenido */
+    justify-content: start;  /* Centramos horizontalmente */
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;          /* Aumentamos el espacio entre elementos */
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ajuste del header para mejor distribución */
+.header {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e5e5e5;
+    gap: 20px;
+    background-color: #FEFCE0;
+    justify-content: space-between;  /* Distribuye mejor el espacio */
+}
+
+/* Ajuste del avatar para que no esté tan separado */
+.avatar-container {
+    flex: 0 0 auto;
+    position: relative;
+    cursor: pointer;
+    margin-left: auto;    /* Cambiamos de 50% a auto para mejor alineación */
+}
+
+/* Media queries actualizadas */
+@media (min-width: 1200px) {
+    .search-bar {
+        max-width: 600px;  /* Más grande en pantallas XL */
+    }
+}
+
+@media (max-width: 992px) {
+    .search-bar {
+        max-width: 400px;  /* Reducimos un poco en pantallas medianas */
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    
+    .logo {
+        flex: 1;
+        max-width: 160px;
+        margin-right: 0;
+    }
+    
+    .search-bar {
+        order: 3;
+        flex: 1 0 100%;
+        max-width: 100%;
+        margin: 10px 0 5px 0;
+    }
+    
+    .main-nav {
+        order: 4;
+        width: 100%;
+        margin: 10px 0 0 0;
+        justify-content: center;  /* Mantenemos centrado en móvil */
+    }
+    
+    .avatar-container {
+        order: 2;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
