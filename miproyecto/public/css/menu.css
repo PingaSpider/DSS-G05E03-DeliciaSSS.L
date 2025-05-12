@@ -50,7 +50,7 @@ a {
 }
 
 .logo img {
-    height: 45px;
+    height: 80px;
 }
 
 .search-bar input {
@@ -172,6 +172,42 @@ a {
     margin-bottom: 30px;
 }
 
+.menu-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.menu-actions button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-actions .btn-add-cart {
+    background-color: #ff8c38;
+    color: white;
+}
+
+.menu-actions .btn-add-cart:hover {
+    background-color: #e67d2e;
+}
+
+.menu-actions .btn-order-now {
+    background-color: #333;
+    color: white;
+}
+
+.menu-actions .btn-order-now:hover {
+    background-color: #555;
+}
+
 .menu-courses {
     display: flex;
     justify-content: space-between;
@@ -262,11 +298,13 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color:  white;
 }
 
 .product-image img {
-    width: 100%;
-    height: 100%;
+    transition: transform 0.3s ease;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: cover;
 }
 
@@ -332,21 +370,20 @@ a {
 
 /* Footer */
 .footer {
-    background-color: #ff8c38;
+    background-color: #F39221;
     color: white;
     padding: 30px 20px;
     margin-top: auto;
 }
 
 .footer-logo {
-    border: 1px solid #fff;
     display: inline-block;
     padding: 10px;
     margin-bottom: 20px;
 }
 
 .footer-logo img {
-    height: 60px;
+    height: 80px;
 }
 
 .footer-info {
@@ -438,24 +475,297 @@ a {
 }
 
 button.menu-category {
-    background-color: transparent; /* Remove background color */
-    border: none; /* Remove border */
-    border-radius: 0; /* Remove border radius to make it completely flat */
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
     padding: 5px;
     color: black;
     font-family: 'Raleway', sans-serif;
     font-size: 15px;
-    transition: color 0.3s ease; /* Smooth color transition */
-    cursor: pointer; /* Add cursor pointer for better user experience */
-    outline: none; /* Remove focus outline */
+    transition: color 0.3s ease;
+    cursor: pointer;
+    outline: none;
 }
 
 button.menu-category:hover {
-    background-color: transparent; /* Keep background transparent on hover */
-    color: #ff8c38; /* Change text color on hover */
+    background-color: transparent;
+    color: #ff8c38;
+    text-decoration: solid underline #ff8c38;
 }
 
-/* Optional: Add a subtle underline on hover if you want a hover effect */
-button.menu-category:hover {
-    text-decoration:solid underline #ff8c38;
+/* Modal Styles */
+.modal-button {
+    background-color: #ff8c38;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+}
+
+.modal-button:hover {
+    background-color: #e67d2e;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 10px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #ff8c38;
+}
+
+.weekday-menus {
+    display: grid;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.weekday-menu {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.weekday-menu:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.weekday-menu.today {
+    border-color: #ff8c38;
+    background-color: #fff5f0;
+}
+
+.weekday-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+}
+
+.weekday-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.today-indicator {
+    background-color: #ff8c38;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.day-menu-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.day-menu-item {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.day-menu-item h4 {
+    margin: 0 0 15px 0;
+    color: #ff8c38;
+    text-align: center;
+    font-size: 18px;
+}
+
+.day-dishes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+.day-dish-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.day-dish-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 8px;
+    border: 2px solid #f0f0f0;
+}
+
+.day-dish-item span {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.2;
+}
+
+.day-dish {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+
+/* Responsive modal styles */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 20px auto;
+        padding: 20px;
+    }
+    
+    .weekday-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .today-indicator {
+        align-self: flex-start;
+    }
+    
+    .day-menu-items {
+        grid-template-columns: 1fr;
+    }
+    
+    .menu-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    
+    .menu-actions button {
+        width: 100%;
+    }
+}
+
+.add-to-cart-btn {
+    background-color: #ff8c38;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+.to-cart-btn {
+    background-color: #ff8c38;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+.to-cart-btn:hover {
+    background-color: #ff6f00;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #e67d2e;
+}
+
+.add-to-cart-btn i {
+    font-size: 18px;
+}
+
+.order-now-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+.order-now-btn:hover {
+    background-color: #555;
+}
+
+
+.product-grip:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }

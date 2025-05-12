@@ -3,13 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Menú - Delicias de la Vida</title>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/7b1fbf0d4d.js" crossorigin="anonymous"></script>
-    <link href="{{ asset('css/cssFuturo/menu.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link href="{{ asset('css/menu.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/tailwindcss@1.9.6/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        // Pasar el estado de autenticación y el código del menú a JavaScript
+        window.isAuthenticated = {{ $isAuthenticated ? 'true' : 'false' }};
+        window.menuDelDiaCod = '{{ $menuDelDiaCod }}';
+    </script>
     <script src="{{ asset('js/menu.js') }}" defer></script>
     <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
+    <script src="{{ asset('js/authNeeded.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/sesion.css') }}">
 </head>
 <body>
@@ -21,9 +30,6 @@
                     <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Delicias de la Vida">
                 </a>
             </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search...">
-            </div>
             <nav class="main-nav">
                 <ul>
                     |
@@ -31,17 +37,28 @@
                     |
                     <li><a href="{{ route('reservaciones.index') }}">Reservar</a></li>
                     |
+                    <a href="{{ route('producto.show') }}" class="link-bar-name">Carta</a>
+                    
                 </ul>
             </nav>
             <div class="actions">
-                <button class="btn-primary">Pedir Online</button>
+                <!-- Botón de carrito - Mostrar solo si está autenticado -->
+                @auth
+                    <a href="{{ route('carrito.view') }}" class="to-cart-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+                @endauth
                 <div class="avatar-container">
-                <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
-                <div class="dropdown-menu" id=avatarMenu>
-                    <a href="{{ route('user.profile') }}" class="dropdown-item">Perfil</a>
-                    <a href="{{ route('logout') }}" class="dropdown-item">Cerrar sesión</a>
-                    <a href="{{ route('login') }}" class="dropdown-item">Iniciar sesión</a>
-                    <a href="{{ route('registro') }}" class="dropdown-item">Registrarse</a>
+                    <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
+                    <div class="dropdown-menu" id=avatarMenu>
+                        @auth
+                            <a href="{{ route('user.profile') }}" class="dropdown-item">Perfil</a>
+                            <a href="{{ route('logout') }}" class="dropdown-item">Cerrar sesión</a>
+                        @else
+                            <a href="{{ route('login') }}" class="dropdown-item">Iniciar sesión</a>
+                            <a href="{{ route('registro') }}" class="dropdown-item">Registrarse</a>
+                        @endauth
+                    </div>
                 </div>
             </div>
         </header>
@@ -53,41 +70,19 @@
             
             <!-- Menu Categories -->
             <div class="menu-categories">
-                <button class="menu-category active" data-target="menuDelDia">Menu del Día</button>
-                @foreach($categoriasSecciones ?? [
-                    ['id' => 'desayunos', 'nombre' => 'Desayunos'],
-                    ['id' => 'combinados', 'nombre' => 'Combinados'],
-                ] as $categoria)
-                <button class="menu-category" data-target="{{ $categoria['id'] }}">{{ $categoria['nombre'] }}</button>
-                @endforeach
+                <button class="menu-category active" data-target="menuDelDia" onclick="openMenuModal()">Menus de la Semana</button>
             </div>
             
             <!-- Menu Content Sections -->
             <div class="menu-content">
                 <!-- Menu del Día (Default View) -->
                 <section class="menu-section active" id="menuDelDia">
-                    <h2 class="section-title">Menu del Día</h2>
+                    <h2 class="section-title">Menu del {{ $diaActual ?? 'Día' }}</h2>
                     <div class="menu-price">{{ $menuDelDia->precio . '€' ?? '12.99€' }}</div>
                     <div class="menu-note">{{ $menuDelDia->nota ?? 'Se puede elegir 2 platos' }}</div>
                     
                     <div class="menu-courses">
-                        @foreach($menuDelDia->cursos ?? [
-                            ['titulo' => 'Primero a Elegir', 'platos' => [
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto']
-                            ]],
-                            ['titulo' => 'Segundo a Elegir', 'platos' => [
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto']
-                            ]],
-                            ['titulo' => 'Postre', 'platos' => [
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto']
-                            ]]
-                        ] as $curso)
+                        @foreach($menuDelDia->cursos ?? [] as $curso)
                         <div class="menu-course">
                             <h3>{{ $curso['titulo'] }}</h3>
                             <div class="course-items">
@@ -102,28 +97,28 @@
                             </div>
                         </div>
                         @endforeach
+
+                        <div class="menu-actions">
+                            <button class="add-to-cart-btn">Añadir al carrito</button>
+                            <button class="order-now-btn">Pedir ahora</button>
+                        </div>
                     </div>
                     
                     <!-- Productos Recomendados -->
                     <div class="recommended-products">
                         <h2>{{ $recomendados->titulo ?? 'Productos recomendados' }}</h2>
-                        <p>{{ $recomendados->descripcion ?? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.' }}</p>
+                        <p>{{ $recomendados->descripcion ?? 'Nuestras delicias más populares seleccionadas especialmente para ti.' }}</p>
                         
                         <div class="product-grid">
-                            @foreach($recomendados->productos ?? [
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€'],
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€'],
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€'],
-                                ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€']
-                            ] as $producto)
-                            <div class="product-card">
+                            @foreach($recomendados->productos ?? [] as $producto)
+                            <div class="product-card" >
                                 <div class="product-image">
                                     <img src="{{ $producto['imagen'] }}" alt="{{ $producto['nombre'] }}">
                                 </div>
-                                <div class="product-info">
-                                <div class="product-name">{{ $producto['nombre'] }}</div>
-                                <div class="product-rating">{{ str_repeat('★', $producto['rating']) }}</div>
-                                <div class="product-price">{{ $producto['precio'] }}</div>
+                                <div class="product-info¡">
+                                    <div class="product-name">{{ $producto['nombre'] }}</div>
+                                    <div class="product-rating">{{ str_repeat('★', $producto['rating']) }}</div>
+                                    <div class="product-price">{{ $producto['precio'] }}</div>
                                 </div>
                             </div>
                             @endforeach
@@ -132,28 +127,7 @@
                 </section>
                 
                 <!-- Category Sections (Hidden initially) -->
-                @foreach($categoriasSecciones ?? [
-                    ['id' => 'desayunos', 'titulo' => 'Desayunos', 'items' => [
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Tostada con Tomate', 'descripcion' => 'Pan artesanal con tomate rallado y aceite de oliva', 'precio' => '3.50€'],
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Croissant con Jamón y Queso', 'descripcion' => 'Croissant recién horneado con jamón serrano y queso', 'precio' => '4.25€'],
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Café con Bollería', 'descripcion' => 'Café a elegir con bollería del día', 'precio' => '3.75€']
-                    ]],
-                    ['id' => 'combinados', 'titulo' => 'Combinados', 'items' => [
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Combo Especial', 'descripcion' => 'Hamburguesa, patatas y bebida a elegir', 'precio' => '9.95€']
-                    ]],
-                    ['id' => 'bebidas', 'titulo' => 'Bebidas', 'items' => [
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Coca Cola', 'descripcion' => 'Refresco de cola 330ml', 'precio' => '2.50€']
-                    ]],
-                    ['id' => 'hamburguesas', 'titulo' => 'Hamburguesas', 'items' => [
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Hamburguesa Clásica', 'descripcion' => 'Carne de ternera, lechuga, tomate y queso', 'precio' => '7.50€']
-                    ]],
-                    ['id' => 'pizzas', 'titulo' => 'Pizzas', 'items' => [
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Pizza Margarita', 'descripcion' => 'Tomate, mozzarella y albahaca', 'precio' => '8.95€']
-                    ]],
-                    ['id' => 'postres', 'titulo' => 'Postres', 'items' => [
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Tarta de Chocolate', 'descripcion' => 'Tarta casera con chocolate belga', 'precio' => '4.50€']
-                    ]]
-                ] as $seccion)
+                @foreach($categoriasSecciones ?? [] as $seccion)
                 <section class="menu-section" id="{{ $seccion['id'] }}">
                     <h2 class="section-title">{{ $seccion['titulo'] }}</h2>
                     <div class="category-items">
@@ -199,5 +173,81 @@
             </div>
         </footer>
     </div>
+
+    <!-- Modal de Menús de la Semana -->
+    <div id="menuSemanaModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeMenuModal()">&times;</span>
+            <h2>Menús de la Semana</h2>
+            
+            <div class="weekday-menus">
+                @foreach($menusSemana ?? [] as $diaMenu)
+                <div class="weekday-menu {{ $diaMenu['isToday'] ? 'today' : '' }}">
+                    <div class="weekday-header">
+                        <span class="weekday-name">{{ $diaMenu['dia'] }}</span>
+                        @if($diaMenu['isToday'])
+                            <span class="today-indicator">HOY</span>
+                        @endif
+                    </div>
+                    
+                    @php
+                        $menuData = collect($menus)->firstWhere('cod', $diaMenu['menu']);
+                    @endphp
+                    
+                    @if($menuData)
+                        <div class="menu-day-info">
+                            <strong>{{ $menuData->nombre }}</strong> - {{ $menuData->precio }}€
+                        </div>
+                        
+                        <div class="day-menu-items">
+                            @foreach($menuData->cursos as $curso)
+                            <div class="day-menu-item">
+                                <h4>{{ $curso['titulo'] }}</h4>
+                                <div class="day-dishes-grid">
+                                    @foreach($curso['platos'] as $plato)
+                                        <div class="day-dish-item">
+                                            <img src="{{ $plato['imagen'] }}" alt="{{ $plato['nombre'] }}">
+                                            <span>{{ $plato['nombre'] }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p>Menú no disponible</p>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openMenuModal() {
+            document.getElementById('menuSemanaModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenuModal() {
+            document.getElementById('menuSemanaModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        window.onclick = function(event) {
+            const modal = document.getElementById('menuSemanaModal');
+            if (event.target == modal) {
+                closeMenuModal();
+            }
+        }
+
+        // Cerrar modal con tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeMenuModal();
+            }
+        });
+    </script>
 </body>
 </html>

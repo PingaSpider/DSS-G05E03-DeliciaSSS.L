@@ -9,6 +9,8 @@ use App\Models\Comida;
 use App\Models\Bebida;
 use App\Models\MenuProducto;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class WebMenuController extends Controller
 {
@@ -23,8 +25,38 @@ class WebMenuController extends Controller
             ['id' => 'combinados', 'nombre' => 'Combinados', 'titulo' => 'Combinados', 'items' => $this->getProductosCategoria('combinados')],
         ];
 
-        // Obtener el menú del día
-        $menuDelDia = $this->getMenuDelDia();
+        // Obtener el día actual
+        $diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        $diaNumero = Carbon::now()->dayOfWeek; // 0 = domingo, 6 = sábado
+        $diaActual = $diasSemana[$diaNumero];
+
+        // Array de menús según el día de la semana
+        $menusPorDia = [
+            0 => 'M0003', // Domingo
+            1 => 'M0001', // Lunes
+            2 => 'M0002', // Martes
+            3 => 'M0003', // Miércoles
+            4 => 'M0004', // Jueves
+            5 => 'M0001', // Viernes
+            6 => 'M0002', // Sábado
+        ];
+
+        // Obtener el menú del día actual
+        $menuDelDiaCod = $menusPorDia[$diaNumero];
+        $menuDelDia = $this->getMenuEspecifico($menuDelDiaCod);
+
+        // Obtener todos los menús para el modal
+        $menus = $this->getTodosLosMenus();
+
+        // Preparar los menús de la semana para el modal
+        $menusSemana = [];
+        foreach ($diasSemana as $index => $dia) {
+            $menusSemana[] = [
+                'dia' => $dia,
+                'menu' => $menusPorDia[$index],
+                'isToday' => $index === $diaNumero
+            ];
+        }
 
         // Productos recomendados
         $recomendados = $this->getProductosRecomendados();
@@ -32,23 +64,30 @@ class WebMenuController extends Controller
         // Información del footer
         $footer = $this->getFooterInfo();
 
+        // Pasar el estado de autenticación y el código del menú del día
+        $isAuthenticated = \Illuminate\Support\Facades\Auth::check();
+
         return view('menu', compact(
             'categoriasSecciones',
             'menuDelDia',
+            'menus',
+            'menusSemana',
+            'diaActual',
             'recomendados',
-            'footer'
+            'footer',
+            'isAuthenticated',
+            'menuDelDiaCod'
         ));
     }
 
     /**
-     * Obtiene el menú del día
+     * Obtiene un menú específico por código
      */
-    private function getMenuDelDia()
+    private function getMenuEspecifico($menuCod)
     {
-        // Puedes tener un campo en la tabla Menu que indique que es el menú del día
-        // O simplemente obtener un menú específico o el primero
         $menu = Menu::join('productos', 'menus.cod', '=', 'productos.cod')
             ->select('menus.*', 'productos.nombre', 'productos.pvp as precio')
+            ->where('menus.cod', $menuCod)
             ->first();
 
         if (!$menu) {
@@ -68,6 +107,22 @@ class WebMenuController extends Controller
     }
 
     /**
+     * Obtiene todos los menús con sus cursos
+     */
+    private function getTodosLosMenus()
+    {
+        $menus = Menu::join('productos', 'menus.cod', '=', 'productos.cod')
+            ->select('menus.*', 'productos.nombre', 'productos.pvp as precio')
+            ->get();
+
+        foreach ($menus as $menu) {
+            $menu->cursos = $this->getMenuDelDiaCursos($menu->cod);
+        }
+
+        return $menus;
+    }
+
+    /**
      * Obtiene los cursos para el menú del día
      */
     private function getMenuDelDiaCursos($menuCod = null)
@@ -75,20 +130,18 @@ class WebMenuController extends Controller
         if (!$menuCod) {
             // Devolver datos por defecto
             return [
-                ['titulo' => 'Primero a Elegir', 'platos' => [
-                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto']
+                ['titulo' => 'Principal', 'platos' => [
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto', 'nombre' => 'Plato Principal 1'],
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto', 'nombre' => 'Plato Principal 2'],
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto', 'nombre' => 'Plato Principal 3']
                 ]],
-                ['titulo' => 'Segundo a Elegir', 'platos' => [
-                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto']
+                ['titulo' => 'Bebida', 'platos' => [
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto', 'nombre' => 'Bebida 1'],
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto', 'nombre' => 'Bebida 2']
                 ]],
                 ['titulo' => 'Postre', 'platos' => [
-                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto'],
-                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto']
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto', 'nombre' => 'Postre 1'],
+                    ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Descripción del Producto', 'nombre' => 'Postre 2']
                 ]]
             ];
         }
@@ -99,92 +152,87 @@ class WebMenuController extends Controller
             ->select('menu_producto.*', 'productos.nombre', 'productos.pvp', 'productos.cod')
             ->get();
 
-        $primeros = [];
-        $segundos = [];
+        $principal = [];
+        $bebidas = [];
         $postres = [];
 
         foreach ($productos as $producto) {
-            //dd($producto);
             $cod = $producto->cod;
-            //dd($cod);
-            $tipo = substr($cod, 0, 1); // C para comidas, B para bebida
-            $productoDetalles = Producto::where('cod', $cod)->first(); // Obtener el producto completo por cod
+            $tipo = substr($cod, 0, 1); // C para comidas, B para bebida, P para postre
+            $productoDetalles = Producto::where('cod', $cod)->first();
 
             if ($productoDetalles) {
                 $imagen = $productoDetalles->imagen_url;
             } else {
                 $imagen = 'assets/images/comida/placeholder.jpg'; 
             }
+            
             $plato = [
                 'imagen' => $imagen,
-                'descripcion' => $producto->nombre
+                'descripcion' => $producto->nombre,
+                'nombre' => $producto->nombre
             ];
-            //dd($plato);
-            //dd($producto); 
-            //dd(vars: $tipo);
 
-            // Determinar la categoría del plato basándose en el código o descripción
+            // Clasificar según el tipo de producto
             if ($tipo === 'C') {
-
                 $comida = Comida::find($cod);
                 if ($comida) {
                     $plato['descripcion'] .= ' - ' . $comida->descripcion;
                 }
 
-                // Asignar a primeros o segundos basado en alguna lógica, por ejemplo el precio
+                // Determinar si es postre por el nombre
                 if (strpos(strtolower($producto->nombre), 'postre') !== false || 
                     strpos(strtolower($producto->nombre), 'tarta') !== false ||
-                    strpos(strtolower($producto->nombre), 'helado') !== false) {
+                    strpos(strtolower($producto->nombre), 'helado') !== false ||
+                    strpos(strtolower($producto->nombre), 'flan') !== false ||
+                    strpos(strtolower($producto->nombre), 'natilla') !== false ||
+                    strpos(strtolower($producto->nombre), 'tiramisu') !== false) {
                     $postres[] = $plato;
-                } elseif ($producto->pvp > 8) {
-                    $primeros[] = $plato;
                 } else {
-                    $segundos[] = $plato;
+                    // Todas las demás comidas van a principal
+                    $principal[] = $plato;
                 }
             } elseif ($tipo === 'B') {
                 $bebida = Bebida::find($cod);
                 if ($bebida) {
                     $plato['descripcion'] .= ' - ' . $bebida->tipoBebida;
                 }
-                // Las bebidas pueden ir en una categoría aparte o con los primeros
-                $segundos[] = $plato;
+                $bebidas[] = $plato;
             } elseif ($tipo === 'P'){
-                //dd(vars: $tipo);
                 $comida = Comida::find($cod);
                 if ($comida) {
                     $plato['descripcion'] .= ' - ' . $comida->descripcion;
                 }
                 $postres[] = $plato;
-                //dd($plato);
             } else {
-                // Si no es ni comida ni bebida, lo ponemos en segundos por defecto
-                $segundos[] = $plato;
+                // Si no es ni comida ni bebida ni postre, lo ponemos en principal
+                $principal[] = $plato;
             }
         }
 
         // Asegurar que haya al menos un elemento en cada categoría
-        if (empty($primeros)) {
-            $primeros = [
-                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Ensalada mixta'],
-                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Sopa del día']
+        if (empty($principal)) {
+            $principal = [
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Filete de ternera', 'nombre' => 'Filete de ternera'],
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Paella valenciana', 'nombre' => 'Paella valenciana']
             ];
         }
-        if (empty($segundos)) {
-            $segundos = [
-                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Filete de ternera'],
-                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Paella valenciana']
+        if (empty($bebidas)) {
+            $bebidas = [
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Agua mineral', 'nombre' => 'Agua mineral'],
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Refresco de cola', 'nombre' => 'Coca Cola']
             ];
         }
         if (empty($postres)) {
             $postres = [
-                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Tarta de chocolate'],
-                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Helado variado']
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Tarta de chocolate', 'nombre' => 'Tarta de chocolate'],
+                ['imagen' => 'assets/images/comida/placeholder.jpg', 'descripcion' => 'Helado variado', 'nombre' => 'Helado variado']
             ];
         }
 
         return [
-            ['titulo' => 'Primero a Elegir', 'platos' => $primeros],
-            ['titulo' => 'Segundo a Elegir', 'platos' => $segundos],
+            ['titulo' => 'Principal', 'platos' => $principal],
+            ['titulo' => 'Bebida', 'platos' => $bebidas],
             ['titulo' => 'Postre', 'platos' => $postres]
         ];
     }
@@ -194,8 +242,6 @@ class WebMenuController extends Controller
      */
     private function getProductosRecomendados()
     {
-        // Obtener algunos productos destacados o los más vendidos
-        // Usando una consulta compatible con todas las versiones de MySQL
         try {
             $productos = Producto::where(function($query) {
                     $query->where('cod', 'like', 'C%')
@@ -210,17 +256,15 @@ class WebMenuController extends Controller
                 $recomendados[] = [
                     'imagen' => $producto->imagen_url,
                     'nombre' => $producto->nombre,
-                    'rating' => rand(3, 5), // Rating aleatorio para demostración
+                    'rating' => rand(3, 5),
                     'precio' => $producto->pvp . '€'
                 ];
             }
         } catch (\Exception $e) {
-            // Si hay un error en la consulta, usar datos por defecto
             $recomendados = [];
         }
 
         if (empty($recomendados)) {
-            // Datos por defecto si no hay productos
             $recomendados = [
                 ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 3, 'precio' => '13€'],
                 ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'PRODUCT NAME', 'rating' => 4, 'precio' => '9.50€'],
@@ -241,7 +285,6 @@ class WebMenuController extends Controller
      */
     private function getProductosCategoria($categoria)
     {
-        // Mapeo de categorías a tipos de productos y condiciones
         $categoriaCondiciones = [
             'desayunos' => function($query) {
                 $query->where('cod', 'like', 'C%')
@@ -305,7 +348,7 @@ class WebMenuController extends Controller
                     }
 
                     $productos[] = [
-                        'imagen' => 'assets/images/comida/placeholder.jpg', //$producto->imagen_url
+                        'imagen' => 'assets/images/comida/placeholder.jpg',
                         'nombre' => $item->nombre,
                         'descripcion' => $descripcion,
                         'precio' => $item->pvp . '€'
@@ -313,7 +356,6 @@ class WebMenuController extends Controller
                 }
             }
         } catch (\Exception $e) {
-            // Si hay un error en la consulta, usar datos por defecto
             $productos = [];
         }
 
@@ -326,35 +368,11 @@ class WebMenuController extends Controller
                         ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Croissant con Jamón y Queso', 'descripcion' => 'Croissant recién horneado con jamón serrano y queso', 'precio' => '4.25€'],
                         ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Café con Bollería', 'descripcion' => 'Café a elegir con bollería del día', 'precio' => '3.75€']
                     ];
-                case 'bebidas':
-                    return [
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Coca Cola', 'descripcion' => 'Refresco de cola 330ml', 'precio' => '2.50€'],
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Agua Mineral', 'descripcion' => 'Agua mineral 500ml', 'precio' => '1.50€'],
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Cerveza', 'descripcion' => 'Cerveza de barril 330ml', 'precio' => '3.00€']
-                    ];
-                case 'hamburguesas':
-                    return [
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Hamburguesa Clásica', 'descripcion' => 'Carne de ternera, lechuga, tomate y queso', 'precio' => '7.50€'],
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Hamburguesa Especial', 'descripcion' => 'Doble carne, bacon, queso, huevo y salsa especial', 'precio' => '9.50€'],
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Hamburguesa Vegana', 'descripcion' => 'Burger plant-based con aguacate y salsa de yogur', 'precio' => '8.50€']
-                    ];
-                case 'pizzas':
-                    return [
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Pizza Margarita', 'descripcion' => 'Tomate, mozzarella y albahaca', 'precio' => '8.95€'],
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Pizza Cuatro Quesos', 'descripcion' => 'Mozzarella, gorgonzola, parmesano y fontina', 'precio' => '10.95€'],
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Pizza Pepperoni', 'descripcion' => 'Tomate, mozzarella y pepperoni', 'precio' => '9.95€']
-                    ];
                 case 'combinados':
                     return [
                         ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Combo Especial', 'descripcion' => 'Hamburguesa, patatas y bebida a elegir', 'precio' => '9.95€'],
                         ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Combo Familiar', 'descripcion' => '2 hamburguesas, patatas grandes, 4 nuggets y 2 bebidas', 'precio' => '19.95€'],
                         ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Combo Pizza', 'descripcion' => 'Pizza mediana, patatas y bebida', 'precio' => '12.95€']
-                    ];
-                case 'postres':
-                    return [
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Tarta de Chocolate', 'descripcion' => 'Tarta casera con chocolate belga', 'precio' => '4.50€'],
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Helado Variado', 'descripcion' => 'Tres bolas de helado a elegir', 'precio' => '3.95€'],
-                        ['imagen' => 'assets/images/comida/placeholder.jpg', 'nombre' => 'Flan de Huevo', 'descripcion' => 'Flan casero con caramelo', 'precio' => '3.50€']
                     ];
                 default:
                     return [
@@ -373,7 +391,6 @@ class WebMenuController extends Controller
      */
     private function getFooterInfo()
     {
-        // En una aplicación real, esto podría venir de la base de datos
         return (object)[
             'direccion' => (object)[
                 'titulo' => 'Dirección',

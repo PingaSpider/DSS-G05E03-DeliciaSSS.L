@@ -1,6 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Seleccionar todos los enlaces que requieren autenticación
+    // Verificar si el usuario está autenticado
+    const isAuthenticated = window.isAuthenticated || false;
+    
+    // Solo continuar si hay enlaces que requieren autenticación
     const authLinks = document.querySelectorAll('.auth-required');
+    
+    if (authLinks.length === 0) {
+        return; // No hacer nada si no hay enlaces que requieran autenticación
+    }
     
     // Crear el elemento del tooltip
     const tooltip = document.createElement('div');
@@ -24,41 +31,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Agregar eventos para cada enlace
     authLinks.forEach(link => {
+        // Deshabilitar el enlace si el usuario no está autenticado
+        link.addEventListener('click', function(e) {
+            if (!isAuthenticated) {
+                e.preventDefault();
+                dialog.classList.add('active');
+                
+                // Obtener la URL de inicio de sesión
+                const loginUrl = this.getAttribute('data-login-url') || '/login';
+                
+                // Configurar el botón de inicio de sesión
+                document.getElementById('login-btn').onclick = function() {
+                    window.location.href = loginUrl;
+                };
+                
+                // Configurar el botón de cancelar
+                document.getElementById('cancel-btn').onclick = function() {
+                    dialog.classList.remove('active');
+                };
+            }
+        });
+        
         // Mostrar tooltip al pasar el mouse
         link.addEventListener('mouseenter', function(e) {
-            const message = this.getAttribute('data-message');
-            tooltip.textContent = message;
-            
-            // Posicionar el tooltip
-            const rect = this.getBoundingClientRect();
-            tooltip.style.top = (rect.bottom + 10) + 'px';
-            tooltip.style.left = (rect.left + rect.width/2 - tooltip.offsetWidth/2) + 'px';
-            
-            // Mostrar el tooltip
-            tooltip.style.opacity = '1';
+            if (!isAuthenticated) {
+                const message = this.getAttribute('data-message') || 'Requiere autenticación';
+                tooltip.textContent = message;
+                
+                // Posicionar el tooltip
+                const rect = this.getBoundingClientRect();
+                tooltip.style.top = (rect.bottom + 10) + 'px';
+                tooltip.style.left = (rect.left + rect.width/2 - tooltip.offsetWidth/2) + 'px';
+                
+                // Mostrar el tooltip
+                tooltip.style.opacity = '1';
+            }
         });
         
         // Ocultar tooltip
         link.addEventListener('mouseleave', function() {
             tooltip.style.opacity = '0';
-        });
-        
-        // Mostrar diálogo al hacer clic
-        link.addEventListener('click', function() {
-            dialog.classList.add('active');
-            
-            // Obtener la URL de inicio de sesión
-            const loginUrl = this.getAttribute('data-login-url');
-            
-            // Configurar el botón de inicio de sesión
-            document.getElementById('login-btn').onclick = function() {
-                window.location.href = loginUrl;
-            };
-            
-            // Configurar el botón de cancelar
-            document.getElementById('cancel-btn').onclick = function() {
-                dialog.classList.remove('active');
-            };
         });
     });
     
