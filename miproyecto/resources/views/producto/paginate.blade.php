@@ -83,6 +83,7 @@
                                 @endif
                             </a>
                         </th>
+                        <th>Imagen</th>
                         <th>
                             @php
                                 $newSortOrder = ($sortBy === 'pvp' && $sortOrder === 'asc') ? 'desc' : 'asc';
@@ -127,6 +128,12 @@
                     <tr>
                         <td>{{ $producto->cod }}</td>
                         <td>{{ $producto->nombre }}</td>
+                        <td>
+                            <img src="{{ $producto->imagen_url }}" 
+                                alt="{{ $producto->nombre }}" 
+                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"
+                                onerror="this.src='{{ asset('assets/images/placeholder.jpg') }}'">
+                        </td>
                         <td>{{ number_format($producto->pvp, 2, ',', '.') }} €</td>
                         <td>{{ $producto->stock }}</td>
                         <td>{{ number_format($producto->precioCompra, 2, ',', '.') }} €</td>
@@ -171,7 +178,7 @@
         </div>
 
         <div>
-            <a href="{{ url('/') }}" class="action-btn edit-btn">Volver al Panel Admin</a>
+            <a href="{{ url('/admin/') }}" class="action-btn edit-btn">Volver al Panel Admin</a>
         </div>
     </div>
     <!-- Form oculto para eliminar producto -->
@@ -181,14 +188,15 @@
     </form>
 
     <script> 
-        // Función para eliminar producto
         function deleteProducto(cod) {
-            if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-                const form = document.getElementById('deleteProductoForm');
-                form.action = `/productos/${cod}`;
-                form.submit();
-            }
+        if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+            const form = document.getElementById('deleteProductoForm');
+            form.action = `/admin/productos/${cod}`;
+            form.method = 'POST';
+            
+            form.submit();
         }
+}
     </script>
 </body>
 </html>

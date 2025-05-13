@@ -7,7 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&family=Roboto&family=Source+Sans+3&display=swap" rel="stylesheet">
-    <link href="{{ asset('css/cssFuturo/home.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/home.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sesion.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
+    <script src="{{ asset('js/authNeeded.js')}}"></script>
+
 </head>
 <body>
     <div class="container">
@@ -18,30 +22,43 @@
                 <div class="logo-container">
                     <img src="{{ asset('assets/images/repo/auWlPQdP6Eus31XrYaNlVMkNX77SohDB/p_OaeuUHJPLAylpvXBb80gi4TCAH9oSSZ5/delicias-logo.png') }}" alt="Deliciass" class="logo-1">
                 </div>
-                
-                <!-- Barra de búsqueda -->
-                <div class="search-container">
-                    <input type="text" placeholder="Buscar..." class="search-input-1">
-                </div>
-                
                 <!-- Enlaces de navegación -->
                 <div class="link-bar-1">
-                    <a href="{{ route('reservaciones.index') }}">Nosotros</a>
+                    <a href="{{ route('menu') }}" class="link-bar-name">Menu</a>
                     |
-                    <a href="{{ route('menu') }}">Menu</a>
+                    <a href="{{ route('producto.show') }}" class="link-bar-name">Carta</a>
                     |
-                    |
-                </div>
-                
-                <!-- Botón de pedido -->
-                <div class="order-button-container">
-                    <button class="button-1-copy">Pedir Online</button>
-                </div>
-                
-                <!-- Avatar de usuario -->
+                    @auth
+                        <a href="{{ route('reservaciones.index') }}" class="link-bar-name">Reservar</a>
+                    @else
+                    <a href="javascript:void(0)" 
+                        class="link-bar-name auth-required"
+                        data-message="Es necesario tener una cuenta para reservar"
+                        data-login-url="{{ route('login.form') }}">Reservar</a>
+                    @endauth
+                </div>                
+                <!-- Estructura HTML para el avatar con menú desplegable -->
                 <div class="avatar-container">
-                    <div class="avatar-1">
-                        <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="Avatar">
+                    <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" id="avatar" class="avatar" alt="Avatar">
+                    <div class="dropdown-menu" id="avatarMenu">
+                        @auth
+                            <!-- Usuario autenticado: muestra opciones de perfil y cerrar sesión -->
+                            <a href="{{ route('user.profile') }}">Mi Perfil</a>
+                            
+                            @if(Auth::user()->esAdmin())
+                                <a href="{{ route('paneladmin') }}">Panel Admin</a>
+                            @endif
+                            
+                            <!-- Formulario de logout estilizado como enlace -->
+                            <form action="{{ route('logout') }}" method="POST" id="logout-form" class="logout-link-form">
+                                @csrf
+                                <button type="submit" class="link-button">Cerrar sesión</button>
+                            </form>
+                        @else
+                            <!-- Usuario no autenticado: muestra opciones de login y registro -->
+                            <a href="{{ route('login.form') }}">Iniciar sesión</a>
+                            <a href="{{ route('registro.form') }}">Registrarse</a>
+                        @endauth
                     </div>
                 </div>
             </div>
@@ -93,46 +110,6 @@
                 <div class="rectangle-3">
                     <div class="m-s-informaci-n">Más Información</div>
                 </div>
-            </div>
-        </section>
-        
-        <!-- Sección de reserva -->
-        <section class="reserva-section">
-            <h2 class="reservar-mesa">Reservar Mesa</h2>
-            <p class="selecciona-la-cantidad-de-persona-la-fecha-y-la-h">Selecciona la cantidad de personas, la fecha y la hora</p>
-            
-            <div class="reserva-form">
-                <form action="{{ route('reservas.store') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label class="cantidad-de-personas">Cantidad de personas</label>
-                        <select name="personas" class="select-1">
-                            @foreach($cantidadPersonas ?? [2, 4, 6, '8+'] as $cantidad)
-                                <option value="{{ $cantidad }}">{{ $cantidad }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="fecha">Fecha</label>
-                        <input type="date" name="fecha" value="{{ date('Y-m-d') }}" class="date-picker-1">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="hora">Hora</label>
-                        <select name="hora" class="select-2">
-                            @foreach($horarios ?? ['20:30', '21:00', '21:30', '22:00'] as $hora)
-                                <option value="{{ $hora }}">{{ $hora }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                
-                    <div class="reserva-submit">
-                        <button type="submit" class="rectangle-5">
-                            <div class="buscar-una-mesa">Reservar una Mesa</div>
-                        </button>
-                    </div>
-                </form>
             </div>
         </section>
     </div>

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->integer('stock');
             $table->boolean('disponible')->default(true);
             $table->float('precioCompra');
+            $table->string('imagen_url')->nullable();
             $table->timestamps();
         });
     }

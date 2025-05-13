@@ -76,6 +76,16 @@
                 @enderror
             </div>
 
+            <!-- Reemplazar el campo actual de imagen por: -->
+            <div class="form-group">
+                <label for="imagen_url"><b>URL de la Imagen</b></label>
+                <input type="url" placeholder="Introduce la URL de la imagen" name="imagen_url" id="imagen_url" value="{{ old('imagen_url') }}">
+                <p class="info-text">Puedes dejar este campo vacío y el sistema buscará automáticamente la imagen en la carpeta correspondiente</p>
+                @error('imagen_url')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
+            </div>
+
             <!-- Campos específicos para Comida -->
             <div id="campos-comida" class="campos-especificos">
                 <h3>Datos específicos de la Comida</h3>

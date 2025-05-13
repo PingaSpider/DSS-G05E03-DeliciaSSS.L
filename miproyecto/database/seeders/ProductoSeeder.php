@@ -8,321 +8,21 @@ use App\Models\Comida;
 use App\Models\Bebida;
 use App\Models\Menu;
 
-
 class ProductoSeeder extends Seeder
 {
     public function run()
     {
-        // 1. Hamburguesa
-        Producto::create([
-            'cod' => 'C0001',
-            'pvp' => 8.50,
-            'nombre' => 'Hamburguesa',
-            'stock' => 20,
-            'disponible'=> true,
-            'precioCompra'=> '6.70'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0001',
-            'descripcion' => 'Hamburguesa con queso y bacon'
-        ]);
-
-        // 2. Patatas Fritas
-        Producto::create([
-            'cod' => 'C0002',
-            'pvp' => 3.50,
-            'nombre' => 'Patatas Fritas',
-            'stock' => 50,
-            'disponible'=> true,
-            'precioCompra'=> '0.70'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0002',
-            'descripcion' => 'Patatas fritas con salsa especial'
-        ]);
-
-        // 3. Ensalada César
-        Producto::create([
-            'cod' => 'C0003',
-            'pvp' => 9.95,
-            'nombre' => 'Ensalada César',
-            'stock' => 15,
-            'disponible'=> true,
-            'precioCompra'=> '4.50'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0003',
-            'descripcion' => 'Ensalada con pollo, crutones y parmesano'
-        ]);
-
-        // 4. Pizza Margarita
-        Producto::create([
-            'cod' => 'C0004',
-            'pvp' => 8.50,
-            'nombre' => 'Pizza Margarita',
-            'stock' => 10,
-            'disponible'=> true,
-            'precioCompra'=> '5.00'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0004',
-            'descripcion' => 'Pizza con tomate, mozzarella y albahaca'
-        ]);
-
-        // 5. Nuggets de Pollo
-        Producto::create([
-            'cod' => 'C0005',
-            'pvp' => 6.75,
-            'nombre' => 'Nuggets de Pollo',
-            'stock' => 40,
-            'disponible'=> true,
-            'precioCompra'=> '3.20'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0005',
-            'descripcion' => 'Nuggets de pollo con salsa BBQ'
-        ]);
-
-        // 6. Sándwich Club
-        Producto::create([
-            'cod' => 'C0006',
-            'pvp' => 7.50,
-            'nombre' => 'Sándwich Club',
-            'stock' => 25,
-            'disponible'=> true,
-            'precioCompra'=> '4.00'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0006',
-            'descripcion' => 'Sándwich con pollo, bacon, lechuga y tomate'
-        ]);
-
-        // 7. Hot Dog
-        Producto::create([
-            'cod' => 'C0007',
-            'pvp' => 5.50,
-            'nombre' => 'Hot Dog',
-            'stock' => 30,
-            'disponible'=> true,
-            'precioCompra'=> '2.50'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0007',
-            'descripcion' => 'Hot Dog con cebolla crujiente y mostaza'
-        ]);
-
-        // 8. Tacos
-        Producto::create([
-            'cod' => 'C0008',
-            'pvp' => 7.95,
-            'nombre' => 'Tacos',
-            'stock' => 20,
-            'disponible'=> true,
-            'precioCompra'=> '4.00'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0008',
-            'descripcion' => 'Tacos rellenos de carne y guacamole'
-        ]);
-
-        // 9. Wrap Vegetariano
-        Producto::create([
-            'cod' => 'C0009',
-            'pvp' => 6.95,
-            'nombre' => 'Wrap Vegetariano',
-            'stock' => 20,
-            'disponible'=> true,
-            'precioCompra'=> '3.80'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0009',
-            'descripcion' => 'Wrap con hummus y vegetales frescos'
-        ]);
-
-        // 10. Sushi Box
-        Producto::create([
-            'cod' => 'C0010',
-            'pvp' => 12.50,
-            'nombre' => 'Sushi Box',
-            'stock' => 15,
-            'disponible'=> true,
-            'precioCompra'=> '7.50'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0010',
-            'descripcion' => 'Caja de sushi variado con soja'
-        ]);
-
-        // 11. Pasta Alfredo
-        Producto::create([
-            'cod' => 'C0011',
-            'pvp' => 10.50,
-            'nombre' => 'Pasta Alfredo',
-            'stock' => 15,
-            'disponible'=> true,
-            'precioCompra'=> '5.50'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0011',
-            'descripcion' => 'Pasta con salsa Alfredo y pollo'
-        ]);
-
-        // 12. Burrito
-        Producto::create([
-            'cod' => 'C0012',
-            'pvp' => 8.75,
-            'nombre' => 'Burrito',
-            'stock' => 20,
-            'disponible'=> true,
-            'precioCompra'=> '4.20'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0012',
-            'descripcion' => 'Burrito relleno de carne y frijoles'
-        ]);
-
-        // 13. Sopa de Tomate
-        Producto::create([
-            'cod' => 'C0013',
-            'pvp' => 6.25,
-            'nombre' => 'Sopa de Tomate',
-            'stock' => 12,
-            'disponible'=> true,
-            'precioCompra'=> '3.00'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0013',
-            'descripcion' => 'Sopa de tomate con albahaca fresca'
-        ]);
-
-        // 14. Lasagna
-        Producto::create([
-            'cod' => 'C0014',
-            'pvp' => 11.00,
-            'nombre' => 'Lasagna',
-            'stock' => 10,
-            'disponible'=> true,
-            'precioCompra'=> '6.00'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0014',
-            'descripcion' => 'Lasagna de carne con queso y bechamel'
-        ]);
-
-        // 15. Falafel
-        Producto::create([
-            'cod' => 'C0015',
-            'pvp' => 7.50,
-            'nombre' => 'Falafel',
-            'stock' => 18,
-            'disponible'=> true,
-            'precioCompra'=> '3.80'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0015',
-            'descripcion' => 'Falafel con salsa de yogurt'
-        ]);
-
-        // 16. Tortilla de Patatas
-        Producto::create([
-            'cod' => 'C0016',
-            'pvp' => 7.95,
-            'nombre' => 'Tortilla de Patatas',
-            'stock' => 15,
-            'disponible'=> true,
-            'precioCompra'=> '3.50'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0016',
-            'descripcion' => 'Tortilla de patatas clásica con cebolla'
-        ]);
-
-        // 17. Empanadas
-        Producto::create([
-            'cod' => 'C0017',
-            'pvp' => 5.75,
-            'nombre' => 'Empanadas',
-            'stock' => 25,
-            'disponible'=> true,
-            'precioCompra'=> '2.80'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0017',
-            'descripcion' => 'Empanadas de carne o queso'
-        ]);
-
-        // 18. Croquetas de Jamón
-        Producto::create([
-            'cod' => 'C0018',
-            'pvp' => 7.25,
-            'nombre' => 'Croquetas de Jamón',
-            'stock' => 30,
-            'disponible'=> true,
-            'precioCompra'=> '3.60'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0018',
-            'descripcion' => 'Croquetas de jamón ibérico crujientes'
-        ]);
+        // BEBIDAS - En orden ascendente bb01, bb02, etc.
         
-        // 19. Arepas
-        Producto::create([
-            'cod' => 'C0019',
-            'pvp' => 8.50,
-            'nombre' => 'Arepas',
-            'stock' => 20,
-            'disponible'=> true,
-            'precioCompra'=> '4.50'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0019',
-            'descripcion' => 'Arepas rellenas de queso o carne'
-        ]);
-
-        // 20. Risotto de Champiñones
-        Producto::create([
-            'cod' => 'C0020',
-            'pvp' => 13.50,
-            'nombre' => 'Risotto de Champiñones',
-            'stock' => 12,
-            'disponible'=> true,
-            'precioCompra'=> '7.20'
-        ]);
-
-        Comida::create([
-            'cod' => 'C0020',
-            'descripcion' => 'Risotto cremoso con champiñones y parmesano'
-        ]);
-
-
-        // Productos tipo bebida
-        // 1. Coca-Cola
+        // 1. Coca-Cola - bb01
         Producto::create([
             'cod' => 'B0001',
             'pvp' => 2.50,
             'nombre' => 'Coca-Cola',
             'stock' => 50,
             'disponible'=> true,
-            'precioCompra'=> '0.70'
+            'precioCompra'=> '0.70',
+            'imagen_url' => 'bb01'
         ]);
 
         Bebida::create([
@@ -331,270 +31,584 @@ class ProductoSeeder extends Seeder
             'tipoBebida' => 'Gaseosa'
         ]);
 
-        // 2. Cerveza
+        // 2. Coca-Cola Zero - bb02
         Producto::create([
-            'cod' => 'B0002',
-            'pvp' => 3.50,
-            'nombre' => 'Cerveza',
-            'stock' => 30,
+            'cod' => 'B0012',
+            'pvp' => 2.50,
+            'nombre' => 'Coca-Cola Zero',
+            'stock' => 50,
             'disponible'=> true,
-            'precioCompra'=> '1.20'
+            'precioCompra'=> '0.70',
+            'imagen_url' => 'bb02'        
         ]);
 
         Bebida::create([
-            'cod' => 'B0002',
+            'cod' => 'B0012',
+            'tamanyo' => 'Mediano',
+            'tipoBebida' => 'Gaseosa'
+        ]);
+
+        // 3. Sprite - bb03
+        Producto::create([
+            'cod' => 'B0013',
+            'pvp' => 2.50,
+            'nombre' => 'Sprite',
+            'stock' => 50,
+            'disponible'=> true,
+            'precioCompra'=> '0.70',
+            'imagen_url' => 'bb03'
+        ]);
+
+        Bebida::create([
+            'cod' => 'B0013',
+            'tamanyo' => 'Mediano',
+            'tipoBebida' => 'Gaseosa'
+        ]);
+
+        // 4. Fanta Naranja - bb04
+        Producto::create([
+            'cod' => 'B0014',
+            'pvp' => 2.50,
+            'nombre' => 'Fanta Naranja',
+            'stock' => 50,
+            'disponible'=> true,
+            'precioCompra'=> '0.70',
+            'imagen_url' => 'bb04'
+        ]);
+
+        Bebida::create([
+            'cod' => 'B0014',
+            'tamanyo' => 'Mediano',
+            'tipoBebida' => 'Gaseosa'
+        ]);
+
+        // 5. San Miguel - bb05
+        Producto::create([
+            'cod' => 'B0015',
+            'pvp' => 3.50,
+            'nombre' => 'San Miguel',
+            'stock' => 30,
+            'disponible'=> true,
+            'precioCompra'=> '1.20',
+            'imagen_url' => 'bb05'
+        ]);
+
+        Bebida::create([
+            'cod' => 'B0015',
             'tamanyo' => 'Grande',
             'tipoBebida' => 'Cerveza'
         ]);
 
-        // 3. Agua Mineral
+        // 6. Estrella Damm - bb06
         Producto::create([
-            'cod' => 'B0003',
-            'pvp' => 1.50,
-            'nombre' => 'Agua Mineral',
-            'stock' => 100,
+            'cod' => 'B0016',
+            'pvp' => 3.50,
+            'nombre' => 'Estrella Damm',
+            'stock' => 30,
             'disponible'=> true,
-            'precioCompra'=> '0.30'
+            'precioCompra'=> '1.20',
+            'imagen_url' => 'bb06'
         ]);
 
         Bebida::create([
-            'cod' => 'B0003',
-            'tamanyo' => 'Pequeño',
+            'cod' => 'B0016',
+            'tamanyo' => 'Grande',
+            'tipoBebida' => 'Cerveza'
+        ]);
+
+        // 7. Estrella Galicia - bb07
+        Producto::create([
+            'cod' => 'B0017',
+            'pvp' => 3.50,
+            'nombre' => 'Estrella Galicia',
+            'stock' => 30,
+            'disponible'=> true,
+            'precioCompra'=> '1.20',
+            'imagen_url' => 'bb07'
+        ]);
+
+        Bebida::create([
+            'cod' => 'B0017',
+            'tamanyo' => 'Grande',
+            'tipoBebida' => 'Cerveza'
+        ]);
+
+        // 8. Solán de Cabras - bb08
+        Producto::create([
+            'cod' => 'B0018',
+            'pvp' => 2.00,
+            'nombre' => 'Solán de Cabras',
+            'stock' => 60,
+            'disponible'=> true,
+            'precioCompra'=> '0.50',
+            'imagen_url' => 'bb08'
+        ]);
+
+        Bebida::create([
+            'cod' => 'B0018',
+            'tamanyo' => 'Grande',
             'tipoBebida' => 'Agua'
         ]);
 
-        // 4. Jugo de Naranja
+        // 9. Evian - bb09
         Producto::create([
-            'cod' => 'B0004',
-            'pvp' => 3.00,
-            'nombre' => 'Jugo de Naranja',
-            'stock' => 25,
+            'cod' => 'B0019',
+            'pvp' => 2.50,
+            'nombre' => 'Evian',
+            'stock' => 50,
             'disponible'=> true,
-            'precioCompra'=> '1.00'
+            'precioCompra'=> '0.80',
+            'imagen_url' => 'bb09'
         ]);
 
         Bebida::create([
-            'cod' => 'B0004',
-            'tamanyo' => 'Mediano',
-            'tipoBebida' => 'Jugo'
-        ]);
-
-        // 5. Té Helado
-        Producto::create([
-            'cod' => 'B0005',
-            'pvp' => 2.75,
-            'nombre' => 'Té Helado',
-            'stock' => 40,
-            'disponible'=> true,
-            'precioCompra'=> '0.80'
-        ]);
-
-        Bebida::create([
-            'cod' => 'B0005',
+            'cod' => 'B0019',
             'tamanyo' => 'Grande',
-            'tipoBebida' => 'Té'
+            'tipoBebida' => 'Agua'
         ]);
 
-        // 6. Red Bull
+        // 10. Casillero del Diablo (Vino Tinto) - bb10
         Producto::create([
-            'cod' => 'B0006',
-            'pvp' => 3.75,
-            'nombre' => 'Red Bull',
-            'stock' => 30,
-            'disponible'=> true,
-            'precioCompra'=> '1.50'
-        ]);
-
-        Bebida::create([
-            'cod' => 'B0006',
-            'tamanyo' => 'Pequeño',
-            'tipoBebida' => 'Energética'
-        ]);
-
-        // 7. Latte Macchiato
-        Producto::create([
-            'cod' => 'B0007',
-            'pvp' => 4.00,
-            'nombre' => 'Latte Macchiato',
+            'cod' => 'B0020',
+            'pvp' => 8.50,
+            'nombre' => 'Casillero del Diablo Cabernet Sauvignon',
             'stock' => 20,
             'disponible'=> true,
-            'precioCompra'=> '2.00'
+            'precioCompra'=> '5.00',
+            'imagen_url' => 'bb10'
         ]);
 
         Bebida::create([
-            'cod' => 'B0007',
-            'tamanyo' => 'Grande',
-            'tipoBebida' => 'Café'
-        ]);
-
-        // 8. Smoothie de Fresas
-        Producto::create([
-            'cod' => 'B0008',
-            'pvp' => 4.50,
-            'nombre' => 'Smoothie de Fresas',
-            'stock' => 15,
-            'disponible'=> true,
-            'precioCompra'=> '2.50'
-        ]);
-
-        Bebida::create([
-            'cod' => 'B0008',
-            'tamanyo' => 'Mediano',
-            'tipoBebida' => 'Batido'
-        ]);
-
-        // 9. Limonada
-        Producto::create([
-            'cod' => 'B0009',
-            'pvp' => 3.00,
-            'nombre' => 'Limonada',
-            'stock' => 20,
-            'disponible'=> true,
-            'precioCompra'=> '1.20'
-        ]);
-
-        Bebida::create([
-            'cod' => 'B0009',
-            'tamanyo' => 'Grande',
-            'tipoBebida' => 'Refresco'
-        ]);
-
-        // 10. Chocolate Caliente
-        Producto::create([
-            'cod' => 'B0010',
-            'pvp' => 3.75,
-            'nombre' => 'Chocolate Caliente',
-            'stock' => 25,
-            'disponible'=> true,
-            'precioCompra'=> '2.00'
-        ]);
-
-        Bebida::create([
-            'cod' => 'B0010',
-            'tamanyo' => 'Mediano',
-            'tipoBebida' => 'Chocolate'
-        ]);
-
-        // 11. Vino Tinto
-        Producto::create([
-            'cod' => 'B0011',
-            'pvp' => 5.00,
-            'nombre' => 'Vino Tinto',
-            'stock' => 10,
-            'disponible'=> true,
-            'precioCompra'=> '3.00'
-        ]);
-
-        Bebida::create([
-            'cod' => 'B0011',
+            'cod' => 'B0020',
             'tamanyo' => 'Grande',
             'tipoBebida' => 'Vino'
         ]);
 
-
-        // 1. Menú Clásico
+        // 11. Izadi Larrosa (Vino Rosado) - bb11
         Producto::create([
-            'cod' => 'M0001',
-            'pvp' => 12.50,
-            'nombre' => 'Menú Clásico',
-            'stock' => 10,
-            'disponible'=> true,
-            'precioCompra'=> '7.50'
-        ]);
-
-        Menu::create([
-            'cod' => 'M0001',
-            'descripcion' => 'Menú Clásico con hamburguesa, patatas y bebida'
-        ]);
-
-        \DB::table('menu_producto')->insert([
-            ['menu_cod' => 'M0001', 'producto_cod' => 'C0001', 'cantidad' => 1, 'descripcion' => 'Hamburguesa clásica'],
-            ['menu_cod' => 'M0001', 'producto_cod' => 'C0002', 'cantidad' => 1, 'descripcion' => 'Patatas de acompañamiento'],
-            ['menu_cod' => 'M0001', 'producto_cod' => 'B0001', 'cantidad' => 1, 'descripcion' => 'Coca-Cola incluida']
-        ]);
-
-        // 2. Menú Saludable
-        Producto::create([
-            'cod' => 'M0002',
-            'pvp' => 14.95,
-            'nombre' => 'Menú Saludable',
-            'stock' => 8,
-            'disponible'=> true,
-            'precioCompra'=> '9.50'
-        ]);
-
-        Menu::create([
-            'cod' => 'M0002',
-            'descripcion' => 'Menú saludable con ensalada, fruta y agua'
-        ]);
-
-        \DB::table('menu_producto')->insert([
-            ['menu_cod' => 'M0002', 'producto_cod' => 'C0003', 'cantidad' => 1, 'descripcion' => 'Ensalada César'],
-            ['menu_cod' => 'M0002', 'producto_cod' => 'C0004', 'cantidad' => 1, 'descripcion' => 'Fruta de temporada'],
-            ['menu_cod' => 'M0002', 'producto_cod' => 'B0003', 'cantidad' => 1, 'descripcion' => 'Agua Mineral']
-        ]);
-
-        // 3. Menú Infantil
-        Producto::create([
-            'cod' => 'M0003',
-            'pvp' => 9.95,
-            'nombre' => 'Menú Infantil',
+            'cod' => 'B0021',
+            'pvp' => 7.50,
+            'nombre' => 'Izadi Larrosa',
             'stock' => 15,
             'disponible'=> true,
-            'precioCompra'=> '5.50'
+            'precioCompra'=> '4.50',
+            'imagen_url' => 'bb11'
         ]);
 
-        Menu::create([
-            'cod' => 'M0003',
-            'descripcion' => 'Menú infantil con nuggets, patatas y jugo'
+        Bebida::create([
+            'cod' => 'B0021',
+            'tamanyo' => 'Grande',
+            'tipoBebida' => 'Vino'
         ]);
 
-        \DB::table('menu_producto')->insert([
-            ['menu_cod' => 'M0003', 'producto_cod' => 'C0005', 'cantidad' => 1, 'descripcion' => 'Nuggets de pollo'],
-            ['menu_cod' => 'M0003', 'producto_cod' => 'C0002', 'cantidad' => 1, 'descripcion' => 'Patatas de acompañamiento'],
-            ['menu_cod' => 'M0003', 'producto_cod' => 'B0004', 'cantidad' => 1, 'descripcion' => 'Jugo de Naranja']
-        ]);
-
-        // 4. Menú Español
+        // 12. Espresso - bb12
         Producto::create([
-            'cod' => 'M0004',
-            'pvp' => 13.95,
-            'nombre' => 'Menú Español',
-            'stock' => 12,
+            'cod' => 'B0022',
+            'pvp' => 1.50,
+            'nombre' => 'Espresso',
+            'stock' => 100,
             'disponible'=> true,
-            'precioCompra'=> '8.00'
+            'precioCompra'=> '0.30',
+            'imagen_url' => 'bb12'
         ]);
 
-        Menu::create([
-            'cod' => 'M0004',
-            'descripcion' => 'Menú con tortilla de patatas, pan con tomate y cerveza'
+        Bebida::create([
+            'cod' => 'B0022',
+            'tamanyo' => 'Pequeño',
+            'tipoBebida' => 'Café'
         ]);
 
-        \DB::table('menu_producto')->insert([
-            ['menu_cod' => 'M0004', 'producto_cod' => 'C0016', 'cantidad' => 1, 'descripcion' => 'Tortilla de patatas clásica'],
-            ['menu_cod' => 'M0004', 'producto_cod' => 'C0007', 'cantidad' => 1, 'descripcion' => 'Pan con tomate'],
-            ['menu_cod' => 'M0004', 'producto_cod' => 'B0002', 'cantidad' => 1, 'descripcion' => 'Cerveza incluida']
-        ]);
-
-        // 5. Menú Mexicano
+        // 13. Café con Leche - bb13
         Producto::create([
-            'cod' => 'M0005',
-            'pvp' => 15.50,
-            'nombre' => 'Menú Mexicano',
-            'stock' => 10,
+            'cod' => 'B0023',
+            'pvp' => 2.00,
+            'nombre' => 'Café con Leche',
+            'stock' => 100,
             'disponible'=> true,
-            'precioCompra'=> '9.00'
+            'precioCompra'=> '0.50',
+            'imagen_url' => 'bb13'
         ]);
 
-        Menu::create([
-            'cod' => 'M0005',
-            'descripcion' => 'Menú con tacos, nachos y jugo'
+        Bebida::create([
+            'cod' => 'B0023',
+            'tamanyo' => 'Mediano',
+            'tipoBebida' => 'Café'
         ]);
 
-        \DB::table('menu_producto')->insert([
-            ['menu_cod' => 'M0005', 'producto_cod' => 'C0008', 'cantidad' => 2, 'descripcion' => 'Tacos de carne con guacamole'],
-            ['menu_cod' => 'M0005', 'producto_cod' => 'C0010', 'cantidad' => 1, 'descripcion' => 'Nachos con queso'],
-            ['menu_cod' => 'M0005', 'producto_cod' => 'B0004', 'cantidad' => 1, 'descripcion' => 'Jugo de Naranja']
+        // DESAYUNOS - En orden ascendente de01, de02, etc.
+        
+        // Tostada con Aguacate y Huevo - de01
+        Producto::create([
+            'cod' => 'C0021',
+            'pvp' => 6.50,
+            'nombre' => 'Desayuno Tostada con Aguacate',
+            'stock' => 25,
+            'disponible'=> true,
+            'precioCompra'=> '3.00',
+            'imagen_url' => 'de01'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0021',
+            'descripcion' => 'Tostada con aguacate fresco, huevo poché y rúcula'
+        ]);
+
+        // Desayuno Americano - de02
+        Producto::create([
+            'cod' => 'C0022',
+            'pvp' => 8.95,
+            'nombre' => 'Desayuno Americano',
+            'stock' => 20,
+            'disponible'=> true,
+            'precioCompra'=> '4.50',
+            'imagen_url' => 'de02'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0022',
+            'descripcion' => 'Dos huevos fritos, bacon crujiente y tostadas'
+        ]);
+
+        // Tortilla de Champiñones - de03
+        Producto::create([
+            'cod' => 'C0023',
+            'pvp' => 7.50,
+            'nombre' => 'Desayuno Tortilla de Champiñones',
+            'stock' => 15,
+            'disponible'=> true,
+            'precioCompra'=> '3.80',
+            'imagen_url' => 'de03'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0023',
+            'descripcion' => 'Tortilla francesa rellena de champiñones y queso con ensalada'
+        ]);
+
+        // Café y Croissant - de04
+        Producto::create([
+            'cod' => 'C0024',
+            'pvp' => 4.50,
+            'nombre' => 'Desayuno Café y Croissant',
+            'stock' => 30,
+            'disponible'=> true,
+            'precioCompra'=> '2.00',
+            'imagen_url' => 'de04'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0024',
+            'descripcion' => 'Café recién hecho con croissant de mantequilla'
+        ]);
+
+        // Pancakes con Frutos Rojos - de05
+        Producto::create([
+            'cod' => 'C0025',
+            'pvp' => 7.95,
+            'nombre' => 'Desayuno Pancakes con Frutos Rojos',
+            'stock' => 15,
+            'disponible'=> true,
+            'precioCompra'=> '4.00',
+            'imagen_url' => 'de05'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0025',
+            'descripcion' => 'Pancakes esponjosos con sirope, frambuesas y menta fresca'
+        ]);
+
+        // HAMBURGUESAS - En orden ascendente hb01, hb02, etc.
+        
+        // Hamburguesa de Pollo Crispy - hb01
+        Producto::create([
+            'cod' => 'C0026',
+            'pvp' => 8.95,
+            'nombre' => 'Crispy Chicken Burger',
+            'stock' => 25,
+            'disponible'=> true,
+            'precioCompra'=> '5.00',
+            'imagen_url' => 'hb01'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0026',
+            'descripcion' => 'Hamburguesa de pollo crujiente con lechuga, tomate y salsa especial'
+        ]);
+
+        // Hamburguesa Clásica con Queso - hb02
+        Producto::create([
+            'cod' => 'C0027',
+            'pvp' => 9.50,
+            'nombre' => 'Cheeseburger Clásica',
+            'stock' => 30,
+            'disponible'=> true,
+            'precioCompra'=> '5.50',
+            'imagen_url' => 'hb02'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0027',
+            'descripcion' => 'Hamburguesa de ternera con queso cheddar, lechuga, tomate y pepinillos'
+        ]);
+
+        // Hamburguesa Doble - hb03
+        Producto::create([
+            'cod' => 'C0028',
+            'pvp' => 11.95,
+            'nombre' => 'Double Burger',
+            'stock' => 20,
+            'disponible'=> true,
+            'precioCompra'=> '7.00',
+            'imagen_url' => 'hb03'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0028',
+            'descripcion' => 'Doble carne de ternera con doble queso, lechuga, tomate y salsa especial'
+        ]);
+
+        // Hamburguesa Vegetariana - hb04
+        Producto::create([
+            'cod' => 'C0029',
+            'pvp' => 8.75,
+            'nombre' => 'Veggie Burger',
+            'stock' => 15,
+            'disponible'=> true,
+            'precioCompra'=> '4.50',
+            'imagen_url' => 'hb04'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0029',
+            'descripcion' => 'Hamburguesa vegetariana con queso, lechuga, tomate y mayonesa'
+        ]);
+
+        // Hamburguesa BBQ - hb05
+        Producto::create([
+            'cod' => 'C0030',
+            'pvp' => 10.50,
+            'nombre' => 'BBQ Burger',
+            'stock' => 25,
+            'disponible'=> true,
+            'precioCompra'=> '6.00',
+            'imagen_url' => 'hb05'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0030',
+            'descripcion' => 'Hamburguesa con salsa BBQ, cebolla caramelizada, bacon y queso cheddar'
+        ]);
+
+        // Hamburguesa Black Angus - hb06
+        Producto::create([
+            'cod' => 'C0031',
+            'pvp' => 12.95,
+            'nombre' => 'Black Angus Burger',
+            'stock' => 15,
+            'disponible'=> true,
+            'precioCompra'=> '8.00',
+            'imagen_url' => 'hb06'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0031',
+            'descripcion' => 'Hamburguesa de Black Angus premium con pan negro, queso, lechuga y cebolla morada'
+        ]);
+
+        // Hamburguesa Big Mac Style - hb07
+        Producto::create([
+            'cod' => 'C0032',
+            'pvp' => 11.50,
+            'nombre' => 'Big Tower Burger',
+            'stock' => 20,
+            'disponible'=> true,
+            'precioCompra'=> '6.50',
+            'imagen_url' => 'hb07'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0032',
+            'descripcion' => 'Hamburguesa triple con salsa especial, lechuga, queso y pepinillos en pan con semillas'
+        ]);
+
+        // Patatas Fritas - hb08
+        Producto::create([
+            'cod' => 'C0033',
+            'pvp' => 3.50,
+            'nombre' => 'Patatas Fritas Deluxe para Burguer',
+            'stock' => 50,
+            'disponible'=> true,
+            'precioCompra'=> '1.00',
+            'imagen_url' => 'hb08'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0033',
+            'descripcion' => 'Patatas fritas crujientes doradas, perfectas como acompañamiento'
+        ]);
+
+        // PIZZAS - En orden ascendente pz01, pz02, etc.
+        
+        // Pizza Carbonara - pz01
+        Producto::create([
+            'cod' => 'C0034',
+            'pvp' => 12.50,
+            'nombre' => 'Pizza Carbonara',
+            'stock' => 15,
+            'disponible'=> true,
+            'precioCompra'=> '6.00',
+            'imagen_url' => 'pz01'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0034',
+            'descripcion' => 'Pizza con salsa carbonara, bacon, cebolla y queso mozzarella'
+        ]);
+
+        // Pizza Vegetariana - pz02
+        Producto::create([
+            'cod' => 'C0035',
+            'pvp' => 11.95,
+            'nombre' => 'Pizza Vegetariana',
+            'stock' => 15,
+            'disponible'=> true,
+            'precioCompra'=> '5.50',
+            'imagen_url' => 'pz02'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0035',
+            'descripcion' => 'Pizza con pimientos, champiñones, jalapeños, aceitunas negras y queso'
+        ]);
+
+        // Pizza Margherita - pz03
+        Producto::create([
+            'cod' => 'C0036',
+            'pvp' => 10.50,
+            'nombre' => 'Pizza Margherita',
+            'stock' => 20,
+            'disponible'=> true,
+            'precioCompra'=> '5.00',
+            'imagen_url' => 'pz03'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0036',
+            'descripcion' => 'Pizza clásica con tomate, mozzarella di bufala y albahaca fresca'
+        ]);
+
+        // Pizza Funghi - pz04
+        Producto::create([
+            'cod' => 'C0037',
+            'pvp' => 11.50,
+            'nombre' => 'Pizza Funghi',
+            'stock' => 15,
+            'disponible'=> true,
+            'precioCompra'=> '5.50',
+            'imagen_url' => 'pz04'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0037',
+            'descripcion' => 'Pizza con champiñones frescos, cebolla, tomates cherry y queso mozzarella'
+        ]);
+
+        // Pizza Pepperoni - pz05
+        Producto::create([
+            'cod' => 'C0038',
+            'pvp' => 12.95,
+            'nombre' => 'Pizza Pepperoni',
+            'stock' => 20,
+            'disponible'=> true,
+            'precioCompra'=> '6.50',
+            'imagen_url' => 'pz05'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0038',
+            'descripcion' => 'Pizza clásica americana con abundante pepperoni y extra queso'
+        ]);
+
+        // Pizza Campesina - pz06
+        Producto::create([
+            'cod' => 'C0039',
+            'pvp' => 13.50,
+            'nombre' => 'Pizza Campesina',
+            'stock' => 15,
+            'disponible'=> true,
+            'precioCompra'=> '7.00',
+            'imagen_url' => 'pz06'
+        ]);
+
+        Comida::create([
+            'cod' => 'C0039',
+            'descripcion' => 'Pizza con jamón, tomate, champiñones, bacon y aceitunas negras'
+        ]);
+        
+        // POSTRES - En orden ascendente po01, po02, etc.
+        
+        // Tarta de Chocolate - po01
+        Producto::create([
+            'cod' => 'P0001',
+            'pvp' => 5.50,
+            'nombre' => 'Tarta de Chocolate',
+            'stock' => 20,
+            'disponible'=> true,
+            'precioCompra'=> '2.50',
+            'imagen_url' => 'po01'
+        ]);
+
+        Comida::create([
+            'cod' => 'P0001',
+            'descripcion' => 'Tarta de chocolate con tres capas y cobertura de chocolate negro'
+        ]);
+
+        // Cheesecake de Frutos Rojos - po02
+        Producto::create([
+            'cod' => 'P0002',
+            'pvp' => 5.95,
+            'nombre' => 'Tarta Cheesecake de Frutos Rojos',
+            'stock' => 15,
+            'disponible'=> true,
+            'precioCompra'=> '3.00',
+            'imagen_url' => 'po02'
+        ]);
+
+        Comida::create([
+            'cod' => 'P0002',
+            'descripcion' => 'Tarta de queso con base de galleta y cobertura de frutos rojos'
+        ]);
+
+        // Helado de Stracciatella - po03
+        Producto::create([
+            'cod' => 'P0003',
+            'pvp' => 4.50,
+            'nombre' => 'Helado Stracciatella',
+            'stock' => 25,
+            'disponible'=> true,
+            'precioCompra'=> '2.00',
+            'imagen_url' => 'po03'
+        ]);
+
+        Comida::create([
+            'cod' => 'P0003',
+            'descripcion' => 'Helado artesanal de vainilla con trocitos de chocolate negro'
+        ]);
+
+        // Helado de Chocolate con Avellanas - po04
+        Producto::create([
+            'cod' => 'P0004',
+            'pvp' => 4.95,
+            'nombre' => 'Helado de Chocolate y Avellanas',
+            'stock' => 20,
+            'disponible'=> true,
+            'precioCompra'=> '2.50',
+            'imagen_url' => 'po04'
+        ]);
+
+        Comida::create([
+            'cod' => 'P0004',
+            'descripcion' => 'Helado de chocolate con sirope de chocolate y avellanas caramelizadas'
         ]);
     }
 }

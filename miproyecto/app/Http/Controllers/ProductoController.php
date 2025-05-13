@@ -18,7 +18,7 @@ class ProductoController
     protected $modelClass = Producto::class;
     protected $viewPrefix = 'producto';
     protected $routePrefix = 'productos';
-    protected $requiredFields = ['nombre', 'pvp', 'stock', 'precioCompra'];
+    protected $requiredFields = ['nombre', 'pvp', 'stock', 'precioCompra','imagen_url'];
 
  
     public function create_get()
@@ -38,6 +38,12 @@ class ProductoController
         $producto->nombre = $request->nombre;
         $producto->stock = $request->stock;
         $producto->precioCompra = $request->precioCompra;
+        // Asignar imagen_url según el tipo de producto
+        if ($request->tipo == 'M') {
+            $producto->imagen_url = null; // O asigna directamente 'menu-por-defecto'
+        } else {
+            $producto->imagen_url = $request->imagen_url;
+        }
         $producto->save();
 
         // Crear el producto específico según su tipo
@@ -136,6 +142,7 @@ class ProductoController
                 'pvp' => 'required|numeric',
                 'stock' => 'required|numeric',
                 'precioCompra' => 'required|numeric',
+                'imagen_url' => 'nullable|url',
             ];
             
             // Validaciones específicas según el tipo
@@ -169,6 +176,12 @@ class ProductoController
                 $producto->nombre = $request->nombre;
                 $producto->stock = $request->stock;
                 $producto->precioCompra = $request->precioCompra;
+                // Asignar imagen_url según el tipo de producto
+                if ($request->tipo == 'M') {
+                    $producto->imagen_url = null; // O asigna directamente 'menu-por-defecto'
+                } else {
+                    $producto->imagen_url = $request->imagen_url;
+                }
                 $producto->save();
                 
                 // Crear el producto específico según su tipo
@@ -302,6 +315,7 @@ class ProductoController
                 'pvp' => 'required|numeric',
                 'stock' => 'required|numeric',
                 'precioCompra' => 'required|numeric',
+                'imagen_url' => 'nullable|url',
             ];
             
             // Validaciones específicas según el tipo
@@ -325,6 +339,7 @@ class ProductoController
                 $producto->nombre = $request->nombre;
                 $producto->stock = $request->stock;
                 $producto->precioCompra = $request->precioCompra;
+                $producto->imagen_url = $request->imagen_url;
                 $producto->save();
                 
                 // Actualizar el producto específico según su tipo
@@ -538,6 +553,8 @@ class ProductoController
             ], 500);
         }
     }
+
+    
 }
 
 //Entrega2

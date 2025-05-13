@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('nombre');
             $table->string('password');
             $table->string('telefono')->nullable();
+            $table->string('rol')->default('user'); // Añadir rol por defecto
             $table->timestamps();
             $table->rememberToken();
         });

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Pedido extends Model
 {
@@ -13,32 +12,31 @@ class Pedido extends Model
     protected $keyType = 'string';
     
     protected $fillable = [
-        'cod', 'fecha', 'estado', 'usuario_id', 'direccion_id', 'metodo_pago', 'notas'
+        'cod', 'fecha', 'estado', 'usuario_id'
     ];
 
     protected $casts = [
         'fecha' => 'date',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
-    /**
-     * Estados posibles del pedido
-     */
+    // Constantes para estados
+    const ESTADO_EN_CARRITO = 'enCarrito';
+    const ESTADO_PREPARANDO = 'preparando';
+    const ESTADO_LISTO = 'listo';
+    const ESTADO_ENTREGADO = 'entregado';
+
+    // Estados válidos
     const ESTADOS = [
-        'en_cesta',
-        'pendiente',
-        'confirmado',
-        'preparando',
-        'listo',
-        'entregado',
-        'cancelado'
+        self::ESTADO_EN_CARRITO,
+        self::ESTADO_PREPARANDO,
+        self::ESTADO_LISTO,
+        self::ESTADO_ENTREGADO
     ];
 
     // Relación con usuario
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class, 'usuario_id', 'id');
+        return $this->belongsTo(Usuario::class, 'usuario_id');
     }
 
     // Relación con líneas de pedido
@@ -46,239 +44,139 @@ class Pedido extends Model
     {
         return $this->hasMany(LineaPedido::class, 'pedido_id', 'cod');
     }
-    
-    /**
-     * Relación con la dirección de entrega
-     */
-    public function direccion()
+
+    // Scope para obtener el carrito actual del usuario
+    public function scopeCarritoActual($query, $usuarioId)
     {
-        return $this->belongsTo(Direccion::class, 'direccion_id');
+        return $query->where('usuario_id', $usuarioId)
+                     ->where('estado', self::ESTADO_EN_CARRITO);
     }
 
-    // Obtener cesta actual del usuario o crear una nueva si no existe
-    public static function obtenerCestaUsuario($usuarioId)
+    // Scope para pedidos activos (no en carrito)
+    public function scopeActivos($query)
     {
-        // Buscar si el usuario ya tiene un pedido en estado "en_cesta"
-        $cesta = self::where('usuario_id', $usuarioId)
-                    ->where('estado', 'en_cesta')
-                    ->first();
+        return $query->whereIn('estado', [
+            self::ESTADO_PREPARANDO,
+            self::ESTADO_LISTO
+        ]);
+    }
+
+    // Scope para pedidos completados
+    public function scopeCompletados($query)
+    {
+        return $query->where('estado', self::ESTADO_ENTREGADO);
+    }
+
+    // Obtener el total del pedido
+    public function getTotalAttribute()
+    {
+        return $this->lineasPedido->sum(function ($linea) {
+            return $linea->cantidad * $linea->precio;
+        });
+    }
+
+    // Obtener el número de items en el pedido
+    public function getCantidadItemsAttribute()
+    {
+        return $this->lineasPedido->sum('cantidad');
+    }
+
+    // Verificar si el pedido está en el carrito
+    public function estaEnCarrito()
+    {
+        return $this->estado === self::ESTADO_EN_CARRITO;
+    }
+
+    // Verificar si el pedido está preparándose
+    public function estaPreparando()
+    {
+        return $this->estado === self::ESTADO_PREPARANDO;
+    }
+
+    // Verificar si el pedido está listo
+    public function estaListo()
+    {
+        return $this->estado === self::ESTADO_LISTO;
+    }
+
+    // Verificar si el pedido está entregado
+    public function estaEntregado()
+    {
+        return $this->estado === self::ESTADO_ENTREGADO;
+    }
+
+    // Cambiar el estado del pedido
+    public function cambiarEstado($nuevoEstado)
+    {
+        if (!in_array($nuevoEstado, self::ESTADOS)) {
+            throw new \InvalidArgumentException("Estado inválido: {$nuevoEstado}");
+        }
+
+        $this->estado = $nuevoEstado;
+        $this->save();
+
+        // Actualizar el estado de todas las líneas de pedido
+        $this->lineasPedido()->update(['estado' => $nuevoEstado]);
+
+        return $this;
+    }
+
+    // Generar el siguiente código de pedido
+    public static function generarSiguienteCodigo()
+    {
+        $ultimoPedido = self::orderBy('cod', 'desc')->first();
         
-        // Si no existe, crear uno nuevo
-        if (!$cesta) {
-            $cesta = self::create([
-                'cod' => 'P' . time() . rand(100, 999), // Generar código único
-                'fecha' => Carbon::now(),
-                'estado' => 'en_cesta',
-                'usuario_id' => $usuarioId
-            ]);
+        if ($ultimoPedido) {
+            // Extraer el número del código (formato Pxxxx)
+            $numeroActual = intval(substr($ultimoPedido->cod, 1));
+            // Incrementar el número y formatear con 4 dígitos
+            $siguienteCodigo = 'P' . str_pad($numeroActual + 1, 4, '0', STR_PAD_LEFT);
+        } else {
+            // Si no hay pedidos anteriores, comenzar con P0001
+            $siguienteCodigo = 'P0001';
         }
         
-        return $cesta;
+        return $siguienteCodigo;
     }
 
-    // Agregar producto a la cesta
-    public function agregarProducto($productoId, $cantidad = 1)
+    // Añadir un producto al pedido
+    public function agregarProducto($producto, $cantidad = 1)
     {
-        // Verificar si el producto ya está en la cesta
+        // Verificar si el producto ya está en el pedido
         $lineaExistente = $this->lineasPedido()
-                               ->where('producto_id', $productoId)
-                               ->where('estado', 'en_cesta')
-                               ->first();
-        
+            ->where('producto_id', $producto->cod)
+            ->first();
+
         if ($lineaExistente) {
-            // Si ya existe, actualizar la cantidad
+            // Actualizar cantidad si ya existe
             $lineaExistente->cantidad += $cantidad;
             $lineaExistente->save();
             return $lineaExistente;
         } else {
-            // Si no existe, crear nueva línea
-            $producto = Producto::find($productoId);
-            return LineaPedido::create([
-                'linea' => uniqid(), // Generar ID único para la línea
+            // Crear nueva línea de pedido
+            return $this->lineasPedido()->create([
+                'linea' => LineaPedido::generarSiguienteCodigo(),
                 'cantidad' => $cantidad,
                 'precio' => $producto->pvp,
-                'estado' => 'en_cesta',
-                'pedido_id' => $this->cod,
-                'producto_id' => $productoId
+                'estado' => $this->estado,
+                'producto_id' => $producto->cod
             ]);
         }
     }
 
-    // Remover producto de la cesta
-    public function removerProducto($productoId)
+    // Verificar si el pedido puede ser procesado
+    public function puedeSerProcesado()
     {
-        return $this->lineasPedido()
-                    ->where('producto_id', $productoId)
-                    ->where('estado', 'en_cesta')
-                    ->delete();
+        return $this->estaEnCarrito() && $this->lineasPedido->count() > 0;
     }
 
-    // Actualizar cantidad de un producto en la cesta
-    public function actualizarCantidad($productoId, $cantidad)
+    // Procesar el pedido (cambiar de carrito a preparando)
+    public function procesar()
     {
-        $linea = $this->lineasPedido()
-                      ->where('producto_id', $productoId)
-                      ->where('estado', 'en_cesta')
-                      ->first();
-        
-        if ($linea) {
-            if ($cantidad <= 0) {
-                // Si la cantidad es 0 o negativa, eliminar el producto
-                return $this->removerProducto($productoId);
-            } else {
-                // Actualizar cantidad
-                $linea->cantidad = $cantidad;
-                $linea->save();
-                return $linea;
-            }
+        if (!$this->puedeSerProcesado()) {
+            throw new \Exception('El pedido no puede ser procesado');
         }
-        
-        return false;
-    }
 
-    // Obtener todos los productos en la cesta
-    public function obtenerProductosCesta()
-    {
-        return $this->lineasPedido()
-                    ->with('producto') // Cargar relación con productos
-                    ->where('estado', 'en_cesta')
-                    ->get();
-    }
-
-    // Vaciar la cesta
-    public function vaciarCesta()
-    {
-        return $this->lineasPedido()
-                    ->where('estado', 'en_cesta')
-                    ->delete();
-    }
-
-    // Confirmar pedido (cambiar estado de en_cesta a confirmado)
-    public function confirmarPedido()
-    {
-        // Verificar que hay productos en la cesta
-        $tieneProdutos = $this->lineasPedido()
-                              ->where('estado', 'en_cesta')
-                              ->exists();
-        
-        if (!$tieneProdutos) {
-            return false; // No se puede confirmar un pedido vacío
-        }
-        
-        // Actualizar estado del pedido
-        $this->estado = 'confirmado';
-        $this->fecha = Carbon::now(); // Actualizar fecha al momento de confirmación
-        $this->save();
-        
-        // Actualizar estado de todas las líneas
-        $this->lineasPedido()
-             ->where('estado', 'en_cesta')
-             ->update(['estado' => 'confirmado']);
-        
-        // Actualizar stock de productos (implementar según tus reglas de negocio)
-        foreach ($this->lineasPedido as $linea) {
-            $producto = $linea->producto;
-            $producto->stock -= $linea->cantidad;
-            $producto->save();
-        }
-        
-        return true;
-    }
-
-    // Calcular total del pedido
-    public function calcularTotal()
-    {
-        return $this->lineasPedido()
-                    ->where('estado', $this->estado) // Usar el mismo estado que el pedido
-                    ->sum(\DB::raw('precio * cantidad'));
-    }
-    
-    /**
-     * Obtiene el monto total calculado del pedido
-     */
-    public function getTotalAttribute()
-    {
-        return $this->calcularTotal();
-    }
-    
-    /**
-     * Cambia el estado del pedido
-     */
-    public function cambiarEstado($estado)
-    {
-        if (in_array($estado, self::ESTADOS)) {
-            $this->estado = $estado;
-            $this->save();
-            
-            // Actualizar estado de todas las líneas
-            $this->lineasPedido()
-                 ->update(['estado' => $estado]);
-                 
-            return true;
-        }
-        
-        return false;
-    }
-    
-    /**
-     * Repite un pedido existente creando una copia con estado pendiente
-     */
-    public static function repetirPedido($pedidoId, $usuarioId)
-    {
-        $pedidoAnterior = self::with('lineasPedido')->findOrFail($pedidoId);
-        
-        // Verificar que el pedido pertenece al usuario
-        if ($pedidoAnterior->usuario_id != $usuarioId) {
-            return false;
-        }
-        
-        // Crear nuevo pedido
-        $nuevoPedido = self::create([
-            'cod' => 'P' . time() . rand(100, 999), // Generar código único
-            'fecha' => Carbon::now(),
-            'estado' => 'pendiente',
-            'usuario_id' => $usuarioId,
-            'direccion_id' => $pedidoAnterior->direccion_id,
-            'metodo_pago' => $pedidoAnterior->metodo_pago,
-            'notas' => $pedidoAnterior->notas
-        ]);
-        
-        // Copiar líneas de pedido
-        foreach ($pedidoAnterior->lineasPedido as $lineaAnterior) {
-            LineaPedido::create([
-                'linea' => uniqid(), // Generar ID único para la línea
-                'cantidad' => $lineaAnterior->cantidad,
-                'precio' => $lineaAnterior->precio,
-                'estado' => 'pendiente',
-                'pedido_id' => $nuevoPedido->cod,
-                'producto_id' => $lineaAnterior->producto_id
-            ]);
-        }
-        
-        return $nuevoPedido;
-    }
-    
-    /**
-     * Scope para filtrar por estado
-     */
-    public function scopeEstado($query, $estado)
-    {
-        return $query->where('estado', $estado);
-    }
-    
-    /**
-     * Scope para filtrar pedidos recientes
-     */
-    public function scopeRecientes($query, $dias = 30)
-    {
-        return $query->where('fecha', '>=', Carbon::now()->subDays($dias));
-    }
-    
-    /**
-     * Scope para filtrar por usuario
-     */
-    public function scopeUsuario($query, $usuarioId)
-    {
-        return $query->where('usuario_id', $usuarioId);
+        return $this->cambiarEstado(self::ESTADO_PREPARANDO);
     }
 }

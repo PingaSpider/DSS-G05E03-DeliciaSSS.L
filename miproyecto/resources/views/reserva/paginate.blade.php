@@ -155,7 +155,7 @@
         </div>
         
         <div class="action-links mt-4">
-            <a href="{{ url('/') }}" class="action-btn edit-btn">Volver al Panel Admin</a>
+            <a href="{{ url('/admin/') }}" class="action-btn edit-btn">Volver al Panel Admin</a>
         </div>
     </div>
 
@@ -170,7 +170,7 @@
         function deleteReserva(codReserva) {
             if (confirm('¿Estás seguro de que deseas eliminar esta reserva?')) {
                 const form = document.getElementById('deleteReservaForm');
-                form.action = `/reservas/${codReserva}`;
+                form.action = `/admin/reservas/${codReserva}`;
                 form.submit();
             }
         }

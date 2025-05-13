@@ -38,6 +38,7 @@ class RegistroController extends Controller
             'email' => $request->email,
             'telefono' => $request->telefono,
             'password' => Hash::make($request->password),
+            'rol' => 'user',  // Añadir rol por defecto
         ]);
 
         // Iniciar sesión con el usuario recién creado

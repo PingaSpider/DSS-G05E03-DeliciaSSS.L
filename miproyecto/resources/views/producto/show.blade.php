@@ -49,7 +49,13 @@
                 <div class="detail-label">Precio de Compra:</div>
                 <div class="detail-value">{{ number_format($producto->precioCompra, 2, ',', '.') }} €</div>
             </div>
-            
+
+            <div class="detail-row">
+                <div class="detail-label">Imagen del Producto:</div>
+                <div class="detail-value">
+                    <img src="{{ $producto->imagen_url }}" alt="{{ $producto->nombre }}" class="product-image" style="max-width: 300px;">
+                </div>
+            </div>
             <div class="detail-row">
                 <div class="detail-label">Tipo de Producto:</div>
                 <div class="detail-value">
@@ -160,11 +166,12 @@
     </form>
 
     <script>
-        // Función para eliminar producto
         function deleteProducto(cod) {
             if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
                 const form = document.getElementById('deleteProductoForm');
-                form.action = `/productos/${cod}`;
+                form.action = `/admin/productos/${cod}`;
+                form.method = 'POST';
+                
                 form.submit();
             }
         }

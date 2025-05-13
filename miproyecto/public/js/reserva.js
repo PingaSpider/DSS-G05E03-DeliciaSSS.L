@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectHora = document.getElementById('time');
     const selectFecha = document.getElementById('date');
     const selectPersonas = document.getElementById('people');
+    const selectMesa = document.getElementById('mesa_id'); // Asegurarse de obtener la referencia correcta
     const reservarBtn = document.getElementById('reservar-btn');
     const modal = document.getElementById('confirmModal');
     const cancelBtn = document.getElementById('cancel-btn');
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'selectHora': selectHora,
         'selectFecha': selectFecha,
         'selectPersonas': selectPersonas,
+        'selectMesa': selectMesa, // Añadido a la verificación
         'reservarBtn': reservarBtn,
         'form': form,
         'modal': modal,
@@ -75,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`Fecha seleccionada cambiada a: ${this.value}`);
         // Aquí se podría añadir una llamada AJAX para verificar disponibilidad en esta fecha
     });
+    
     
     // Función para actualizar las franjas horarias basado en la hora seleccionada
     function actualizarBotonesFranjasHorariasBasadoEnHora() {
@@ -144,6 +147,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        // Verificar que se ha seleccionado una mesa
+        if (!selectMesa.value) {
+            alert('Por favor, seleccione una mesa para continuar.');
+            console.warn("No se ha seleccionado mesa");
+            return;
+        }
+        
         // Mostrar el modal de confirmación
         modal.classList.remove('modal-hidden');
         console.log("Modal de confirmación mostrado");
@@ -197,35 +207,3 @@ document.addEventListener('DOMContentLoaded', function() {
     // Logging para depuración
     console.log('Script de reserva inicializado correctamente');
 });
-
-document.addEventListener('DOMContentLoaded', function() {
-    const selectPersonas = document.getElementById('people');
-    const selectMesa = document.getElementById('mesa_id');
-    
-    if (selectPersonas && selectMesa) {
-      // Filtrar mesas según la capacidad seleccionada
-      selectPersonas.addEventListener('change', function() {
-        const personasCount = parseInt(this.value);
-        
-        // Recorrer todas las opciones y habilitar/deshabilitar según capacidad
-        Array.from(selectMesa.options).forEach(function(option) {
-          if (option.value === '') return; // Saltar la opción "Selecciona una mesa"
-          
-          const capacidad = parseInt(option.getAttribute('data-capacidad'));
-          if (capacidad < personasCount) {
-            option.disabled = true;
-            option.style.color = '#999';
-            if (option.selected) {
-              selectMesa.value = '';
-            }
-          } else {
-            option.disabled = false;
-            option.style.color = '';
-          }
-        });
-      });
-      
-      // Ejecutar inicialmente para configurar el estado inicial
-      selectPersonas.dispatchEvent(new Event('change'));
-    }
-  });

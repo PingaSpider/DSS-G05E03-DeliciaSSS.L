@@ -7,6 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/pedido/create.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sesion.css') }}">
+    <script src="{{ asset('js/sesionHandler.js') }}" defer></script>
     <style>
         body {
             background-color: #fffbeb;
@@ -20,6 +22,7 @@
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
         
         h1 {
@@ -133,6 +136,30 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+
+        /* Estilos específicos para el avatar en panel admin */
+        #avatar {
+            position: relative;
+        }
+        
+        /* Sobreescribir estilos del avatar container específicamente para el panel admin */
+        .container .avatar-container {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            z-index: 10;
+        }
+        
+        /* Ajustar el menú dropdown para que aparezca correctamente */
+        .container .avatar-container .dropdown-menu {
+            right: 0;
+            top: 45px;
+        }
+        
+        /* Añadir espacio para evitar que el avatar tape el título */
+        .container h1 {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -151,7 +178,30 @@
                 {{ session('error') }}
             </div>
         @endif
-        
+        <!-- Estructura HTML para el avatar con menú desplegable -->
+        <div class="avatar-container">
+            <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" id="avatar" class="avatar" alt="Avatar">
+            <div class="dropdown-menu" id="avatarMenu">
+                @auth
+                    <!-- Usuario autenticado: muestra opciones de perfil y cerrar sesión -->
+                    <a href="{{ route('user.profile') }}">Mi Perfil</a>
+                    
+                    @if(Auth::user()->esAdmin())
+                        <a href="{{ route('paneladmin') }}">Panel Admin</a>
+                    @endif
+                    
+                    <!-- Formulario de logout estilizado como enlace -->
+                    <form action="{{ route('logout') }}" method="POST" id="logout-form" class="logout-link-form">
+                        @csrf
+                        <button type="submit" class="link-button">Cerrar sesión</button>
+                    </form>
+                @else
+                    <!-- Usuario no autenticado: muestra opciones de login y registro -->
+                    <a href="{{ route('login.form') }}">Iniciar sesión</a>
+                    <a href="{{ route('registro.form') }}">Registrarse</a>
+                @endauth
+            </div>
+        </div>
         <div class="admin-menu">
             <div class="menu-section">
                 <a href="{{ route('productos.paginate') }}" class="menu-button">

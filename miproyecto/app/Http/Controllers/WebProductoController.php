@@ -16,12 +16,57 @@ class WebProductoController extends Controller
      */
     public function show($cod = null)
     {
-        // Si no se proporciona un código, mostrar la lista de productos
         if ($cod === null) {
-            $productos = Producto::where('disponible', true)->get();
+            // Paginación para todos los productos (14 por página)
+            $todosLosProductos = Producto::where('disponible', true)
+                ->paginate(10, ['*'], 'todos_page');
             
-            return view('producto', [
-                'productos' => $productos,
+            // Paginación para cada categoría (14 por página)
+            $bebidas = Producto::where('disponible', true)
+                ->whereHas('bebida')
+                ->paginate(5, ['*'], 'bebidas_page');
+            
+            $comidas = Producto::where('disponible', true)
+                ->whereHas('comida')
+                ->paginate(5, ['*'], 'comidas_page');
+            
+            $menus = Producto::where('disponible', true)
+                ->whereHas('menu')
+                ->paginate(5, ['*'], 'menus_page');
+            
+            // Paginación para subcategorías
+            $desayunos = Producto::where('disponible', true)
+                ->whereHas('comida')
+                ->where('nombre', 'like', '%Desayuno%')
+                ->paginate(5, ['*'], 'desayunos_page');
+            
+            $hamburguesas = Producto::where('disponible', true)
+                ->whereHas('comida')
+                ->where('nombre', 'like', '%Burger%')
+                ->paginate(5, ['*'], 'hamburguesas_page');
+            
+            $pizzas = Producto::where('disponible', true)
+                ->whereHas('comida')
+                ->where('nombre', 'like', '%Pizza%')
+                ->paginate(5, ['*'], 'pizzas_page');
+            
+            $postres = Producto::where('disponible', true)
+                ->whereHas('comida')
+                ->where(function($query) {
+                    $query->where('nombre', 'like', '%Tarta%')
+                        ->orWhere('nombre', 'like', '%Helado%');
+                })
+                ->paginate(5, ['*'], 'postres_page');
+            
+            return view('productos-lista', [
+                'productos' => $todosLosProductos,
+                'bebidas' => $bebidas,
+                'comidas' => $comidas,
+                'menus' => $menus,
+                'desayunos' => $desayunos,
+                'hamburguesas' => $hamburguesas,
+                'pizzas' => $pizzas,
+                'postres' => $postres,
                 'footer' => $this->getFooterData()
             ]);
         }
@@ -34,33 +79,48 @@ class WebProductoController extends Controller
             $producto->descripcion = $producto->comida->descripcion ?? 'Descripción no disponible';
         }
 
-        // Convertir los atributos para que coincidan con la vista
-        $producto->imagen = $producto->imagen ?? asset('assets/images/repo/comida/p_3GwOHUvwOpa8FhM8bMmF02UWBi0vEFqC/especialburguer.png');
-        $producto->rating = 5; // Valor por defecto
-        $producto->reviews_count = 4; // Valor por defecto
-        $producto->precio = $producto->pvp;
+        // Generar rating aleatorio entre 3 y 5
+        $producto->rating = rand(3, 5);
+        $producto->reviews_count = rand(10, 100); // Reviews aleatorios
 
-        // Buscar productos similares
+        // Buscar productos similares (de la misma categoría)
         $similarProducts = Producto::where('cod', '!=', $cod)
             ->where('disponible', true)
             ->limit(5)
             ->get()
             ->map(function($similar) {
-                $similar->rating = 3; // Valor por defecto
-                $similar->precio = $similar->pvp;
+                $similar->rating = rand(3, 5); // Rating aleatorio para cada producto similar
                 return $similar;
             });
 
-        // Reviews de ejemplo
+        // Reviews de ejemplo con datos más realistas
         $reviews = collect([
             (object)[
                 'usuario' => (object)[
-                    'nombre' => 'John Doe',
-                    'avatar' => asset('user-avatar.jpg')
+                    'nombre' => 'María García',
+                    'avatar' => asset('assets/images/avatars/user-1.jpg')
                 ],
-                'fecha' => now(),
-                'rating' => 5,
-                'comentario' => 'Excelente producto, muy recomendado.'
+                'fecha' => now()->subDays(5),
+                'rating' => rand(4, 5),
+                'comentario' => 'Excelente producto, muy recomendado. El sabor es increíble y la presentación impecable.'
+            ],
+            (object)[
+                'usuario' => (object)[
+                    'nombre' => 'Carlos Martínez',
+                    'avatar' => asset('assets/images/avatars/user-2.jpg')
+                ],
+                'fecha' => now()->subDays(12),
+                'rating' => rand(3, 5),
+                'comentario' => 'Muy buena calidad. El precio es justo para lo que ofrece. Definitivamente volveré a pedir.'
+            ],
+            (object)[
+                'usuario' => (object)[
+                    'nombre' => 'Ana López',
+                    'avatar' => asset('assets/images/avatars/user-3.jpg')
+                ],
+                'fecha' => now()->subDays(20),
+                'rating' => rand(4, 5),
+                'comentario' => 'Me encantó el servicio y la calidad del producto. Lo recomiendo ampliamente.'
             ]
         ]);
 
@@ -70,34 +130,6 @@ class WebProductoController extends Controller
             'similarProducts' => $similarProducts,
             'reviews' => $reviews,
             'footer' => $this->getFooterData()
-        ]);
-    }
-
-    /**
-     * Añadir un producto al carrito
-     * 
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function addToCart(Request $request)
-    {
-        $producto = Producto::findOrFail($request->input('producto_id'));
-        
-        // Lógica para añadir al carrito
-        $cart = $request->session()->get('cart', []);
-        
-        $cart[] = [
-            'id' => $producto->cod,
-            'nombre' => $producto->nombre,
-            'precio' => $producto->pvp
-        ];
-        
-        $request->session()->put('cart', $cart);
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Producto añadido al carrito',
-            'cart' => $cart
         ]);
     }
 
@@ -155,5 +187,64 @@ class WebProductoController extends Controller
                 'telefono' => 'Tel: 678-45-20-16'
             ]
         ];
+    }
+
+    public function buscar(Request $request)
+    {
+        try {
+            // Validar la solicitud
+            $request->validate([
+                'q' => 'required|string|min:2'
+            ]);
+            
+            $query = $request->input('q');
+            
+            // Buscar productos que coincidan con la consulta
+            $productos = Producto::where('nombre', 'like', "%{$query}%")
+                ->where('disponible', true)
+                ->with(['comida', 'bebida']) // Cargar relaciones
+                ->get(); // Obtener todos los campos
+            
+            // Transformar los productos para incluir descripción
+            $productos = $productos->map(function ($producto) {
+                // Crear un nuevo objeto con solo los campos necesarios
+                return [
+                    'cod' => $producto->cod,
+                    'nombre' => $producto->nombre,
+                    'precio' => $producto->pvp,
+                    'imagen_url' => $producto->imagen_url,
+                    'descripcion' => $this->obtenerDescripcion($producto)
+                ];
+            });
+            
+            // Devolver JSON
+            return response()->json($productos, 200, [
+                'Content-Type' => 'application/json; charset=utf-8',
+            ]);
+        } catch (\Exception $e) {
+            // Registrar el error
+            \Log::error('Error en búsqueda de productos: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            // Devolver respuesta de error
+            return response()->json([
+                'error' => true,
+                'message' => 'Error al buscar productos: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Obtener la descripción del producto según su tipo
+     */
+    private function obtenerDescripcion($producto)
+    {
+        if ($producto->comida) {
+            return $producto->comida->descripcion ?? '';
+        } elseif ($producto->bebida) {
+            return ($producto->bebida->tipoBebida ?? '') . ' - ' . ($producto->bebida->tamanyo ?? '');
+        }
+        
+        return '';
     }
 }

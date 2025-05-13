@@ -59,6 +59,31 @@
                     <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
+            <!-- Selección de categoría y URL de imagen -->
+            <div class="form-group">
+                <label for="imagen_categoria"><b>Categoría de la Imagen</b></label>
+                <select name="imagen_categoria" id="imagen_categoria" class="select-category">
+                    <option value="">Seleccionar categoría</option>
+                    <option value="hamburguesa">Hamburguesa</option>
+                    <option value="pizza">Pizza</option>
+                    <option value="desayuno">Desayuno</option>
+                    <option value="postre">Postre</option>
+                    <option value="comida">Otra comida</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="imagen_url"><b>Imagen del Producto</b></label>
+                <select name="imagen_url" id="imagen_url" class="select-image" disabled>
+                    <option value="">Primero seleccione una categoría</option>
+                </select>
+                <div id="image-preview" class="mt-2" style="display: none;">
+                    <img src="" alt="Vista previa" style="max-width: 150px; max-height: 150px;">
+                </div>
+                @error('imagen_url')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
+            </div>
 
             <div class="form-group">
                 <label for="descripcion"><b>Descripción</b></label>
@@ -117,6 +142,92 @@
                 if (hasErrors) {
                     e.preventDefault();
                 }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoriaSelect = document.getElementById('imagen_categoria');
+            const imageSelect = document.getElementById('imagen_url');
+            const imagePreview = document.getElementById('image-preview');
+            const previewImg = imagePreview.querySelector('img');
+            
+            // Mapa de imágenes por categoría (esto será cargado mediante AJAX)
+            const imagesByCategory = {};
+            
+            // Función para cargar imágenes de una categoría específica
+            function loadImagesForCategory(category) {
+                if (!category) {
+                    imageSelect.innerHTML = '<option value="">Primero seleccione una categoría</option>';
+                    imageSelect.disabled = true;
+                    return;
+                }
+                
+                // Si ya tenemos imágenes cargadas para esta categoría, las usamos
+                if (imagesByCategory[category]) {
+                    populateImageSelect(category, imagesByCategory[category]);
+                    return;
+                }
+                
+                // Sino, hacemos una solicitud AJAX para obtener las imágenes
+                fetch(`/api/comida/images/${category}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            imagesByCategory[category] = data.images;
+                            populateImageSelect(category, data.images);
+                        } else {
+                            console.error('Error al cargar imágenes:', data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error en la solicitud:', error);
+                    });
+            }
+            
+            // Función para llenar el selector de imágenes
+            function populateImageSelect(category, images) {
+                imageSelect.innerHTML = '';
+                
+                // Opción predeterminada
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Seleccionar imagen';
+                imageSelect.appendChild(defaultOption);
+                
+                // Agregar opciones de imagen
+                if (images && images.length > 0) {
+                    images.forEach(image => {
+                        const option = document.createElement('option');
+                        option.value = image.name;
+                        option.textContent = image.name;
+                        option.setAttribute('data-img-src', image.url);
+                        imageSelect.appendChild(option);
+                    });
+                    imageSelect.disabled = false;
+                } else {
+                    const noImagesOption = document.createElement('option');
+                    noImagesOption.value = '';
+                    noImagesOption.textContent = 'No hay imágenes disponibles para esta categoría';
+                    imageSelect.appendChild(noImagesOption);
+                    imageSelect.disabled = true;
+                }
+            }
+            
+            // Mostrar vista previa cuando se selecciona una imagen
+            imageSelect.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                if (selectedOption && selectedOption.hasAttribute('data-img-src')) {
+                    previewImg.src = selectedOption.getAttribute('data-img-src');
+                    imagePreview.style.display = 'block';
+                } else {
+                    imagePreview.style.display = 'none';
+                }
+            });
+            
+            // Cargar imágenes cuando cambia la categoría
+            categoriaSelect.addEventListener('change', function() {
+                const category = this.value;
+                loadImagesForCategory(category);
+                imagePreview.style.display = 'none';
             });
         });
     </script>

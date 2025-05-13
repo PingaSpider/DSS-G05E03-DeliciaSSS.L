@@ -35,8 +35,11 @@ class RouteServiceProvider extends ServiceProvider
                     ->group(base_path('routes/api.php'));
             }
         });
+        // Registrar el middleware aquí
+        Route::aliasMiddleware('admin', \App\Http\Middleware\AdminMiddleware::class);
     }
 
+    
     /**
      * Configura los limitadores de velocidad para la aplicación.
      */
