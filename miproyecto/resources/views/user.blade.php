@@ -23,6 +23,9 @@
             </div>
             <div class="nav-links">
                 <a href="{{ route('home') }}" class="back-to-home">Home</a>
+                @if(Auth::user()->esAdmin())
+                    <a href="{{ route('paneladmin') }}" class="back-to-home">Panel Admin</a>
+                @endif
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="link-button">Cerrar sesión</button>

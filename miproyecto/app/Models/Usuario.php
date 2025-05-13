@@ -26,6 +26,7 @@ class Usuario extends Authenticatable
         'password',
         'telefono',
         'avatar',
+        'rol'
     ];
 
     /**
@@ -61,6 +62,14 @@ class Usuario extends Authenticatable
     public function getNombreCompletoAttribute()
     {
         return $this->nombre . ' ' . $this->apellido;
+    }
+
+    /**
+     * Verificar si el usuario es administrador
+     */
+    public function esAdmin()
+    {
+        return $this->rol === 'admin';
     }
 }
 

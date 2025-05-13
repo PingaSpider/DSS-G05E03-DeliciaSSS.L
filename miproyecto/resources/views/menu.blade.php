@@ -48,15 +48,27 @@
                         <i class="fas fa-shopping-cart"></i>
                     </a>
                 @endauth
+                <!-- Estructura HTML para el avatar con menú desplegable -->
                 <div class="avatar-container">
-                    <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" alt="User avatar">
-                    <div class="dropdown-menu" id=avatarMenu>
+                    <img src="{{ asset('assets/images/repo/E-commerce_Shop_Avatar_1.png') }}" id="avatar" class="avatar" alt="Avatar">
+                    <div class="dropdown-menu" id="avatarMenu">
                         @auth
-                            <a href="{{ route('user.profile') }}" class="dropdown-item">Perfil</a>
-                            <a href="{{ route('logout') }}" class="dropdown-item">Cerrar sesión</a>
+                            <!-- Usuario autenticado: muestra opciones de perfil y cerrar sesión -->
+                            <a href="{{ route('user.profile') }}">Mi Perfil</a>
+                            
+                            @if(Auth::user()->esAdmin())
+                                <a href="{{ route('paneladmin') }}">Panel Admin</a>
+                            @endif
+                            
+                            <!-- Formulario de logout estilizado como enlace -->
+                            <form action="{{ route('logout') }}" method="POST" id="logout-form" class="logout-link-form">
+                                @csrf
+                                <button type="submit" class="link-button">Cerrar sesión</button>
+                            </form>
                         @else
-                            <a href="{{ route('login') }}" class="dropdown-item">Iniciar sesión</a>
-                            <a href="{{ route('registro') }}" class="dropdown-item">Registrarse</a>
+                            <!-- Usuario no autenticado: muestra opciones de login y registro -->
+                            <a href="{{ route('login.form') }}">Iniciar sesión</a>
+                            <a href="{{ route('registro.form') }}">Registrarse</a>
                         @endauth
                     </div>
                 </div>

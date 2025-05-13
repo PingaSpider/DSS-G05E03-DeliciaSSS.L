@@ -45,6 +45,10 @@
                             <!-- Usuario autenticado: muestra opciones de perfil y cerrar sesión -->
                             <a href="{{ route('user.profile') }}">Mi Perfil</a>
                             
+                            @if(Auth::user()->esAdmin())
+                                <a href="{{ route('paneladmin') }}">Panel Admin</a>
+                            @endif
+                            
                             <!-- Formulario de logout estilizado como enlace -->
                             <form action="{{ route('logout') }}" method="POST" id="logout-form" class="logout-link-form">
                                 @csrf

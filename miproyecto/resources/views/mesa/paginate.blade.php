@@ -109,7 +109,7 @@
             {{ $mesas->appends(request()->query())->links() }}
         </div>
         <div>
-            <a href="{{ url('/') }}" class="action-btn edit-btn">Volver al Panel Admin</a>
+            <a href="{{ url('/admin/') }}" class="action-btn edit-btn">Volver al Panel Admin</a>
         </div>
     </div>
 
@@ -175,7 +175,7 @@
             }
             
             // Establece la acción del formulario con la ruta correcta
-            document.getElementById('editMesaForm').action = `/mesas/${codMesa}`;
+            document.getElementById('editMesaForm').action = `/admin/mesas/${codMesa}`;
             
             // Limpia los mensajes de error
             clearErrors();
@@ -193,7 +193,7 @@
         function deleteMesa(codMesa) {
             if (confirm('¿Estás seguro de que deseas eliminar esta mesa?')) {
                 const form = document.getElementById('deleteMesaForm');
-                form.action = `/mesas/${codMesa}`;
+                form.action = `/admin/mesas/${codMesa}`;
                 form.submit();
             }
         }

@@ -178,7 +178,7 @@
         </div>
 
         <div>
-            <a href="{{ url('/') }}" class="action-btn edit-btn">Volver al Panel Admin</a>
+            <a href="{{ url('/admin/') }}" class="action-btn edit-btn">Volver al Panel Admin</a>
         </div>
     </div>
     <!-- Form oculto para eliminar producto -->

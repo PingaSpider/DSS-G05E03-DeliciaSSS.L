@@ -22,4 +22,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+    
+    // Asegurarse de que el formulario de logout funcione correctamente
+    const logoutForm = document.getElementById('logout-form');
+    if (logoutForm) {
+        logoutForm.addEventListener('submit', function(e) {
+            // Permitir que el formulario se envíe normalmente
+            // No prevenir el comportamiento por defecto
+            return true;
+        });
+    }
 });

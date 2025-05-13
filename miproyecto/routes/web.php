@@ -121,113 +121,120 @@ Route::prefix('reservaciones')->middleware('auth')->group(function () {
 // RUTAS PANEL ADMIN
 // ====================================
 
-Route::prefix('admin')->middleware('auth')->group(function () {
-    // Dashboard admin
-    Route::get('/', function () {
-        return view('paneladmin');
-    })->name('paneladmin');
+// Middleware simple directamente en las rutas
+Route::prefix('admin')->group(function () {
+    Route::middleware(['auth'])->group(function () {
+        // Dashboard admin
+        Route::get('/', function () {
+            // Verificar que el usuario sea admin
+            if (!Auth::user()->esAdmin()) {
+                return redirect()->route('home')->with('error', 'No tienes permisos para acceder a esta sección.');
+            }
+            return view('paneladmin');
+        })->name('paneladmin');
     
-    // CRUD Usuarios
-    Route::prefix('usuarios')->group(function () {
-        Route::get('/', [UsuarioController::class, 'paginate'])->name('usuarios.paginate');
-        Route::get('/create', [UsuarioController::class, 'create_get'])->name('usuarios.create');
-        Route::post('/', [UsuarioController::class, 'store'])->name('user.store');
-        Route::get('/{id}', [UsuarioController::class, 'show_get'])->name('usuarios.show');
-        Route::get('/{id}/edit', [UsuarioController::class, 'edit'])->name('usuarios.edit');
-        Route::put('/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
-        Route::delete('/{id}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
-        Route::get('/verificar-email', [UsuarioController::class, 'verificarEmail'])->name('usuarios.verificar-email');
-    });
+        // CRUD Usuarios
+        Route::prefix('usuarios')->group(function () {
+            Route::get('/', [UsuarioController::class, 'paginate'])->name('usuarios.paginate');
+            Route::get('/create', [UsuarioController::class, 'create_get'])->name('usuarios.create');
+            Route::post('/', [UsuarioController::class, 'store'])->name('user.store');
+            Route::get('/{id}', [UsuarioController::class, 'show_get'])->name('usuarios.show');
+            Route::get('/{id}/edit', [UsuarioController::class, 'edit'])->name('usuarios.edit');
+            Route::put('/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
+            Route::delete('/{id}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
+            Route::get('/verificar-email', [UsuarioController::class, 'verificarEmail'])->name('usuarios.verificar-email');
+        });
 
-    // CRUD Mesas
-    Route::prefix('mesas')->group(function () {
-        Route::get('/', [MesaController::class, 'paginate'])->name('mesas.paginate');
-        Route::get('/create', [MesaController::class, 'create'])->name('mesas.create');
-        Route::post('/', [MesaController::class, 'store'])->name('mesas.store');
-        Route::get('/{codMesa}', [MesaController::class, 'show'])->name('mesas.show');
-        Route::get('/{codMesa}/edit', [MesaController::class, 'edit'])->name('mesas.edit');
-        Route::put('/{codMesa}', [MesaController::class, 'update'])->name('mesas.update');
-        Route::delete('/{codMesa}', [MesaController::class, 'destroy'])->name('mesas.destroy');
-        Route::get('/verificar-codigo-mesa', [MesaController::class, 'verificarCodigo'])->name('mesas.verificar-codigo');
-    });
+        // CRUD Mesas
+        Route::prefix('mesas')->group(function () {
+            Route::get('/', [MesaController::class, 'paginate'])->name('mesas.paginate');
+            Route::get('/create', [MesaController::class, 'create'])->name('mesas.create');
+            Route::post('/', [MesaController::class, 'store'])->name('mesas.store');
+            Route::get('/{codMesa}', [MesaController::class, 'show'])->name('mesas.show');
+            Route::get('/{codMesa}/edit', [MesaController::class, 'edit'])->name('mesas.edit');
+            Route::put('/{codMesa}', [MesaController::class, 'update'])->name('mesas.update');
+            Route::delete('/{codMesa}', [MesaController::class, 'destroy'])->name('mesas.destroy');
+            Route::get('/verificar-codigo-mesa', [MesaController::class, 'verificarCodigo'])->name('mesas.verificar-codigo');
+        });
 
-    // CRUD Pedidos
-    Route::prefix('pedidos')->group(function () {
-        Route::get('/', [PedidoController::class, 'paginate'])->name('pedidos.paginate');
-        Route::get('/create', [PedidoController::class, 'create'])->name('pedidos.create');
-        Route::post('/', [PedidoController::class, 'store'])->name('pedidos.store');
-        Route::get('/{cod}', [PedidoController::class, 'show'])->name('pedidos.show');
-        Route::get('/{cod}/edit', [PedidoController::class, 'edit'])->name('pedidos.edit');
-        Route::put('/{cod}', [PedidoController::class, 'update'])->name('pedidos.update');
-        Route::delete('/{cod}', [PedidoController::class, 'destroy'])->name('pedidos.destroy');
-        Route::get('/verificar-codigo-pedido', [PedidoController::class, 'verificarCodigo'])->name('pedidos.verificar-codigo');
-    });
+        // CRUD Pedidos
+        Route::prefix('pedidos')->group(function () {
+            Route::get('/', [PedidoController::class, 'paginate'])->name('pedidos.paginate');
+            Route::get('/create', [PedidoController::class, 'create'])->name('pedidos.create');
+            Route::post('/', [PedidoController::class, 'store'])->name('pedidos.store');
+            Route::get('/{cod}', [PedidoController::class, 'show'])->name('pedidos.show');
+            Route::get('/{cod}/edit', [PedidoController::class, 'edit'])->name('pedidos.edit');
+            Route::put('/{cod}', [PedidoController::class, 'update'])->name('pedidos.update');
+            Route::delete('/{cod}', [PedidoController::class, 'destroy'])->name('pedidos.destroy');
+            Route::get('/verificar-codigo-pedido', [PedidoController::class, 'verificarCodigo'])->name('pedidos.verificar-codigo');
+        });
 
-    // CRUD Líneas de pedido
-    Route::prefix('lineas-pedido')->group(function () {
-        Route::get('/', [LineaPedidoController::class, 'paginate'])->name('lineaPedidos.paginate');
-        Route::get('/create', [LineaPedidoController::class, 'create'])->name('lineaPedidos.create');
-        Route::post('/', [LineaPedidoController::class, 'store'])->name('lineaPedidos.store');
-        Route::get('/{linea}', [LineaPedidoController::class, 'show'])->name('lineaPedidos.show');
-        Route::get('/{linea}/edit', [LineaPedidoController::class, 'edit'])->name('lineaPedidos.edit');
-        Route::put('/{linea}', [LineaPedidoController::class, 'update'])->name('lineaPedidos.update');
-        Route::delete('/{linea}', [LineaPedidoController::class, 'destroy'])->name('lineaPedidos.destroy');
-        Route::get('/verificar-codigo-linea', [LineaPedidoController::class, 'verificarCodigo'])->name('lineaPedidos.verificar-codigo');
-    });
+        // CRUD Líneas de pedido
+        Route::prefix('lineas-pedido')->group(function () {
+            Route::get('/', [LineaPedidoController::class, 'paginate'])->name('lineaPedidos.paginate');
+            Route::get('/create', [LineaPedidoController::class, 'create'])->name('lineaPedidos.create');
+            Route::post('/', [LineaPedidoController::class, 'store'])->name('lineaPedidos.store');
+            Route::get('/{linea}', [LineaPedidoController::class, 'show'])->name('lineaPedidos.show');
+            Route::get('/{linea}/edit', [LineaPedidoController::class, 'edit'])->name('lineaPedidos.edit');
+            Route::put('/{linea}', [LineaPedidoController::class, 'update'])->name('lineaPedidos.update');
+            Route::delete('/{linea}', [LineaPedidoController::class, 'destroy'])->name('lineaPedidos.destroy');
+            Route::get('/verificar-codigo-linea', [LineaPedidoController::class, 'verificarCodigo'])->name('lineaPedidos.verificar-codigo');
+        });
 
-    // CRUD Productos
-    Route::prefix('productos')->group(function () {
-        Route::get('/', [ProductoController::class, 'paginate'])->name('productos.paginate');
-        Route::get('/create', [ProductoController::class, 'create_get'])->name('productos.create');
-        Route::post('/', [ProductoController::class, 'store'])->name('productos.store');
-        Route::get('/{cod}', [ProductoController::class, 'show_get'])->name('productos.show');
-        Route::get('/{cod}/edit', [ProductoController::class, 'edit'])->name('productos.edit');
-        Route::put('/{cod}', [ProductoController::class, 'update'])->name('productos.update');
-        Route::delete('/{cod}', [ProductoController::class, 'destroy'])->name('productos.destroy');
-    });
+        // CRUD Productos
+        Route::prefix('productos')->group(function () {
+            Route::get('/', [ProductoController::class, 'paginate'])->name('productos.paginate');
+            Route::get('/create', [ProductoController::class, 'create_get'])->name('productos.create');
+            Route::post('/', [ProductoController::class, 'store'])->name('productos.store');
+            Route::get('/{cod}', [ProductoController::class, 'show_get'])->name('productos.show');
+            Route::get('/{cod}/edit', [ProductoController::class, 'edit'])->name('productos.edit');
+            Route::put('/{cod}', [ProductoController::class, 'update'])->name('productos.update');
+            Route::delete('/{cod}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+        });
 
-    // CRUD Comidas
-    Route::prefix('comidas')->group(function () {
-        Route::get('/', [ComidaController::class, 'paginate'])->name('comida.paginate');
-        Route::get('/create', [ComidaController::class, 'create_get'])->name('comida.create');
-        Route::post('/store', [ComidaController::class, 'store'])->name('comida.store');
-        Route::get('/{cod}', [ComidaController::class, 'show_get'])->name('comida.show');
-        Route::get('/{cod}/edit', [ComidaController::class, 'edit'])->name('comida.edit');
-        Route::put('/{cod}', [ComidaController::class, 'update'])->name('comida.update');
-        Route::delete('/{cod}', [ComidaController::class, 'destroy'])->name('comida.destroy');
-    });
+        // CRUD Comidas
+        Route::prefix('comidas')->group(function () {
+            Route::get('/', [ComidaController::class, 'paginate'])->name('comida.paginate');
+            Route::get('/create', [ComidaController::class, 'create_get'])->name('comida.create');
+            Route::post('/store', [ComidaController::class, 'store'])->name('comida.store');
+            Route::get('/{cod}', [ComidaController::class, 'show_get'])->name('comida.show');
+            Route::get('/{cod}/edit', [ComidaController::class, 'edit'])->name('comida.edit');
+            Route::put('/{cod}', [ComidaController::class, 'update'])->name('comida.update');
+            Route::delete('/{cod}', [ComidaController::class, 'destroy'])->name('comida.destroy');
+        });
 
-    // CRUD Bebidas
-    Route::prefix('bebidas')->group(function () {
-        Route::get('/', [BebidaController::class, 'paginate'])->name('bebidas.paginate');
-        Route::get('/create', [BebidaController::class, 'create_get'])->name('bebidas.create');
-        Route::post('/store', [BebidaController::class, 'store'])->name('bebidas.store');
-        Route::get('/{cod}', [BebidaController::class, 'show'])->name('bebidas.show');
-        Route::get('/{cod}/edit', [BebidaController::class, 'edit'])->name('bebidas.edit');
-        Route::put('/{cod}', [BebidaController::class, 'update'])->name('bebidas.update');
-        Route::delete('/{cod}', [BebidaController::class, 'destroy'])->name('bebidas.destroy');
-    });
+        // CRUD Bebidas
+        Route::prefix('bebidas')->group(function () {
+            Route::get('/', [BebidaController::class, 'paginate'])->name('bebidas.paginate');
+            Route::get('/create', [BebidaController::class, 'create_get'])->name('bebidas.create');
+            Route::post('/store', [BebidaController::class, 'store'])->name('bebidas.store');
+            Route::get('/{cod}', [BebidaController::class, 'show'])->name('bebidas.show');
+            Route::get('/{cod}/edit', [BebidaController::class, 'edit'])->name('bebidas.edit');
+            Route::put('/{cod}', [BebidaController::class, 'update'])->name('bebidas.update');
+            Route::delete('/{cod}', [BebidaController::class, 'destroy'])->name('bebidas.destroy');
+        });
 
-    // CRUD Menús
-    Route::prefix('menus')->group(function () {
-        Route::get('/', [MenuController::class, 'paginate'])->name('menus.paginate');
-        Route::get('/create', [MenuController::class, 'create_get'])->name('menus.create');
-        Route::post('/store', [MenuController::class, 'store'])->name('menus.store');
-        Route::get('/{cod}', [MenuController::class, 'show'])->name('menus.show');
-        Route::get('/{cod}/edit', [MenuController::class, 'edit'])->name('menus.edit');
-        Route::put('/{cod}', [MenuController::class, 'update'])->name('menus.update');
-        Route::delete('/{cod}', [MenuController::class, 'destroy'])->name('menus.destroy');
-    });
+        // CRUD Menús
+        Route::prefix('menus')->group(function () {
+            Route::get('/', [MenuController::class, 'paginate'])->name('menus.paginate');
+            Route::get('/create', [MenuController::class, 'create_get'])->name('menus.create');
+            Route::post('/store', [MenuController::class, 'store'])->name('menus.store');
+            Route::get('/{cod}', [MenuController::class, 'show'])->name('menus.show');
+            Route::get('/{cod}/edit', [MenuController::class, 'edit'])->name('menus.edit');
+            Route::put('/{cod}', [MenuController::class, 'update'])->name('menus.update');
+            Route::delete('/{cod}', [MenuController::class, 'destroy'])->name('menus.destroy');
+        });
 
-    // CRUD Reservas
-    Route::prefix('reservas')->group(function () {
-        Route::get('/', [ReservaController::class, 'paginate'])->name('reservas.paginate');
-        Route::get('/create', [ReservaController::class, 'create'])->name('reservas.create');
-        Route::post('/store', [ReservaController::class, 'store'])->name('reservas.store');
-        Route::get('/{codReserva}', [ReservaController::class, 'show'])->name('reservas.show');
-        Route::get('/{codReserva}/edit', [ReservaController::class, 'edit'])->name('reservas.edit');
-        Route::put('/{codReserva}', [ReservaController::class, 'update'])->name('reservas.update');
-        Route::delete('/{codReserva}', [ReservaController::class, 'destroy'])->name('reservas.destroy');
+        // CRUD Reservas
+        Route::prefix('reservas')->group(function () {
+            Route::get('/', [ReservaController::class, 'paginate'])->name('reservas.paginate');
+            Route::get('/create', [ReservaController::class, 'create'])->name('reservas.create');
+            Route::post('/store', [ReservaController::class, 'store'])->name('reservas.store');
+            Route::get('/{codReserva}', [ReservaController::class, 'show'])->name('reservas.show');
+            Route::get('/{codReserva}/edit', [ReservaController::class, 'edit'])->name('reservas.edit');
+            Route::put('/{codReserva}', [ReservaController::class, 'update'])->name('reservas.update');
+            Route::delete('/{codReserva}', [ReservaController::class, 'destroy'])->name('reservas.destroy');
+        });
     });
 });
 
