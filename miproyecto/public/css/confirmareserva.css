@@ -69,11 +69,11 @@ h2 {
 }
 
 /* Detalles de reserva */
-.detalles-reserva {
+.detalles-reserva .detalles-pedido {
     margin-bottom: 40px;
 }
 
-.reserva-box {
+.reserva-box .pedido-box {
     border: 1px solid #333;
     max-width: 400px;
     margin: 0 auto;
@@ -81,7 +81,7 @@ h2 {
     text-align: left;
 }
 
-.reserva-box p {
+.reserva-box p .pedido-box p {
     margin-bottom: 10px;
 }
 
@@ -125,5 +125,125 @@ h2 {
     
     .reserva-box {
         max-width: 100%;
+    }
+}
+
+.productos-list {
+    margin-top: 15px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #F39221;
+}
+
+/*productos ocupen la misma posicion sin importar cantidad de caracteres*/
+.producto-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.producto-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.btn-pedidos {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.btn-pedidos:hover {
+    background-color: #555;
+}
+
+.detalles-pedido{
+    border-radius: 4px;
+    padding: 10px;
+    border: 1px solid #F39221; 
+    margin-bottom: 20px;
+}
+
+.btn-menu{
+    background-color: #F39221;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.btn-menu:hover {
+    background-color: #D6811E;
+}
+/* Estilos para el botón de volver */
+.btn-volver {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.btn-volver:hover {
+    background-color: #555;
+}
+
+.pedido-box{
+    margin-bottom: 10px;
+}
+
+/* Estilos mejorados para la lista de productos */
+.producto-item {
+    display: flex;
+    align-items: center; /* Centra verticalmente todos los elementos */
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.producto-item:last-child {
+    border-bottom: none;
+}
+
+/* Define anchos específicos para cada columna */
+.producto-nombre {
+    flex: 1 1 50%; /* Toma el 50% del espacio disponible */
+    text-align: left;
+    padding-right: 10px;
+}
+
+.producto-cantidad {
+    flex: 0 0 100px; /* Ancho fijo de 100px */
+    text-align: center; /* Centra el texto horizontalmente */
+    font-weight: bold;
+}
+
+.producto-precio {
+    flex: 0 0 100px; /* Ancho fijo de 100px */
+    text-align: right;
+    font-weight: bold;
+}
+
+/* Para pantallas más pequeñas */
+@media (max-width: 600px) {
+    .producto-nombre {
+        flex: 1 1 40%;
+    }
+    
+    .producto-cantidad {
+        flex: 0 0 80px;
+    }
+    
+    .producto-precio {
+        flex: 0 0 80px;
     }
 }

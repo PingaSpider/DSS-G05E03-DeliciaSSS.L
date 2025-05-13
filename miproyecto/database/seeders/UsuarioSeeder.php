@@ -11,18 +11,19 @@ class UsuarioSeeder extends Seeder
     public function run()
     {
         Usuario::create([
-            'nombre' => 'Admin',
-            'email' => 'admin@admin.com',
-            'password' => Hash::make('password123'),
-            'telefono' => '000000000',
-            'rol' => 'admin',
-        ]);
-        Usuario::create([
             'nombre' => 'alvaro',
             'email' => 'alvaro@example.com',
             'password' => Hash::make('123456'),
             'telefono' => '111222333',
             'rol' => 'user',
+        ]);
+
+        Usuario::create([
+            'nombre' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => Hash::make('password123'),
+            'telefono' => '000000000',
+            'rol' => 'admin',
         ]);
 
         Usuario::create([
