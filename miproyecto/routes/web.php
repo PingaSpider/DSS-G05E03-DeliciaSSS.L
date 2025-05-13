@@ -72,6 +72,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/carrito/update', [WebLineaPedidoController::class, 'updateQuantity'])->name('carrito.update');
     Route::delete('/carrito/remove/{lineaId}', [WebLineaPedidoController::class, 'removeFromCart'])->name('carrito.remove');
 
+    // Confirmación de ped
+    Route::get('/carrito/confirmacion/{pedidoId}', [WebPedidoController::class, 'confirmacion'])
+        ->name('carrito.confirmacion');
+
 });
 
 Route::get('/api/productos/buscar', [WebProductoController::class, 'buscar'])->name('api.productos.buscar');

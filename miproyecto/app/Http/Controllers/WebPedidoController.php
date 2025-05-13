@@ -75,15 +75,14 @@ class WebPedidoController extends Controller
                 'cvv' => 'required_if:payment_method,tarjeta',
             ]);
             
-            // Procesar el pago (aquí iría la lógica real de pago)
-            // Por ahora solo simulamos el proceso
             
             // Cambiar el estado del pedido a "preparando"
             $carrito->cambiarEstado(Pedido::ESTADO_PREPARANDO);
             
             DB::commit();
             
-            return redirect()->route('user.orders')
+            // Redirigir a la página de confirmación con el ID del pedido
+            return redirect()->route('carrito.confirmacion', ['pedidoId' => $carrito->cod])
                 ->with('success', 'Pedido realizado con éxito. Tu pedido está siendo preparado.');
                 
         } catch (Exception $e) {
@@ -143,5 +142,36 @@ class WebPedidoController extends Controller
                 'telefono' => 'Tel: 678-45-20-16'
             ]
         ];
+    }
+
+    /**
+     * Mostrar confirmación del pedido
+     */
+    public function confirmacion($pedidoId)
+    {
+        try {
+            $usuario = Usuario::where('email', Auth::user()->email)->firstOrFail();
+            
+            // Buscar el pedido con sus líneas y productos
+            $pedido = Pedido::where('cod', $pedidoId)
+                ->where('usuario_id', $usuario->id)
+                ->with('lineasPedido.producto', 'usuario')
+                ->firstOrFail();
+            
+            // Preparar datos del mensaje
+            $mensaje = (object)[
+                'titulo' => '¡Gracias por tu pedido!',
+                'subtitulo' => 'Te enviaremos una confirmación por email a ' . $usuario->email
+            ];
+            
+            // Datos del footer
+            $footer = $this->getFooterData();
+            
+            return view('confirmarpedido', compact('pedido', 'mensaje', 'footer'));
+            
+        } catch (Exception $e) {
+            return redirect()->route('home')
+                ->with('error', 'Error al mostrar la confirmación del pedido');
+        }
     }
 }
